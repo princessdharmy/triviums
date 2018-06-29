@@ -1,0 +1,45 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.app.horizon"
+        minSdkVersion 14
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+ext {
+    appcompatVersion = '28.0.0-alpha3'
+    constraintLayoutVersion = '1.1.2'
+    jUnitVersion = '4.12'
+    runnerVersion = '1.0.1'
+    espressoVersion = '3.0.2'
+}
+
+dependencies {
+    //Loads packaged libraries in the libs folder
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    //Android Libs
+    implementation "com.android.support:appcompat-v7:$appcompatVersion"
+    implementation "com.android.support:design:$appcompatVersion"
+    implementation "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"
+    implementation "com.android.support:support-vector-drawable:$appcompatVersion"
+
+    //View Dependency Injection Libs
+
+    //Testing libs
+    testImplementation "junit:junit:$jUnitVersion"
+    androidTestImplementation "com.android.support.test:runner:$runnerVersion"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$espressoVersion"
+}
