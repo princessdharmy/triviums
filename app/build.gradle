@@ -9,6 +9,22 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+    }
+    compileOptions{
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    dataBinding{
+        enabled true
+    }
+    packagingOptions{
+        exclude 'META-INF/rxjava.properties'
     }
     buildTypes {
         release {
@@ -24,6 +40,14 @@ ext {
     jUnitVersion = '4.12'
     runnerVersion = '1.0.1'
     espressoVersion = '3.0.2'
+    daggerVersion = '2.14.1'
+    rxBusVersion = '1.0.6'
+    trelloLifecycleVersion = '2.2.1'
+    retrofitAdaptersVersion = '2.3.0'
+    retrofitVersion = '2.4.0'
+    okhttpVersion = '3.10.0'
+    loggingInterceptorVersion = '3.8.1'
+    roomVersion = '1.1.1'
 }
 
 dependencies {
@@ -36,10 +60,33 @@ dependencies {
     implementation "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"
     implementation "com.android.support:support-vector-drawable:$appcompatVersion"
 
-    //View Dependency Injection Libs
+    //Dependency Injection
+    implementation "com.google.dagger:dagger:$daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
 
     //Testing libs
     testImplementation "junit:junit:$jUnitVersion"
     androidTestImplementation "com.android.support.test:runner:$runnerVersion"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$espressoVersion"
+
+    //Event bus
+    implementation "com.hwangjr.rxbus:rxbus:$rxBusVersion"
+
+    //Lifecycle
+    implementation "com.trello.rxlifecycle2:rxlifecycle-components:$trelloLifecycleVersion"
+
+    //Network
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$loggingInterceptorVersion"
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitAdaptersVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava:$retrofitAdaptersVersion"
+
+    //Views and animations
+    implementation 'com.facebook.fresco:fresco:1.9.0'
+
+    //Persistence and storage
+    implementation "android.arch.persistence.room:runtime:$roomVersion"
+    annotationProcessor "android.arch.persistence.room:compiler:$roomVersion"
+    implementation "android.arch.persistence.room:rxjava2:$roomVersion"
 }
