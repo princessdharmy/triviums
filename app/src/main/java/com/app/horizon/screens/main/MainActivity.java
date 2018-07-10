@@ -1,4 +1,4 @@
-package com.app.horizon;
+package com.app.horizon.screens.main;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,7 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import com.app.horizon.R;
+import com.app.horizon.core.view.BaseActivity;
+
+public class MainActivity extends BaseActivity {
 
     private TextView mTextMessage;
 
@@ -36,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        mTextMessage = findViewById(R.id.message);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
