@@ -13,16 +13,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity android:name=".screens.splashscreen.SplashScreenActivity">
-
-        </activity>
-        <activity android:name=".screens.onboarding.OnBoardingActivity"/>
-        <activity android:name=".screens.authentication.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".screens.onboarding.OnBoardingActivity"/>
+        <activity android:name=".screens.authentication.login.LoginActivity"/>
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
