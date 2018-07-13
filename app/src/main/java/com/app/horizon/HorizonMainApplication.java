@@ -6,11 +6,9 @@ import android.app.Application;
 import com.app.horizon.core.dagger.components.DaggerHorizonMainComponent;
 import com.app.horizon.core.dagger.components.HorizonMainComponent;
 import com.app.horizon.core.dagger.modules.external.ContextModule;
+import com.facebook.FacebookSdk;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
-/**
- * Created by Ayokunle Paul on 7/3/18.
- */
 public class HorizonMainApplication extends Application {
 
     private HorizonMainComponent component;
@@ -23,6 +21,7 @@ public class HorizonMainApplication extends Application {
                 .contextModule(new ContextModule(this))
                 .build();
         Fresco.initialize(this);
+        FacebookSdk.sdkInitialize(getApplicationContext());
     }
 
     public HorizonMainApplication get(Activity activity){

@@ -5,9 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
-/**
- * Created by Ayokunle Paul on 7/3/18.
- */
+
 public class BaseActivity extends RxAppCompatActivity {
 
     @Override

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1032665251185",
+    "firebase_url": "https://horizon-b1f4f.firebaseio.com",
+    "project_id": "horizon-b1f4f",
+    "storage_bucket": "horizon-b1f4f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032665251185:android:180bc495e008f5ae",
+        "android_client_info": {
+          "package_name": "com.app.horizon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1032665251185-3trvep3uaeu1jum3g7l6993qrblsd33l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.horizon",
+            "certificate_hash": "4f1874e0d54a31bd5668af5cada62dae46483fe3"
+          }
+        },
+        {
+          "client_id": "1032665251185-q6233dj9sroj6h1btp17lj190k1r7tlv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYskt5RC3wI3RI8leW5jAffFxLqBs3auE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1032665251185-q6233dj9sroj6h1btp17lj190k1r7tlv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

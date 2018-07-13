@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.app.horizon"
-        minSdkVersion 14
+        minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -15,15 +15,17 @@ android {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
+
+        multiDexEnabled true
     }
-    compileOptions{
+    compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    dataBinding{
+    dataBinding {
         enabled true
     }
-    packagingOptions{
+    packagingOptions {
         exclude 'META-INF/rxjava.properties'
     }
     buildTypes {
@@ -37,16 +39,23 @@ android {
 ext {
     appcompatVersion = '28.0.0-alpha3'
     constraintLayoutVersion = '1.1.2'
-    jUnitVersion = '4.12'
-    runnerVersion = '1.0.1'
-    espressoVersion = '3.0.2'
     daggerVersion = '2.14.1'
-    rxBusVersion = '1.0.6'
-    trelloLifecycleVersion = '2.2.1'
+    espressoVersion = '3.0.2'
+    facebookSdkVersion = '4.27.0'
+    firebaseVersion = '16.0.1'
+    frescoVersion = '1.9.0'
+    jUnitVersion = '4.12'
+    loggingInterceptorVersion = '3.8.1'
+    multiDexVersion = '1.0.3'
+    okhttpVersion = '3.10.0'
     retrofitAdaptersVersion = '2.3.0'
     retrofitVersion = '2.4.0'
-    okhttpVersion = '3.10.0'
-    loggingInterceptorVersion = '3.8.1'
+    runnerVersion = '1.0.1'
+    rxBusVersion = '1.0.6'
+    trelloLifecycleVersion = '2.2.1'
+
+
+
     roomVersion = '1.1.1'
 }
 
@@ -83,10 +92,22 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava:$retrofitAdaptersVersion"
 
     //Views and animations
-    implementation 'com.facebook.fresco:fresco:1.9.0'
+    implementation "com.facebook.fresco:fresco:$frescoVersion"
 
     //Persistence and storage
     implementation "android.arch.persistence.room:runtime:$roomVersion"
     annotationProcessor "android.arch.persistence.room:compiler:$roomVersion"
     implementation "android.arch.persistence.room:rxjava2:$roomVersion"
+
+    //Firebase
+    implementation "com.google.firebase:firebase-core:$firebaseVersion"
+    implementation "com.google.firebase:firebase-auth:$firebaseVersion"
+
+    //Facebook Authentication
+    implementation "com.facebook.android:facebook-android-sdk:$facebookSdkVersion"
+
+    //MultiDex
+    implementation "com.android.support:multidex:$multiDexVersion"
 }
+
+apply plugin: 'com.google.gms.google-services'

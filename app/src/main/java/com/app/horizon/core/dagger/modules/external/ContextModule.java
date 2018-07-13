@@ -7,9 +7,6 @@ import com.app.horizon.core.dagger.scopes.MainAppScope;
 import dagger.Module;
 import dagger.Provides;
 
-/**
- * Created by Ayokunle Paul on 7/3/18.
- */
 
 @Module
 public class ContextModule {
