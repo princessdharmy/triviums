@@ -13,5 +13,21 @@
     <!--Icons Colors-->
     <color name="navIconColor">#06C8D4</color>
     <color name="bottomNavIconColor">#FCC344</color>
+    <color name="indicatorInactiveColor">#4DFFFFFF</color>
+    <color name="indicatorActiveColor">#FFFFFF</color>
+    <color name="button_color">#D48000</color>
+
+
+    <array name="array_dot_active">
+        <item>@color/indicatorActiveColor</item>
+        <item>@color/indicatorActiveColor</item>
+        <item>@color/indicatorActiveColor</item>
+    </array>
+
+    <array name="array_dot_inactive">
+        <item>@color/indicatorInactiveColor</item>
+        <item>@color/indicatorInactiveColor</item>
+        <item>@color/indicatorInactiveColor</item>
+    </array>
 
 </resources>

@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.app.horizon.R;
-import com.app.horizon.screens.main.MainActivity;
+import com.app.horizon.screens.onboarding.OnBoardingActivity;
 
 import java.util.concurrent.TimeUnit;
 
@@ -31,7 +31,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         @Override
         public void onNext(Object o) {
-            Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+            Intent intent = new Intent(SplashScreenActivity.this, OnBoardingActivity.class);
             startActivity(intent);
             finish();
         }

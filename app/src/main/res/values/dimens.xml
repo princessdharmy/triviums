@@ -8,4 +8,11 @@
     <dimen name="margin">8dp</dimen>
     <dimen name="marginTop">60dp</dimen>
     <dimen name="marginBottom">80dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
+
+    <dimen name="slide_title">24sp</dimen>
+    <dimen name="slide_desc">16sp</dimen>
+    <dimen name="slide_title_margin_top">50dp</dimen>
+
 </resources>

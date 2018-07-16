@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
+
+    <TextView
+        android:id="@+id/slide_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/slide_title_margin_top"
+        android:text="@string/slide3_title"
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/slide_title"
+        android:textStyle="bold" />
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="300dp"
+        android:layout_height="370dp"
+        android:layout_centerInParent="true"
+        app:cardCornerRadius="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/image_view"
+                android:layout_width="match_parent"
+                android:layout_height="283dp"
+                android:src="@drawable/fourth_ob"
+                android:scaleType="centerCrop"/>
+
+            <Button
+                android:id="@+id/get_started_btn"
+                android:layout_width="148dp"
+                android:layout_height="38dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/slide_title"
+                android:gravity="center"
+                android:background="@drawable/get_started_button"
+                android:text="@string/get_started"
+                android:textAllCaps="false"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/slide_desc" />
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>
