@@ -32,7 +32,7 @@ public class OnBoardingActivity extends AppCompatActivity {
     private LinearLayout dotsLayout;
     private TextView[] dots;
     private int[] layouts;
-    private Button getStarted;
+    private Button btnSkip, btnNext;
     private PrefManager prefManager;
 
 
@@ -54,7 +54,9 @@ public class OnBoardingActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_on_boarding);
         mViewPager = findViewById(R.id.container);
-        getStarted = findViewById(R.id.get_started_btn);
+        dotsLayout = findViewById(R.id.layoutDots);
+        btnSkip = findViewById(R.id.btn_skip);
+        btnNext = findViewById(R.id.btn_next);
 
         // layouts of all welcome sliders
         // add few more layouts if you want
@@ -64,7 +66,7 @@ public class OnBoardingActivity extends AppCompatActivity {
                 R.layout.slide3};
 
         //Adding bottom dots
-        //addBottomDots(0);
+        addBottomDots(0);
 
         //Making notification bar transparent
         changeStatusBarColor();
@@ -81,7 +83,7 @@ public class OnBoardingActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 //addBottomDots(position);
-                /*// changing the next button text 'NEXT' / 'GOT IT'
+                // changing the next button text 'NEXT' / 'GOT IT'
                 if (position == layouts.length - 1) {
                     // last page. make button text to GOT IT
                     btnNext.setText(getString(R.string.start));
@@ -90,7 +92,7 @@ public class OnBoardingActivity extends AppCompatActivity {
                     // still pages are left
                     btnNext.setText(getString(R.string.next));
                     btnSkip.setVisibility(View.VISIBLE);
-                }*/
+                }
             }
 
             @Override
@@ -99,22 +101,31 @@ public class OnBoardingActivity extends AppCompatActivity {
             }
         });
 
-        /*getStarted.setOnClickListener(new View.OnClickListener() {
+        btnSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                launchHomeScreen();
+            }
+        });
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // checking for last page
+                // if last page home screen will be launched
                 int current = getItem(+1);
-                if(current < layouts.length){
+                if (current < layouts.length) {
+                    // move to next screen
                     mViewPager.setCurrentItem(current);
                 } else {
                     launchHomeScreen();
-                    finish();
                 }
             }
-        });*/
+        });
 
     }
 
-    /*private void addBottomDots(int currentPage) {
+    private void addBottomDots(int currentPage) {
         dots = new TextView[layouts.length];
 
         int[] colorsActive = getResources().getIntArray(R.array.array_dot_active);
@@ -132,7 +143,7 @@ public class OnBoardingActivity extends AppCompatActivity {
         if (dots.length > 0)
             dots[currentPage].setTextColor(colorsActive[currentPage]);
     }
-*/
+
     private int getItem(int i) {
         return mViewPager.getCurrentItem() + i;
     }
@@ -150,7 +161,7 @@ public class OnBoardingActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
+            window.setStatusBarColor(Color.parseColor("#3C4258"));
         }
     }
 

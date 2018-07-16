@@ -22,7 +22,7 @@
         <activity
             android:name=".screens.onboarding.OnBoardingActivity"
             android:label="@string/title_activity_on_boarding"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/OnBoardingTheme"/>
         <activity android:name=".screens.authentication.login.LoginActivity" />
 
         <meta-data

@@ -1,57 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background">
 
-    <TextView
-        android:id="@+id/slide_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/slide_title_margin_top"
-        android:text="@string/slide1_title"
-        android:textColor="@color/textColor"
-        android:textSize="@dimen/slide_title"
-        android:textStyle="bold" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="@dimen/marginBottom">
 
+        <ImageView
+            android:id="@+id/image_view"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/technology" />
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_width="300dp"
-        android:layout_height="370dp"
-        android:layout_centerInParent="true"
-        app:cardCornerRadius="5dp">
+        <TextView
+            android:id="@+id/slide_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/slide_title_margin_top"
+            android:text="@string/slide1_title"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/slide_title"
+            android:textStyle="bold" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        <TextView
+            android:id="@+id/slide_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/margin"
+            android:layout_marginEnd="@dimen/margin"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:gravity="center"
+            android:text="@string/slide1_desc"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/slide_desc" />
 
-            <ImageView
-                android:id="@+id/image_view"
-                android:layout_width="match_parent"
-                android:layout_height="283dp"
-                android:src="@drawable/first_ob"
-                android:scaleType="centerCrop"/>
-
-            <TextView
-                android:id="@+id/slide_desc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="@dimen/margin"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:layout_marginEnd="@dimen/margin"
-                android:layout_marginStart="@dimen/margin"
-                android:gravity="center"
-                android:text="@string/slide1_desc"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/slide_desc" />
-        </LinearLayout>
-
-    </android.support.v7.widget.CardView>
+    </LinearLayout>
 
 </RelativeLayout>
