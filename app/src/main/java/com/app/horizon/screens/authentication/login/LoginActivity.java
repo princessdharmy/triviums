@@ -63,18 +63,19 @@ public class LoginActivity extends BaseActivity {
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
                 handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
             @Override
             public void onCancel() {
-                Toast.makeText(getApplicationContext(), "Login Cancel", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Login Cancel", Toast.LENGTH_SHORT)
+                        .show();
             }
 
             @Override
             public void onError(FacebookException error) {
-                Toast.makeText(getApplicationContext(), "Login Error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Login Error", Toast.LENGTH_SHORT)
+                        .show();
 
             }
         });
@@ -91,6 +92,21 @@ public class LoginActivity extends BaseActivity {
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        mAuth.addAuthStateListener(firebaseAuthListener);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Pass the activity result back to the Facebook SDK
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
     private void handleFacebookAccessToken(AccessToken token) {
         progressBar.setVisibility(View.VISIBLE);
         loginButton.setVisibility(View.GONE);
@@ -101,6 +117,8 @@ public class LoginActivity extends BaseActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "Login Successful",
+                                    Toast.LENGTH_SHORT).show();
                             // Sign in success, update UI with the signed-in user's information
                             progressBar.setVisibility(View.GONE);
                             loginButton.setVisibility(View.VISIBLE);
@@ -119,21 +137,6 @@ public class LoginActivity extends BaseActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
         Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Pass the activity result back to the Facebook SDK
-        mCallbackManager.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        mAuth.addAuthStateListener(firebaseAuthListener);;
     }
 
     @Override
