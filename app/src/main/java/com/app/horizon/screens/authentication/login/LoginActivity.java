@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.app.horizon.R;
 import com.app.horizon.core.view.BaseActivity;
 import com.app.horizon.screens.main.MainActivity;
+import com.app.horizon.utils.PrefManager;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -28,8 +29,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 
 public class LoginActivity extends BaseActivity {
-
-    private static final String TAG = LoginActivity.class.getSimpleName();
 
     private FirebaseAuth mAuth;
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -121,7 +120,6 @@ public class LoginActivity extends BaseActivity {
                                     Toast.LENGTH_SHORT).show();
                             // Sign in success, update UI with the signed-in user's information
                             progressBar.setVisibility(View.GONE);
-                            loginButton.setVisibility(View.VISIBLE);
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
