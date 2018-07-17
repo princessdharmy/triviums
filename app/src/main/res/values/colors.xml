@@ -4,7 +4,8 @@
     <!--Background Colors-->
     <color name="colorPrimary">#3C4258</color>
     <color name="colorPrimaryDark">#6D748E</color>
-    <color name="colorAccent">#4F576C</color>
+    <color name="colorAccent">#06C8D4</color>
+    <color name="colorAccentDark">#4F576C</color>
 
     <!--Text Colors-->
     <color name="textColor">#FFFFFF</color>
@@ -13,5 +14,12 @@
     <!--Icons Colors-->
     <color name="navIconColor">#06C8D4</color>
     <color name="bottomNavIconColor">#FCC344</color>
+
+    <!-- dots inactive color -->
+    <color name="dots_inactive_color">#4DFFFFFF</color>
+
+    <!-- dots active color -->
+    <color name="dots_active_color">#FFFFFF</color>
+
 
 </resources>

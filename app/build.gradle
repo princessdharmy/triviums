@@ -108,6 +108,7 @@ dependencies {
 
     //MultiDex
     implementation "com.android.support:multidex:$multiDexVersion"
+
 }
 
 apply plugin: 'com.google.gms.google-services'

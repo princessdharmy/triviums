@@ -3,6 +3,9 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
 
     <!--Facebook-->
     <string name="facebook_app_id">197952730877848</string>
@@ -10,4 +13,20 @@
 
     <!--Texts-->
     <string name="login_text">You will be redirected automatically to Facebook to authenticate your login account</string>
+    <string name="title_activity_on_boarding">OnBoardingActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <string name="slide1_title">Technology</string>
+    <string name="slide1_desc">What was the name of the WWF professional</string>
+
+    <string name="slide2_title">Sport</string>
+    <string name="slide2_desc">What was the name of the WWF professional</string>
+
+    <string name="slide3_title">Entertainment</string>
+    <string name="slide3_desc">What was the name of the WWF professional</string>
+
+    <string name="get_started">Get Started</string>
+
+
 </resources>
