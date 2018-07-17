@@ -3,4 +3,11 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+    <!--Facebook-->
+    <string name="facebook_app_id">197952730877848</string>
+    <string name="fb_login_protocol_scheme">fb197952730877848</string>
+
+    <!--Texts-->
+    <string name="login_text">You will be redirected automatically to Facebook to authenticate your login account</string>
 </resources>

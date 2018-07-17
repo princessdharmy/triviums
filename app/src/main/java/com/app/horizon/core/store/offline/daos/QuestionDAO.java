@@ -12,9 +12,7 @@ import java.util.List;
 import io.reactivex.Flowable;
 import rx.Observable;
 
-/**
- * Created by Ayokunle Paul on 7/3/18.
- */
+
 @Dao
 public interface QuestionDAO {
     @Query("SELECT * FROM QuestionTable WHERE questionId = :id")
