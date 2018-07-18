@@ -1,17 +1,17 @@
 package com.app.horizon;
 
 import android.app.Activity;
-import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 
 import com.app.horizon.core.dagger.components.DaggerHorizonMainComponent;
 import com.app.horizon.core.dagger.components.HorizonMainComponent;
 import com.app.horizon.core.dagger.modules.external.ContextModule;
-
+import com.app.horizon.core.dagger.modules.view.OnBoardingPagerModule;
 import com.facebook.FacebookSdk;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
 
-public class HorizonMainApplication extends Application {
+public class HorizonMainApplication extends MultiDexApplication {
 
     private HorizonMainComponent component;
 
@@ -21,12 +21,14 @@ public class HorizonMainApplication extends Application {
 
         component = DaggerHorizonMainComponent.builder()
                 .contextModule(new ContextModule(this))
+                .onBoardingPagerModule(new OnBoardingPagerModule())
                 .build();
+
         Fresco.initialize(this);
         FacebookSdk.sdkInitialize(getApplicationContext());
     }
 
-    public HorizonMainApplication get(Activity activity){
+    public static HorizonMainApplication get(Activity activity){
         return (HorizonMainApplication) activity.getApplication();
     }
 
