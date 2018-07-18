@@ -39,6 +39,7 @@ public class OnBoardingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //setTheme(R.style.AppTheme_NoActionBar);
         super.onCreate(savedInstanceState);
 
         // Checking for first time launch - before calling setContentView()
