@@ -19,7 +19,6 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         tools:context=".screens.onboarding.OnBoardingActivity">
-        android:layout_height="match_parent" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/container"
@@ -32,17 +31,18 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_alignParentBottom="true"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btn_next"
                 android:layout_width="wrap_content"
+                android:text="@string/next"
                 android:layout_height="match_parent"
                 android:background="@null"
-                android:text="@{isLastPage ? @string/start : @string/next}"
                 android:textColor="@android:color/white"
-                android:onClick="@{isLastPage ? clickHandler::onSkipClicked : clickHandler::onNextClicked}" />
+                android:visibility="@{isLastPage ? View.INVISIBLE : View.VISIBLE}"
+                android:onClick="@{clickHandler::onNextClicked}" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -82,9 +82,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@null"
-                android:text="@string/skip"
                 android:textColor="@android:color/white"
-                android:visibility="@{isLastPage ? View.INVISIBLE : View.VISIBLE}"
+                android:text="@{isLastPage ? @string/start : @string/skip}"
                 android:onClick="@{clickHandler::onSkipClicked}"/>
 
         </LinearLayout>
@@ -95,5 +94,6 @@
             android:alpha=".5"
             android:layout_above="@id/layoutDots"
             android:background="@android:color/white" />
+
     </RelativeLayout>
 </layout>

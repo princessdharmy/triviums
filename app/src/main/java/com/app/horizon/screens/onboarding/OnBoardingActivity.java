@@ -34,6 +34,7 @@ public class OnBoardingActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         //setTheme(R.style.AppTheme_NoActionBar);
         super.onCreate(savedInstanceState);
+        inject();
 
         // Checking for first time launch - before calling setContentView()
         if (!prefManager.isFirstTimeLaunch()) {
@@ -51,7 +52,6 @@ public class OnBoardingActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_on_boarding);
         binding.setClickHandler(new OnBoardingActivityClickHandler());
         binding.setIsLastPage(false);
-        inject();
         setupViewPager();
     }
 
