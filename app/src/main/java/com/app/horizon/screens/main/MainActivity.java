@@ -31,10 +31,10 @@ public class MainActivity extends BaseActivity {
                 case R.id.navigation_home:
                     //mTextMessage.setText(R.string.title_home);
                     return true;
-                case R.id.navigation_dashboard:
+                case R.id.navigation_profile:
                     //mTextMessage.setText(R.string.title_dashboard);
                     return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_leader:
                     //mTextMessage.setText(R.string.title_notifications);
                     return true;
             }
@@ -51,11 +51,11 @@ public class MainActivity extends BaseActivity {
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        user = FirebaseAuth.getInstance().getCurrentUser();
+        /*user = FirebaseAuth.getInstance().getCurrentUser();
         if(user != null){
             String name = user.getDisplayName();
             mTextMessage.setText(name);
-        }
+        }*/
     }
 
     private void goLoginScreen() {
@@ -65,9 +65,9 @@ public class MainActivity extends BaseActivity {
         startActivity(intent);
     }
 
-    public void logout(View view) {
+    /*public void logout(View view) {
         FirebaseAuth.getInstance().signOut();
         LoginManager.getInstance().logOut();
         goLoginScreen();
-    }
+    }*/
 }
