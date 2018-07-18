@@ -11,10 +11,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".screens.splashscreen.SplashScreenActivity">
-
-        </activity>
+        android:theme="@style/AppTheme.NoActionBar">
 
         <activity
             android:name=".screens.main.MainActivity"
@@ -28,12 +25,23 @@
             android:name=".screens.onboarding.OnBoardingActivity"
             android:label="@string/title_activity_on_boarding"
             android:theme="@style/OnBoardingTheme">
+
+        <activity android:name=".screens.splashscreen.SplashScreenActivity"
+            android:theme="@style/AppTheme.Launcher">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+          
+        <activity
+            android:name=".screens.main.MainActivity"
+            android:label="@string/app_name"/>
+
+        <activity android:name=".screens.dummy.DummyActivity"/>
+
         <activity android:name=".screens.authentication.login.LoginActivity" />
 
         <meta-data
@@ -65,3 +73,4 @@
     </application>
 
 </manifest>
+

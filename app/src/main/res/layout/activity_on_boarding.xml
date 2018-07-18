@@ -19,6 +19,7 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         tools:context=".screens.onboarding.OnBoardingActivity">
+        android:layout_height="match_parent" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/container"

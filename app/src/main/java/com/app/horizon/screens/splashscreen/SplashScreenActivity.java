@@ -5,7 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.app.horizon.R;
+import com.app.horizon.screens.main.MainActivity;
 import com.app.horizon.screens.onboarding.OnBoardingActivity;
+import com.app.horizon.utils.PrefManager;
 
 import java.util.concurrent.TimeUnit;
 
@@ -16,48 +18,22 @@ import rx.Subscription;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
-    private Subscription subscription;
-
-    Observer observer = new Observer() {
-        @Override
-        public void onCompleted() {
-
-        }
-
-        @Override
-        public void onError(Throwable e) {
-
-        }
-
-        @Override
-        public void onNext(Object o) {
-            Intent intent = new Intent(SplashScreenActivity.this, OnBoardingActivity.class);
-            startActivity(intent);
-            finish();
-        }
-    };
+    private PrefManager prefManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme_NoActionBar);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_screen);
+
+        prefManager = new PrefManager(this);
+        if (prefManager.isFirstTimeLaunch()) {
+            prefManager.setFirstTimeLaunch(true);
+            startActivity(new Intent(SplashScreenActivity.this, OnBoardingActivity.class));
+            finish();
+        } else{
+            startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+            finish();
+        }
     }
 
-    @Override
-    public void onBackPressed() {
-        subscription.unsubscribe();
-        super.onBackPressed();
-    }
-
-    @Override
-    protected void onPause() {
-        subscription.unsubscribe();
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        subscription = Observable.timer(3, TimeUnit.SECONDS).subscribe(observer);
-        super.onResume();
-    }
 }
