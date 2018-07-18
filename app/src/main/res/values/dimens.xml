@@ -17,4 +17,8 @@
     <dimen name="dots_height">30dp</dimen>
     <dimen name="dots_margin_bottom">20dp</dimen>
 
+    <dimen name="carousel_page_radius">200dp</dimen>
+    <dimen name="indicator_size">10dp</dimen>
+    <dimen name="indicator_margin">5dp</dimen>
+
 </resources>
