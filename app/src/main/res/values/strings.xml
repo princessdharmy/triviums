@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Horizon</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_leader_board">Leaderboard</string>
     <string name="next">NEXT</string>
     <string name="skip">SKIP</string>
     <string name="start">GOT IT</string>
@@ -27,6 +27,7 @@
     <string name="slide3_desc">What was the name of the WWF professional</string>
 
     <string name="get_started">Get Started</string>
+    <string name="categories">Categories</string>
 
 
 </resources>
