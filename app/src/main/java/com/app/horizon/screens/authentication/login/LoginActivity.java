@@ -4,6 +4,7 @@ package com.app.horizon.screens.authentication.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -73,19 +74,17 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onError(FacebookException error) {
+                Log.e("FACEBOOK LOGIN ERROR", error.toString());
                 Toast.makeText(getApplicationContext(), "Login Error", Toast.LENGTH_SHORT)
                         .show();
 
             }
         });
 
-        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    goMainScreen();
-                }
+        firebaseAuthListener = firebaseAuth -> {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            if (user != null) {
+                goMainScreen();
             }
         };
 
@@ -112,21 +111,18 @@ public class LoginActivity extends BaseActivity {
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Login Successful",
-                                    Toast.LENGTH_SHORT).show();
-                            // Sign in success, update UI with the signed-in user's information
-                            progressBar.setVisibility(View.GONE);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(getApplicationContext(), "Login Successful",
+                                Toast.LENGTH_SHORT).show();
+                        // Sign in success, update UI with the signed-in user's information
+                        progressBar.setVisibility(View.GONE);
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
                     }
+
                 });
     }
 
