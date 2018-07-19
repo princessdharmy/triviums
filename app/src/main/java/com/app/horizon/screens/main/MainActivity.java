@@ -1,61 +1,51 @@
 package com.app.horizon.screens.main;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
 import com.app.horizon.R;
 import com.app.horizon.core.view.BaseActivity;
+import com.app.horizon.databinding.ActivityMainBinding;
 import com.app.horizon.screens.authentication.login.LoginActivity;
-import com.facebook.login.LoginManager;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
+import javax.inject.Inject;
 
 
 public class MainActivity extends BaseActivity {
 
-    private TextView mTextMessage;
+    @Inject
+    MainActivityViewModel viewModel;
 
-    private FirebaseUser user;
+    private ActivityMainBinding binding;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    //mTextMessage.setText(R.string.title_home);
-                    return true;
-                case R.id.navigation_profile:
-                    //mTextMessage.setText(R.string.title_dashboard);
-                    return true;
-                case R.id.navigation_leader:
-                    //mTextMessage.setText(R.string.title_notifications);
-                    return true;
-            }
-            return false;
-        }
-    };
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = item -> {
+                switch (item.getItemId()) {
+                    case R.id.navigation_home:
+                        //mTextMessage.setText(R.string.title_home);
+                        return true;
+                    case R.id.navigation_profile:
+                        //mTextMessage.setText(R.string.title_dashboard);
+                        return true;
+                    case R.id.navigation_leader:
+                        //mTextMessage.setText(R.string.title_notifications);
+                        return true;
+                }
+                return false;
+            };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        inject(this);
 
-        mTextMessage = findViewById(R.id.message);
-        BottomNavigationView navigation = findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        initBinding();
+    }
 
-        /*user = FirebaseAuth.getInstance().getCurrentUser();
-        if(user != null){
-            String name = user.getDisplayName();
-            mTextMessage.setText(name);
-        }*/
+    private void initBinding(){
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        binding.navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
     private void goLoginScreen() {
@@ -65,9 +55,4 @@ public class MainActivity extends BaseActivity {
         startActivity(intent);
     }
 
-    /*public void logout(View view) {
-        FirebaseAuth.getInstance().signOut();
-        LoginManager.getInstance().logOut();
-        goLoginScreen();
-    }*/
 }

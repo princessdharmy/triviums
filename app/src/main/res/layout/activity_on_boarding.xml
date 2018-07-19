@@ -6,8 +6,11 @@
     <data>
         <import type="android.view.View"/>
         <variable
+            name="viewModel"
+            type="com.app.horizon.screens.onboarding.OnBoardingViewModel"/>
+        <variable
             name="isLastPage"
-            type="Boolean"/>
+            type="boolean"/>
         <variable
             name="clickHandler"
             type="com.app.horizon.screens.onboarding.OnBoardingActivity.OnBoardingActivityClickHandler"/>
@@ -35,14 +38,14 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btn_next"
+                android:id="@+id/btn_skip"
                 android:layout_width="wrap_content"
-                android:text="@string/next"
                 android:layout_height="match_parent"
                 android:background="@null"
                 android:textColor="@android:color/white"
-                android:visibility="@{isLastPage ? View.INVISIBLE : View.VISIBLE}"
-                android:onClick="@{clickHandler::onNextClicked}" />
+                android:text="@string/skip"
+                android:visibility="@{viewModel.isLastPage ? View.INVISIBLE : View.VISIBLE}"
+                android:onClick="@{clickHandler::onSkipClicked}"/>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -78,13 +81,13 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/btn_skip"
+                android:id="@+id/btn_next"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@null"
                 android:textColor="@android:color/white"
-                android:text="@{isLastPage ? @string/start : @string/skip}"
-                android:onClick="@{clickHandler::onSkipClicked}"/>
+                android:text="@{viewModel.isLastPage ? @string/start : @string/next}"
+                android:onClick="@{viewModel.isLastPage ? clickHandler::onSkipClicked : clickHandler::onNextClicked}" />
 
         </LinearLayout>
 
