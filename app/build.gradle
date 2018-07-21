@@ -71,6 +71,7 @@ dependencies {
 
     //Dependency Injection
     implementation "com.google.dagger:dagger:$daggerVersion"
+    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
     annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
 
     //Testing libs

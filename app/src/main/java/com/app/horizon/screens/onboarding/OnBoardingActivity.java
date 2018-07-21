@@ -10,34 +10,32 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.app.horizon.HorizonMainApplication;
 import com.app.horizon.R;
 import com.app.horizon.core.view.BaseActivity;
 import com.app.horizon.databinding.ActivityOnBoardingBinding;
 import com.app.horizon.screens.authentication.login.LoginActivity;
-import com.app.horizon.utils.PrefManager;
 
 import javax.inject.Inject;
 
 
 public class OnBoardingActivity extends BaseActivity {
 
-
     private ActivityOnBoardingBinding binding;
 
     @Inject
-    PrefManager prefManager;
-    @Inject
     OnBoardingPagerAdapter adapter;
+
+    @Inject
+    OnBoardingViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //setTheme(R.style.AppTheme_NoActionBar);
         super.onCreate(savedInstanceState);
-        inject();
+        inject(this);
 
         // Checking for first time launch - before calling setContentView()
-        if (!prefManager.isFirstTimeLaunch()) {
+        if (!viewModel.isFirstTimeLaunch()) {
             launchHomeScreen();
             finish();
         }
@@ -51,12 +49,9 @@ public class OnBoardingActivity extends BaseActivity {
     private void initBinding(){
         binding = DataBindingUtil.setContentView(this, R.layout.activity_on_boarding);
         binding.setClickHandler(new OnBoardingActivityClickHandler());
-        binding.setIsLastPage(false);
+        binding.setViewModel(viewModel);
+        viewModel.setIsLastPage(false);
         setupViewPager();
-    }
-
-    private void inject(){
-        HorizonMainApplication.get(this).getComponent().inject(this);
     }
 
     private void setupViewPager(){
@@ -87,7 +82,7 @@ public class OnBoardingActivity extends BaseActivity {
     }
 
     private void launchHomeScreen() {
-        prefManager.setFirstTimeLaunch(false);
+        viewModel.setFirstTimeLaunch();
         startActivity(new Intent(OnBoardingActivity.this, LoginActivity.class));
         finish();
     }
@@ -125,9 +120,9 @@ public class OnBoardingActivity extends BaseActivity {
         public void onPageSelected(int position) {
             enableIndicator(position);
             if (position == adapter.getCount() - 1){
-                binding.setIsLastPage(true);
+                viewModel.setIsLastPage(true);
             } else {
-                binding.setIsLastPage(false);
+                viewModel.setIsLastPage(false);
             }
         }
 
