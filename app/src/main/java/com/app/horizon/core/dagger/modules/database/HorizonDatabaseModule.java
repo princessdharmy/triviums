@@ -10,16 +10,15 @@ import dagger.Module;
 import dagger.Provides;
 
 
-@Module
+@Module()
 public class HorizonDatabaseModule {
 
     @MainAppScope
     @Provides
     public HorizonDatabase provideMainAppDatabase(Context context){
-        HorizonDatabase database = Room.databaseBuilder(context, HorizonDatabase.class, "horizon.db")
+        return Room.databaseBuilder(context, HorizonDatabase.class, "horizon.db")
                 .allowMainThreadQueries()
                 .build();
-        return database;
     }
 
 }
