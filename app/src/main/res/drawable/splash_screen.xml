@@ -2,6 +2,9 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android"
     android:opacity="opaque">
 
-    <item android:drawable="@drawable/splash" />
+    <item android:drawable="@drawable/background" />
+    <item>
+        <bitmap android:src="@drawable/logo"/>
+    </item>
 
 </layer-list>

@@ -2,9 +2,7 @@ package com.app.horizon.core.network.models;
 
 import com.app.horizon.utils.Utils;
 
-/**
- * Created by Ayokunle Paul on 7/19/18.
- */
+
 public class UserProfile {
 
     private String name;

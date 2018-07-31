@@ -5,17 +5,17 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import com.app.horizon.core.store.offline.entities.Question;
+import com.app.horizon.core.store.offline.entities.question.Question;
 
 import java.util.List;
 
 import io.reactivex.Flowable;
-import rx.Observable;
 
 
 @Dao
 public interface QuestionDAO {
-    @Query("SELECT * FROM QuestionTable WHERE questionId = :id")
+
+    @Query("SELECT * FROM question_table")
     Flowable<Question> getAllQuestion(long id);
 
     @Insert

@@ -9,6 +9,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        dataBinding.enabled = true
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -21,9 +22,6 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-    dataBinding {
-        enabled true
     }
     packagingOptions {
         exclude 'META-INF/rxjava.properties'
@@ -42,7 +40,8 @@ ext {
     daggerVersion = '2.14.1'
     espressoVersion = '3.0.2'
     facebookSdkVersion = '4.27.0'
-    firebaseVersion = '16.0.1'
+    firebaseCoreVersion = '16.0.1'
+    firebaseAuthVersion = '16.0.2'
     frescoVersion = '1.9.0'
     jUnitVersion = '4.12'
     loggingInterceptorVersion = '3.8.1'
@@ -101,8 +100,8 @@ dependencies {
     implementation "android.arch.persistence.room:rxjava2:$roomVersion"
 
     //Firebase
-    implementation "com.google.firebase:firebase-core:$firebaseVersion"
-    implementation "com.google.firebase:firebase-auth:$firebaseVersion"
+    implementation "com.google.firebase:firebase-core:$firebaseCoreVersion"
+    implementation "com.google.firebase:firebase-auth:$firebaseAuthVersion"
 
     //Facebook Authentication
     implementation "com.facebook.android:facebook-android-sdk:$facebookSdkVersion"

@@ -8,4 +8,7 @@ public interface Constants {
     String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
     String PREF_NAME = "HorizonCache";
     String CACHED_USER = "CachedUser";
+
+    //Network
+    String BASE_URL = "https://question-api.herokuapp.com/";
 }
