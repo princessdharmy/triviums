@@ -16,7 +16,7 @@ import io.reactivex.Flowable;
 public interface QuestionDAO {
 
     @Query("SELECT * FROM question_table")
-    Flowable<Question> getAllQuestion(long id);
+    Flowable<Question> getAllQuestion();
 
     @Insert
     void insertQuestion(List<Question> questions);

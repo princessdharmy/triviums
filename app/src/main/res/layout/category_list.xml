@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="category"
+            type="com.app.horizon.core.store.offline.entities.category.Category"/>
+    </data>
+<android.support.v7.widget.CardView
+    android:layout_width="157dp"
+    android:layout_height="158dp"
+    app:cardCornerRadius="@dimen/card_view_radius"
+    android:layout_margin="@dimen/card_view_margin"
+    app:cardBackgroundColor="@color/colorAccentDark">
+
 <android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        fresco:placeholderImage="@drawable/my_drawable"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>
+</layout>
