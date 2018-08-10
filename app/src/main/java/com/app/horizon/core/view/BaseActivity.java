@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.app.horizon.HorizonMainApplication;
-import com.app.horizon.screens.splashscreen.SplashScreenActivity;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import dagger.android.AndroidInjection;

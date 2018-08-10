@@ -33,12 +33,6 @@ public class OnBoardingActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         inject(this);
 
-        // Checking for first time launch - before calling setContentView()
-        if (!viewModel.isFirstTimeLaunch()) {
-            launchHomeScreen();
-            finish();
-        }
-
         initBinding();
 
         //Making notification bar transparent

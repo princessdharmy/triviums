@@ -1,33 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fresco="http://schemas.android.com/tools">
+    xmlns:bind="http://schemas.android.com/tools">
+
     <data>
         <variable
             name="category"
-            type="com.app.horizon.core.store.offline.entities.category.Category"/>
+            type="com.app.horizon.core.store.offline.entities.category.Category" />
     </data>
-<android.support.v7.widget.CardView
-    android:layout_width="157dp"
-    android:layout_height="158dp"
-    app:cardCornerRadius="@dimen/card_view_radius"
-    android:layout_margin="@dimen/card_view_margin"
-    app:cardBackgroundColor="@color/colorAccentDark">
 
-<android.support.constraint.ConstraintLayout
+    <android.support.v7.widget.CardView
+        android:layout_width="157dp"
+        android:layout_height="158dp"
+        android:layout_marginStart="@dimen/card_view_marginH"
+        android:layout_marginEnd="@dimen/card_view_marginH"
+        android:layout_marginTop="@dimen/card_view_marginV"
+        android:layout_marginBottom="@dimen/card_view_marginV"
+        app:cardBackgroundColor="@color/colorAccentDark"
+        app:cardCornerRadius="@dimen/card_view_radius">
 
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+        <android.support.constraint.ConstraintLayout
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        fresco:placeholderImage="@drawable/my_drawable"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/simpleDraweeView2"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.492"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.236"
+                bind:iconUrl="@{category.iconUrl}" />
 
-</android.support.constraint.ConstraintLayout>
-</android.support.v7.widget.CardView>
+            <TextView
+                android:layout_width="132dp"
+                android:layout_height="29dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="@{category.name}"
+                android:textColor="@color/textColor"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.492"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/simpleDraweeView2"
+                app:layout_constraintVertical_bias="0.619" />
+
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
 </layout>

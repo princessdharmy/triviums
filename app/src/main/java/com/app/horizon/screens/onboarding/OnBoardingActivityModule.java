@@ -7,9 +7,7 @@ import com.app.horizon.core.store.MainAppStore;
 import dagger.Module;
 import dagger.Provides;
 
-/**
- * Created by Ayokunle Paul on 7/19/18.
- */
+
 @Module
 public class OnBoardingActivityModule {
 

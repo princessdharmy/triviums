@@ -4,8 +4,10 @@ package com.app.horizon.core.store.offline.entities.category;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.databinding.BindingAdapter;
 import android.support.annotation.NonNull;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "category_table")
@@ -28,11 +30,17 @@ public class Category {
     @SerializedName("questions")
     private String mQuestions;
 
+
     public Category(@NonNull String mId, @NonNull String mName, String mIconUrl, String mQuestions) {
         this.mId = mId;
         this.mName = mName;
         this.mIconUrl = mIconUrl;
         this.mQuestions = mQuestions;
+    }
+
+    @BindingAdapter("iconUrl")
+    public static void loadImage(SimpleDraweeView view, String imageUrl){
+        view.setImageURI(imageUrl);
     }
 
     public String getId() {

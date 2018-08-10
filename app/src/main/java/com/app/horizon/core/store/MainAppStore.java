@@ -38,4 +38,12 @@ public class MainAppStore {
         return offlineStore.isFirstTimeLaunch();
     }
 
+    public boolean isLoggedIn(){
+        return offlineStore.isLoggedIn();
+    }
+
+    public void setLoggedIn(boolean loggedIn){
+        offlineStore.setLoggedIn(loggedIn);
+    }
+
 }

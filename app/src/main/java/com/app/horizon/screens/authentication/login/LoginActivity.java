@@ -23,6 +23,8 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import javax.inject.Inject;
+
 
 public class LoginActivity extends BaseActivity {
 
@@ -34,6 +36,8 @@ public class LoginActivity extends BaseActivity {
     LoginButton loginButton;
     private ProgressBar progressBar;
 
+    @Inject LoginActivityViewModel viewModel;
+
     private static final String EMAIL = "email";
     private static final String PUBLIC_PROFILE = "public_profile";
 
@@ -41,6 +45,7 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        inject(this);
 
         progressBar = findViewById(R.id.progressBar);
 
@@ -85,6 +90,7 @@ public class LoginActivity extends BaseActivity {
 
     }
 
+
     @Override
     public void onStart() {
         super.onStart();
@@ -108,6 +114,7 @@ public class LoginActivity extends BaseActivity {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
+                        viewModel.setLoggedIn(true);
                         Toast.makeText(getApplicationContext(), "Login Successful",
                                 Toast.LENGTH_SHORT).show();
                         // Sign in success, update UI with the signed-in user's information

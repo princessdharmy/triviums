@@ -1,19 +1,17 @@
 package com.app.horizon.core.store.online.services;
 
-import com.app.horizon.core.store.offline.entities.category.Category;
-import com.app.horizon.core.store.offline.entities.question.Question;
+import com.app.horizon.core.store.offline.entities.category.CategoryResponse;
+import com.app.horizon.core.store.offline.entities.question.QuestionResponse;
 
-import java.util.List;
-
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-import rx.Observable;
 
 public interface ApiService {
 
     @GET("categories/read.php")
-    Observable<List<Category>> fetchCategories();
+    Observable<CategoryResponse> fetchCategories();
 
-    @GET("questions/read_paging.php")
-    Observable<List<Question>> fetchQuestions(@Query("category_id") String categoryId);
+    @GET("questions/read_paging.php?")
+    Observable<QuestionResponse> fetchQuestions(@Query("category_id") String categoryId);
 }

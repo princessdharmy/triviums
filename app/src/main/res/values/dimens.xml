@@ -21,6 +21,8 @@
     <dimen name="indicator_size">10dp</dimen>
     <dimen name="indicator_margin">5dp</dimen>
     <dimen name="card_view_radius">10dp</dimen>
-    <dimen name="card_view_margin">17dp</dimen>
+    <dimen name="card_view_marginH">10dp</dimen>
+    <dimen name="card_view_marginV">8dp</dimen>
+
 
 </resources>

@@ -7,9 +7,7 @@ import com.app.horizon.core.view.BaseViewModel;
 
 import javax.inject.Inject;
 
-/**
- * Created by Ayokunle Paul on 7/19/18.
- */
+
 public class OnBoardingViewModel extends BaseViewModel {
 
     public ObservableBoolean isLastPage;

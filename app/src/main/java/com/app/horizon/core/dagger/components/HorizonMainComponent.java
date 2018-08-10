@@ -3,11 +3,8 @@ package com.app.horizon.core.dagger.components;
 import com.app.horizon.HorizonMainApplication;
 import com.app.horizon.core.dagger.modules.ActivityBuilder;
 import com.app.horizon.core.dagger.modules.HorizonAppModule;
-import com.app.horizon.core.dagger.modules.database.HorizonDatabaseModule;
 import com.app.horizon.core.dagger.modules.network.GsonModule;
 import com.app.horizon.core.dagger.scopes.MainAppScope;
-import com.app.horizon.screens.onboarding.OnBoardingActivity;
-import com.app.horizon.screens.splashscreen.SplashScreenActivity;
 
 import dagger.BindsInstance;
 import dagger.Component;
