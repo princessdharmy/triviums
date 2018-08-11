@@ -1,6 +1,8 @@
 package com.app.horizon.screens.authentication.login;
 
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,8 +11,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.app.horizon.R;
-import com.app.horizon.core.view.BaseActivity;
+import com.app.horizon.core.base.BaseActivity;
 import com.app.horizon.screens.main.MainActivity;
+import com.app.horizon.screens.splashscreen.SplashScreenViewModel;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -23,8 +26,10 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import javax.inject.Inject;
 
-public class LoginActivity extends BaseActivity {
+
+public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
 
     private FirebaseAuth mAuth;
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -34,8 +39,18 @@ public class LoginActivity extends BaseActivity {
     LoginButton loginButton;
     private ProgressBar progressBar;
 
+    LoginActivityViewModel viewModel;
+    @Inject
+    ViewModelProvider.Factory factory;
+
     private static final String EMAIL = "email";
     private static final String PUBLIC_PROFILE = "public_profile";
+
+    @Override
+    public LoginActivityViewModel getViewModel() {
+        viewModel = ViewModelProviders.of(this, factory).get(LoginActivityViewModel.class);
+        return viewModel;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +100,7 @@ public class LoginActivity extends BaseActivity {
 
     }
 
+
     @Override
     public void onStart() {
         super.onStart();
@@ -108,6 +124,7 @@ public class LoginActivity extends BaseActivity {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
+                        viewModel.setLoggedIn(true);
                         Toast.makeText(getApplicationContext(), "Login Successful",
                                 Toast.LENGTH_SHORT).show();
                         // Sign in success, update UI with the signed-in user's information

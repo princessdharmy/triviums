@@ -1,10 +1,16 @@
 package com.app.horizon.screens.main;
 
-import dagger.Module;
+import com.app.horizon.core.store.MainAppStore;
 
-/**
- * Created by Ayokunle Paul on 7/19/18.
- */
+import dagger.Module;
+import dagger.Provides;
+
+
 @Module
 public class MainActivityModule {
+
+    @Provides
+    MainActivityViewModel provideMainActivityViewModel(MainAppStore store){
+        return new MainActivityViewModel(store);
+    }
 }

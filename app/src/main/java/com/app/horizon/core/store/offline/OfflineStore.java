@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.app.horizon.core.network.models.UserProfile;
 import com.app.horizon.core.managers.PrefManager;
+import com.app.horizon.utils.Constants;
 
 import javax.inject.Inject;
 
@@ -33,5 +34,13 @@ public class OfflineStore {
 
     public boolean isFirstTimeLaunch(){
         return prefManager.isFirstTimeLaunch();
+    }
+
+    public boolean isLoggedIn(){
+        return prefManager.isLoggedIn();
+    }
+
+    public void setLoggedIn(boolean loggedIn){
+        prefManager.setLoggedIn(loggedIn);
     }
 }
