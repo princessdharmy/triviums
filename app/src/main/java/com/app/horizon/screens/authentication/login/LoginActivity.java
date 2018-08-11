@@ -1,6 +1,8 @@
 package com.app.horizon.screens.authentication.login;
 
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,8 +11,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.app.horizon.R;
-import com.app.horizon.core.view.BaseActivity;
+import com.app.horizon.core.base.BaseActivity;
 import com.app.horizon.screens.main.MainActivity;
+import com.app.horizon.screens.splashscreen.SplashScreenViewModel;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -26,7 +29,7 @@ import com.google.firebase.auth.FirebaseUser;
 import javax.inject.Inject;
 
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
 
     private FirebaseAuth mAuth;
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -36,16 +39,23 @@ public class LoginActivity extends BaseActivity {
     LoginButton loginButton;
     private ProgressBar progressBar;
 
-    @Inject LoginActivityViewModel viewModel;
+    LoginActivityViewModel viewModel;
+    @Inject
+    ViewModelProvider.Factory factory;
 
     private static final String EMAIL = "email";
     private static final String PUBLIC_PROFILE = "public_profile";
 
     @Override
+    public LoginActivityViewModel getViewModel() {
+        viewModel = ViewModelProviders.of(this, factory).get(LoginActivityViewModel.class);
+        return viewModel;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        inject(this);
 
         progressBar = findViewById(R.id.progressBar);
 

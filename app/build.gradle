@@ -44,6 +44,7 @@ ext {
     firebaseAuthVersion = '16.0.2'
     frescoVersion = '1.9.0'
     jUnitVersion = '4.12'
+    lifecycle = '1.1.0'
     loggingInterceptorVersion = '3.8.1'
     multiDexVersion = '1.0.3'
     okhttpVersion = '3.10.0'
@@ -103,6 +104,10 @@ dependencies {
     implementation "android.arch.persistence.room:runtime:$roomVersion"
     annotationProcessor "android.arch.persistence.room:compiler:$roomVersion"
     implementation "android.arch.persistence.room:rxjava2:$roomVersion"
+
+    // view model
+    implementation "android.arch.lifecycle:extensions:$lifecycle"
+    annotationProcessor "android.arch.lifecycle:compiler:$lifecycle"
 
     //Firebase
     implementation "com.google.firebase:firebase-core:$firebaseCoreVersion"

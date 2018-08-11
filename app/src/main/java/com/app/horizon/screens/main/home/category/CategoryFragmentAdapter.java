@@ -1,4 +1,4 @@
-package com.app.horizon.screens.main.fragments;
+package com.app.horizon.screens.main.home.category;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;

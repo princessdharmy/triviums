@@ -3,7 +3,7 @@ package com.app.horizon.screens.onboarding;
 import android.databinding.ObservableBoolean;
 
 import com.app.horizon.core.store.MainAppStore;
-import com.app.horizon.core.view.BaseViewModel;
+import com.app.horizon.core.base.BaseViewModel;
 
 import javax.inject.Inject;
 
@@ -11,12 +11,11 @@ import javax.inject.Inject;
 public class OnBoardingViewModel extends BaseViewModel {
 
     public ObservableBoolean isLastPage;
-    private MainAppStore store;
 
     @Inject
     public OnBoardingViewModel(MainAppStore store){
+        super(store);
         isLastPage = new ObservableBoolean();
-        this.store = store;
     }
 
     public void setIsLastPage(boolean isLastPage){
@@ -24,11 +23,11 @@ public class OnBoardingViewModel extends BaseViewModel {
     }
 
     public boolean isFirstTimeLaunch(){
-        return store.isFirstTimeLaunch();
+        return getStore().isFirstTimeLaunch();
     }
 
     public void setFirstTimeLaunch(){
-        store.setFirstTimeLaunch();
+        getStore().setFirstTimeLaunch();
     }
 
 }

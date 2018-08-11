@@ -22,6 +22,7 @@ public class HorizonMainApplication extends MultiDexApplication implements HasAc
     @Inject
     DispatchingAndroidInjector<Activity> activityDispatchingAndroidInjector;
 
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -43,4 +44,5 @@ public class HorizonMainApplication extends MultiDexApplication implements HasAc
     public AndroidInjector<Activity> activityInjector() {
         return activityDispatchingAndroidInjector;
     }
+
 }

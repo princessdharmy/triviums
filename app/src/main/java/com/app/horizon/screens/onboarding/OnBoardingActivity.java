@@ -1,5 +1,7 @@
 package com.app.horizon.screens.onboarding;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
@@ -11,22 +13,32 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.app.horizon.R;
-import com.app.horizon.core.view.BaseActivity;
+import com.app.horizon.core.base.BaseActivity;
 import com.app.horizon.databinding.ActivityOnBoardingBinding;
 import com.app.horizon.screens.authentication.login.LoginActivity;
+import com.app.horizon.screens.authentication.login.LoginActivityViewModel;
 
 import javax.inject.Inject;
 
+import static dagger.android.AndroidInjection.inject;
 
-public class OnBoardingActivity extends BaseActivity {
+
+public class OnBoardingActivity extends BaseActivity<OnBoardingViewModel> {
 
     private ActivityOnBoardingBinding binding;
 
     @Inject
     OnBoardingPagerAdapter adapter;
 
-    @Inject
     OnBoardingViewModel viewModel;
+    @Inject
+    ViewModelProvider.Factory factory;
+
+    @Override
+    public OnBoardingViewModel getViewModel() {
+        viewModel = ViewModelProviders.of(this, factory).get(OnBoardingViewModel.class);
+        return viewModel;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

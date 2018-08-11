@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPrimary"
-        tools:context=".screens.main.fragments.CategoryFragment">
+        tools:context=".screens.main.home.category.CategoryFragment">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/container"
