@@ -5,6 +5,7 @@ import com.app.horizon.screens.authentication.login.LoginActivityModule;
 import com.app.horizon.screens.main.MainActivity;
 import com.app.horizon.screens.main.MainActivityModule;
 import com.app.horizon.screens.main.home.category.CategoryFragmentProvider;
+import com.app.horizon.screens.main.home.stages.StagesFragmentProvider;
 import com.app.horizon.screens.onboarding.OnBoardingActivity;
 import com.app.horizon.screens.onboarding.OnBoardingActivityModule;
 import com.app.horizon.screens.splashscreen.SplashScreenActivity;
@@ -28,7 +29,8 @@ public abstract class ActivityBuilder {
 
     @ContributesAndroidInjector(modules = {
             MainActivityModule.class,
-            CategoryFragmentProvider.class})
+            CategoryFragmentProvider.class,
+            StagesFragmentProvider.class})
     abstract MainActivity contributeMainActivity();
 
 }

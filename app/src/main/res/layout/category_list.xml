@@ -4,9 +4,13 @@
     xmlns:bind="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View"/>
         <variable
             name="category"
             type="com.app.horizon.core.store.offline.entities.category.Category" />
+        <variable
+            name="handlers"
+            type="View.OnClickListener"/>
     </data>
 
     <android.support.v7.widget.CardView
@@ -17,7 +21,9 @@
         android:layout_marginTop="@dimen/card_view_marginV"
         android:layout_marginBottom="@dimen/card_view_marginV"
         app:cardBackgroundColor="@color/colorAccentDark"
-        app:cardCornerRadius="@dimen/card_view_radius">
+        app:cardCornerRadius="@dimen/card_view_radius"
+        android:onClick="@{handlers}"
+        app:specialTag="@{category}">
 
         <android.support.constraint.ConstraintLayout
 

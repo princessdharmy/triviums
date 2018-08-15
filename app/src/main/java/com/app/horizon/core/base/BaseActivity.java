@@ -6,10 +6,11 @@ import android.support.annotation.Nullable;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import dagger.android.AndroidInjection;
 import dagger.android.support.AndroidSupportInjection;
+import dagger.android.support.DaggerAppCompatActivity;
 
 
-public abstract class BaseActivity<T extends BaseViewModel> extends RxAppCompatActivity
-implements BaseFragment.Callback {
+public abstract class BaseActivity<T extends BaseViewModel> extends DaggerAppCompatActivity
+        implements BaseFragment.Callback {
 
     private T viewModel;
 

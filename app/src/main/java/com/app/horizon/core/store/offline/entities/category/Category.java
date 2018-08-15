@@ -6,6 +6,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.databinding.BindingAdapter;
 import android.support.annotation.NonNull;
+import android.view.View;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.annotations.SerializedName;
@@ -41,6 +42,10 @@ public class Category {
     @BindingAdapter("iconUrl")
     public static void loadImage(SimpleDraweeView view, String imageUrl){
         view.setImageURI(imageUrl);
+    }
+    @BindingAdapter("specialTag")
+    public static void setSpecialTag(View view, Object value){
+        view.setTag(value);
     }
 
     public String getId() {

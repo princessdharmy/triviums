@@ -5,23 +5,31 @@ import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
+import com.app.horizon.BR;
 import com.app.horizon.R;
 import com.app.horizon.core.store.offline.entities.category.Category;
 import com.app.horizon.databinding.CategoryListBinding;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class CategoryFragmentAdapter extends RecyclerView.Adapter<CategoryFragmentAdapter.CategoryViewHolder> {
 
     private Context context;
     private List<Category> categoryList;
     private LayoutInflater layoutInflater;
+    private View.OnClickListener listener;
 
-    public CategoryFragmentAdapter(Context context, List<Category> categoryList) {
+    @Inject
+    public CategoryFragmentAdapter(Context context, List<Category> categoryList,
+                                   View.OnClickListener listener) {
         this.context = context;
         this.categoryList = categoryList;
+        this.listener = listener;
     }
 
     @NonNull
@@ -30,15 +38,18 @@ public class CategoryFragmentAdapter extends RecyclerView.Adapter<CategoryFragme
         if(layoutInflater == null){
             layoutInflater = LayoutInflater.from(parent.getContext());
         }
-        CategoryListBinding binding = DataBindingUtil.inflate(layoutInflater,
-                R.layout.category_list, parent, false);
-
-        return new CategoryViewHolder(binding);
+        View view = layoutInflater.inflate(R.layout.category_list, parent, false);
+        return new CategoryViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
-        holder.binding.setCategory(categoryList.get(position));
+        holder.getBinding().setCategory(categoryList.get(position));
+        holder.getBinding().setVariable(BR.handlers, listener);
+
+        //riggers the View to be updated with the new values provided.
+        // This method has to be run on the UI thread.
+        holder.getBinding().executePendingBindings();
     }
 
     @Override
@@ -46,13 +57,22 @@ public class CategoryFragmentAdapter extends RecyclerView.Adapter<CategoryFragme
         return categoryList.size();
     }
 
+
     public class CategoryViewHolder extends RecyclerView.ViewHolder {
 
         private CategoryListBinding binding;
 
-        public CategoryViewHolder(final CategoryListBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
+        public CategoryViewHolder(View v) {
+            super(v);
+            binding = DataBindingUtil.bind(v);
+            v.setTag(binding);
+        }
+
+        public CategoryListBinding getBinding(){
+            return binding;
         }
     }
+
+
+
 }

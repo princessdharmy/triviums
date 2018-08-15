@@ -8,16 +8,21 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.app.horizon.R;
 import com.app.horizon.core.base.BaseFragment;
 import com.app.horizon.core.store.offline.entities.category.Category;
 import com.app.horizon.databinding.FragmentCategoryBinding;
+import com.app.horizon.screens.main.home.stages.StagesFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +71,7 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_category, container,
                 false);
         View view = binding.getRoot();
+
         initRecyclerView();
         return view;
     }
@@ -73,11 +79,11 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fetchCategory();
+        showCategory();
     }
 
     private void initRecyclerView(){
-        adapter = new CategoryFragmentAdapter(getActivity(), categoryList);
+        adapter = new CategoryFragmentAdapter(getActivity(), categoryList, categoryListener);
         recyclerView = binding.categoryView;
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(layoutManager);
@@ -87,20 +93,37 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
     /**
      * Fetches list of Category
      */
-    public void fetchCategory(){
-        viewModel.fetchCategory().observe(this, category -> {
+    public void showCategory(){
+        viewModel.getCategory().observe(this, category -> {
             if (category != null) {
                 categoryList.clear();
-                categoryList.addAll(category.getData());
+                categoryList.addAll(category);
                 adapter.notifyDataSetChanged();
             }
         });
     }
 
+    private View.OnClickListener categoryListener = view -> {
+        Category category = (Category) view.getTag();
+        Toast.makeText(getActivity(), category.getId(), Toast.LENGTH_SHORT).show();
+
+        Fragment fragment = new StagesFragment();
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        Bundle args = new Bundle();
+        args.putString("CategoryId", category.getId());
+        fragment.setArguments(args);
+        transaction.replace(R.id.frame_container, fragment)
+                .addToBackStack(null)
+                .commit();
+
+    };
+
+
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //disposable.dispose();
+        disposable.dispose();
     }
 
 

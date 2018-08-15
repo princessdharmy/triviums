@@ -3,33 +3,28 @@ package com.app.horizon.core.base;
 import android.arch.lifecycle.ViewModel;
 
 import com.app.horizon.core.store.MainAppStore;
-import com.app.horizon.core.store.online.services.ApiClient;
-import com.app.horizon.core.store.online.services.ApiService;
 
-import io.reactivex.disposables.CompositeDisposable;
+import java.lang.ref.WeakReference;
 
 
-public class BaseViewModel extends ViewModel {
+public class BaseViewModel<N> extends ViewModel {
 
     private MainAppStore store;
-    private CompositeDisposable compositeDisposable;
-    private ApiService apiService;
+    private WeakReference<N> navigator;
 
     public BaseViewModel(MainAppStore store) {
         this.store = store;
-        this.compositeDisposable = new CompositeDisposable();
-        this.apiService = ApiClient.getClient().create(ApiService.class);
-    }
-
-    public CompositeDisposable getCompositeDisposable() {
-        return compositeDisposable;
-    }
-
-    public ApiService getApiService() {
-        return apiService;
     }
 
     public MainAppStore getStore() {
         return store;
+    }
+
+    public N getNavigator(){
+        return navigator.get();
+    }
+
+    public void setNavigator(N navigator){
+        this.navigator = new WeakReference<>(navigator);
     }
 }

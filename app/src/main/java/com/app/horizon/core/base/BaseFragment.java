@@ -6,8 +6,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import dagger.android.support.AndroidSupportInjection;
+import dagger.android.support.DaggerFragment;
 
-public abstract class BaseFragment<T extends BaseViewModel> extends Fragment {
+public abstract class BaseFragment<T extends BaseViewModel> extends DaggerFragment {
 
     private BaseActivity baseActivity;
     private T viewModel;

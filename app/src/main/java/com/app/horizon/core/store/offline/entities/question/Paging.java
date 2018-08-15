@@ -13,6 +13,7 @@ public class Paging {
     @SerializedName("total_pages")
     private Long mTotalPages;
 
+
     public Long getCurrentPage() {
         return mCurrentPage;
     }

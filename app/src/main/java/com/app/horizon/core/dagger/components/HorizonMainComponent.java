@@ -2,8 +2,7 @@ package com.app.horizon.core.dagger.components;
 
 import com.app.horizon.HorizonMainApplication;
 import com.app.horizon.core.dagger.builders.ActivityBuilder;
-import com.app.horizon.core.dagger.modules.app.HorizonAppModule;
-import com.app.horizon.core.dagger.modules.network.GsonModule;
+import com.app.horizon.core.dagger.modules.HorizonAppModule;
 import com.app.horizon.core.dagger.scopes.MainAppScope;
 
 import javax.inject.Singleton;
@@ -17,8 +16,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
 @Singleton
 @Component(modules = {AndroidSupportInjectionModule.class,
                     HorizonAppModule.class,
-                    ActivityBuilder.class,
-                    GsonModule.class})
+                    ActivityBuilder.class})
 public interface HorizonMainComponent {
 
     void inject(HorizonMainApplication application);
