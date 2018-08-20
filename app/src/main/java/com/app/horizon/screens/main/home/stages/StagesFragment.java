@@ -67,7 +67,7 @@ public class StagesFragment extends BaseFragment<StagesViewModel>{
                 false);
         View view = binding.getRoot();
         categoryId = getArguments().getString("CategoryId");
-
+        binding.setClick(new MyHandler());
         initRecyclerView();
         return view;
     }
@@ -103,6 +103,12 @@ public class StagesFragment extends BaseFragment<StagesViewModel>{
     public View.OnClickListener listener = view -> {
 
     };
+
+    public class MyHandler{
+        public void onButtonClick(View view) {
+            getActivity().onBackPressed();
+        }
+    }
 
 
 }
