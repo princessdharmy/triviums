@@ -8,6 +8,8 @@ import com.app.horizon.core.network.models.UserProfile;
 import com.app.horizon.utils.Constants;
 import com.google.gson.Gson;
 
+import java.util.Calendar;
+
 import javax.inject.Inject;
 
 public class PrefManager {
@@ -42,6 +44,15 @@ public class PrefManager {
     public UserProfile getCachedUser(){
         String user = sharedPreferences.getString(Constants.CACHED_USER, null);
         return gson.fromJson(user, UserProfile.class);
+    }
+
+    public boolean isLoggedIn(){
+        return sharedPreferences.getBoolean(Constants.LOGGED_IN, false);
+    }
+
+    public void setLoggedIn(boolean isLoggedIn){
+        editor.putBoolean(Constants.LOGGED_IN, isLoggedIn);
+        editor.commit();
     }
 
 }

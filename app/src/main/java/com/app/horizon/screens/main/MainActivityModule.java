@@ -1,10 +1,14 @@
 package com.app.horizon.screens.main;
 
 import dagger.Module;
+import dagger.Provides;
 
-/**
- * Created by Ayokunle Paul on 7/19/18.
- */
+
 @Module
 public class MainActivityModule {
+
+    @Provides
+    MainActivityViewModel provideMainActivityViewModel(){
+        return new MainActivityViewModel();
+    }
 }

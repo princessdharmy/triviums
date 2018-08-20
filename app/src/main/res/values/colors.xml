@@ -21,5 +21,8 @@
     <!-- dots active color -->
     <color name="dots_active_color">#FFFFFF</color>
 
+    <!-- stage unselected color -->
+    <color name="stage_unselected_color">#66FFFFFF</color>
+
 
 </resources>

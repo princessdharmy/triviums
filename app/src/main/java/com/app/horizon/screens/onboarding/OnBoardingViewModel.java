@@ -1,16 +1,14 @@
 package com.app.horizon.screens.onboarding;
 
+import android.arch.lifecycle.ViewModel;
 import android.databinding.ObservableBoolean;
 
 import com.app.horizon.core.store.MainAppStore;
-import com.app.horizon.core.view.BaseViewModel;
 
 import javax.inject.Inject;
 
-/**
- * Created by Ayokunle Paul on 7/19/18.
- */
-public class OnBoardingViewModel extends BaseViewModel {
+
+public class OnBoardingViewModel extends ViewModel {
 
     public ObservableBoolean isLastPage;
     private MainAppStore store;

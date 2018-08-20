@@ -2,24 +2,125 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a8e52f8bff0918be52f5f36f5ca36e59",
+    "identityHash": "deae8e592c9a80dfc8303da14f85da01",
     "entities": [
       {
-        "tableName": "QuestionTable",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`questionId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
+        "tableName": "question_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`mId` TEXT NOT NULL, `category_id` TEXT NOT NULL, `mQuestion` TEXT, `mCorrectAnswer` TEXT, `mOptionA` TEXT, `mOptionB` TEXT, `mOptionC` TEXT, `mOptionD` TEXT, PRIMARY KEY(`mId`), FOREIGN KEY(`category_id`) REFERENCES `category_table`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
-            "fieldPath": "questionId",
-            "columnName": "questionId",
-            "affinity": "INTEGER",
+            "fieldPath": "mId",
+            "columnName": "mId",
+            "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "mCategoryId",
+            "columnName": "category_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mQuestion",
+            "columnName": "mQuestion",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mCorrectAnswer",
+            "columnName": "mCorrectAnswer",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mOptionA",
+            "columnName": "mOptionA",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mOptionB",
+            "columnName": "mOptionB",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mOptionC",
+            "columnName": "mOptionC",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mOptionD",
+            "columnName": "mOptionD",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
           "columnNames": [
-            "questionId"
+            "mId"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_question_table_category_id",
+            "unique": false,
+            "columnNames": [
+              "category_id"
+            ],
+            "createSql": "CREATE  INDEX `index_question_table_category_id` ON `${TABLE_NAME}` (`category_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "category_table",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "category_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "category_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `category` TEXT NOT NULL, `mIconUrl` TEXT, `mQuestions` TEXT, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "mId",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mName",
+            "columnName": "category",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mIconUrl",
+            "columnName": "mIconUrl",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mQuestions",
+            "columnName": "mQuestions",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -27,7 +128,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"a8e52f8bff0918be52f5f36f5ca36e59\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"deae8e592c9a80dfc8303da14f85da01\")"
     ]
   }
 }
