@@ -1,17 +1,15 @@
 package com.app.horizon.screens.main;
 
-import com.app.horizon.core.base.BaseViewModel;
-import com.app.horizon.core.store.MainAppStore;
+import android.arch.lifecycle.ViewModel;
 
 import javax.inject.Inject;
 
 
-public class MainActivityViewModel extends BaseViewModel {
+public class MainActivityViewModel extends ViewModel {
 
 
     @Inject
-    public MainActivityViewModel(MainAppStore store){
-        super(store);
+    public MainActivityViewModel(){
     }
 
 }

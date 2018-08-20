@@ -1,27 +1,23 @@
 package com.app.horizon.screens.main.home.category;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.ViewModel;
 
-import com.app.horizon.core.base.BaseViewModel;
-import com.app.horizon.core.store.MainAppStore;
 import com.app.horizon.core.store.offline.entities.category.Category;
-import com.app.horizon.core.store.offline.entities.question.QuestionResponse;
-import com.app.horizon.screens.main.home.stages.StageRepository;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
 
-public class CategoryViewModel extends BaseViewModel{
+public class CategoryViewModel extends ViewModel {
 
-    @Inject
     public CategoryRepository repository;
     private LiveData<List<Category>> listLiveData;
 
-
-    public CategoryViewModel(MainAppStore store) {
-        super(store);
+    @Inject
+    public CategoryViewModel(CategoryRepository repository) {
+        this.repository = repository;
     }
 
     LiveData<List<Category>> getCategory(){

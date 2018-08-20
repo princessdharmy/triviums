@@ -25,15 +25,12 @@
 
         <activity
             android:name=".screens.main.MainActivity"
-            android:label="@string/app_name">
-
-        </activity>
+            android:label="@string/app_name"
+            android:launchMode="singleTop"/>
 
         <activity
             android:name=".screens.onboarding.OnBoardingActivity"
-            android:label="@string/title_activity_on_boarding">
-
-        </activity>
+            android:label="@string/title_activity_on_boarding"/>
           
         <activity android:name=".screens.authentication.login.LoginActivity" />
 

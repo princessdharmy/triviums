@@ -9,22 +9,17 @@ import javax.inject.Singleton;
 
 import dagger.BindsInstance;
 import dagger.Component;
+import dagger.android.AndroidInjector;
 import dagger.android.support.AndroidSupportInjectionModule;
 
 
 @MainAppScope
-@Singleton
 @Component(modules = {AndroidSupportInjectionModule.class,
                     HorizonAppModule.class,
                     ActivityBuilder.class})
-public interface HorizonMainComponent {
-
-    void inject(HorizonMainApplication application);
+public interface HorizonMainComponent extends AndroidInjector<HorizonMainApplication> {
 
     @Component.Builder
-    interface Builder{
-        @BindsInstance
-        Builder horizonApplication(HorizonMainApplication application);
-        HorizonMainComponent build();
-    }
+    abstract class Builder extends AndroidInjector.Builder<HorizonMainApplication> {}
+
 }

@@ -17,8 +17,8 @@ import dagger.Provides;
 public class StagesFragmentModule {
 
     @Provides
-    StagesViewModel stagesViewModel(MainAppStore store) {
-        return new StagesViewModel(store);
+    StagesViewModel stagesViewModel(StageRepository repository) {
+        return new StagesViewModel(repository);
     }
 
     @Provides

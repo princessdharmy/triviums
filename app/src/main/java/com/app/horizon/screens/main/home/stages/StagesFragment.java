@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +28,7 @@ import javax.inject.Inject;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StagesFragment extends BaseFragment<StagesViewModel> implements StagesNavigator{
+public class StagesFragment extends BaseFragment<StagesViewModel>{
 
     public static final String TAG = StagesFragment.class.getSimpleName();
 
@@ -74,14 +75,13 @@ public class StagesFragment extends BaseFragment<StagesViewModel> implements Sta
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel.setNavigator(this);
         showStage(categoryId);
     }
 
     private void initRecyclerView(){
         adapter = new StagesFragmentAdapter(getActivity(), totalPage, listener);
         recyclerView = binding.stageView;
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
     }
@@ -95,19 +95,14 @@ public class StagesFragment extends BaseFragment<StagesViewModel> implements Sta
             for(int i = 1; i <= page; i++){
                 totalPage.add(i);
             }
+            adapter.updateStages(totalPage);
         });
 
     }
 
     public View.OnClickListener listener = view -> {
-        Integer value = (Integer) view.getTag();
-        Toast.makeText(getActivity(), value, Toast.LENGTH_SHORT).show();
-    };
 
-    @Override
-    public void goBack() {
-        getBaseActivity().onFragmentDetached(TAG);
-    }
+    };
 
 
 }

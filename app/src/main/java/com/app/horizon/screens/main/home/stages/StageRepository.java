@@ -17,7 +17,7 @@ import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 
-@MainAppScope
+
 public class StageRepository {
 
     private ApiService apiService;

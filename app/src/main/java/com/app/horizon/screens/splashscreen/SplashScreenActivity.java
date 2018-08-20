@@ -29,7 +29,6 @@ public class SplashScreenActivity extends BaseActivity<SplashScreenViewModel> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //setTheme(R.style.AppTheme_NoActionBar);
         super.onCreate(savedInstanceState);
 
         // Checking for first time launch

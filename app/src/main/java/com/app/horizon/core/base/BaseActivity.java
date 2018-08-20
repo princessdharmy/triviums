@@ -1,5 +1,6 @@
 package com.app.horizon.core.base;
 
+import android.arch.lifecycle.ViewModel;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -9,8 +10,7 @@ import dagger.android.support.AndroidSupportInjection;
 import dagger.android.support.DaggerAppCompatActivity;
 
 
-public abstract class BaseActivity<T extends BaseViewModel> extends DaggerAppCompatActivity
-        implements BaseFragment.Callback {
+public abstract class BaseActivity<T extends ViewModel> extends DaggerAppCompatActivity {
 
     private T viewModel;
 
@@ -21,25 +21,9 @@ public abstract class BaseActivity<T extends BaseViewModel> extends DaggerAppCom
     public abstract T getViewModel();
 
     @Override
-    public void onFragmentAttached() {
-
-    }
-
-    @Override
-    public void onFragmentDetached(String tag) {
-
-    }
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        performDependencyInjection();
         super.onCreate(savedInstanceState);
         this.viewModel = viewModel == null ? getViewModel() : viewModel;
     }
-
-    private void performDependencyInjection(){
-        AndroidInjection.inject(this);
-    }
-
 
 }

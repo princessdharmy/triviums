@@ -10,6 +10,7 @@ import com.app.horizon.core.store.online.services.ApiService;
 import com.app.horizon.utils.ViewModelProviderFactory;
 
 import java.util.ArrayList;
+import java.util.concurrent.Executor;
 
 import javax.inject.Singleton;
 
@@ -23,8 +24,8 @@ public class CategoryFragmentModule {
     View.OnClickListener listener;
 
     @Provides
-    CategoryViewModel categoryViewModel(MainAppStore store) {
-        return new CategoryViewModel(store);
+    CategoryViewModel categoryViewModel(CategoryRepository repository) {
+        return new CategoryViewModel(repository);
     }
 
     @Provides

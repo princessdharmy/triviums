@@ -35,7 +35,7 @@ public class HorizonAppModule {
     }
 
     @MainAppScope
-    @Singleton
+    @Provides
     MainAppStore provideMainAppStore(OnlineStore onlineStore, OfflineStore offlineStore){
         return new MainAppStore(onlineStore, offlineStore);
     }
@@ -66,7 +66,7 @@ public class HorizonAppModule {
     }
 
     @MainAppScope
-    @Singleton
+    @Provides
     CategoryDAO provideCategoryDao(HorizonDatabase database){
         return database.categoryDAO();
     }

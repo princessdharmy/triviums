@@ -43,7 +43,6 @@ public class StagesFragmentAdapter extends RecyclerView.Adapter<StagesFragmentAd
     @Override
     public void onBindViewHolder(@NonNull StageViewHolder holder, int i) {
         holder.getBinding().setNumber(totalPage.get(i));
-        //holder.getBinding().stageButton.setText(String.valueOf(totalPage));
         holder.getBinding().setVariable(BR.on_click, listener);
 
     }
@@ -52,6 +51,11 @@ public class StagesFragmentAdapter extends RecyclerView.Adapter<StagesFragmentAd
     @Override
     public int getItemCount() {
         return totalPage.size();
+    }
+
+    public void updateStages(List<Integer> totalPage){
+        this.totalPage = totalPage;
+        notifyDataSetChanged();
     }
 
 

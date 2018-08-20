@@ -1,24 +1,27 @@
 package com.app.horizon.screens.splashscreen;
 
+import android.arch.lifecycle.ViewModel;
+
 import com.app.horizon.core.store.MainAppStore;
-import com.app.horizon.core.base.BaseViewModel;
 
 import javax.inject.Inject;
 
 
-public class SplashScreenViewModel extends BaseViewModel {
+public class SplashScreenViewModel extends ViewModel {
 
+    private MainAppStore store;
 
+    @Inject
     public SplashScreenViewModel(MainAppStore store) {
-        super(store);
+        this.store = store;
     }
 
     public boolean isFirstTimeLaunch(){
-        return getStore().isFirstTimeLaunch();
+        return store.isFirstTimeLaunch();
     }
 
     public boolean isLoggedIn(){
-        return getStore().isLoggedIn();
+        return store.isLoggedIn();
     }
 
 }

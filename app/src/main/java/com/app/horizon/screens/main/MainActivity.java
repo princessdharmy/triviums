@@ -17,31 +17,26 @@ import com.app.horizon.utils.BottomNavigationBehaviour;
 
 import javax.inject.Inject;
 
-import dagger.android.AndroidInjector;
-import dagger.android.DispatchingAndroidInjector;
-import dagger.android.support.HasSupportFragmentInjector;
 
-
-public class MainActivity extends BaseActivity<MainActivityViewModel> implements
-        HasSupportFragmentInjector{
+public class MainActivity extends BaseActivity<MainActivityViewModel>{
 
     private ActivityMainBinding binding;
     @Inject
-    DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
-    @Inject
     MainActivityViewModel viewModel;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+    public BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
+        Fragment fragment;
         switch (item.getItemId()) {
                     case R.id.navigation_home:
-                        showCategoryFragment();
+                        fragment = new CategoryFragment();
+                        loadFragment(fragment);
                         return true;
                     case R.id.navigation_profile:
-                        showProfileFragment();
+                        fragment = new ProfileFragment();
+                        loadFragment(fragment);
                         return true;
                     case R.id.navigation_leader:
-                        //mTextMessage.setText(R.string.title_notifications);
                         return true;
                 }
                 return false;
@@ -59,9 +54,7 @@ public class MainActivity extends BaseActivity<MainActivityViewModel> implements
 
         initBinding();
         //load the category fragment by default
-        if (savedInstanceState == null) {
-            showCategoryFragment();
-        }
+        loadFragment(new CategoryFragment());
     }
 
     private void initBinding(){
@@ -74,25 +67,15 @@ public class MainActivity extends BaseActivity<MainActivityViewModel> implements
         layoutParams.setBehavior(new BottomNavigationBehaviour());
     }
 
-    public void showCategoryFragment(){
-        getSupportFragmentManager()
-                .beginTransaction()
-                .disallowAddToBackStack()
-                .replace(R.id.frame_container, CategoryFragment.newInstance())
-                .commit();
-    }
-
-    private void showProfileFragment() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .disallowAddToBackStack()
-                .replace(R.id.frame_container, ProfileFragment.newInstance())
-                .commit();
-    }
-
-    @Override
-    public AndroidInjector<Fragment> supportFragmentInjector() {
-        return fragmentDispatchingAndroidInjector;
+    public void loadFragment(Fragment fragment){
+        //switching fragment
+        if(fragment != null){
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .addToBackStack(null)
+                    .replace(R.id.frame_container, fragment)
+                    .commit();
+        }
     }
 
     private void goLoginScreen() {
