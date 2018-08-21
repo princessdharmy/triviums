@@ -1,14 +1,10 @@
-package com.app.horizon.screens.main.home.stages;
+package com.app.horizon.screens.main.home.stage.stages;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.util.Log;
 
-import com.app.horizon.core.dagger.scopes.MainAppScope;
 import com.app.horizon.core.store.offline.entities.question.QuestionResponse;
 import com.app.horizon.core.store.online.services.ApiService;
-
-import javax.inject.Singleton;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -36,14 +32,11 @@ public class StageRepository {
                 .subscribeWith(new DisposableSingleObserver<Response<QuestionResponse>>() {
                     @Override
                     public void onSuccess(Response<QuestionResponse> questionResponseResponse) {
-                        Log.e("Check", String.valueOf(questionResponseResponse.body().getPaging()
-                                .getTotalPages()));
                         mutableLiveData.postValue(questionResponseResponse.body());
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("Error", e.getMessage());
                     }
                 })
         );

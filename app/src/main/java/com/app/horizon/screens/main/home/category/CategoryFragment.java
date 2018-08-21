@@ -3,6 +3,7 @@ package com.app.horizon.screens.main.home.category;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,17 +13,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.app.horizon.R;
 import com.app.horizon.core.base.BaseFragment;
 import com.app.horizon.core.store.offline.entities.category.Category;
 import com.app.horizon.databinding.FragmentCategoryBinding;
-import com.app.horizon.screens.main.home.stages.StagesFragment;
+import com.app.horizon.screens.main.home.stage.StageActivity;
+import com.app.horizon.screens.main.home.stage.stages.StagesFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +82,15 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
         showCategory();
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        /*if(savedInstanceState != null){
+            categoryList = (List<Category>) savedInstanceState.getSerializable("list");
+        }*/
+    }
+
     private void initRecyclerView(){
         adapter = new CategoryFragmentAdapter(getActivity(), categoryList, categoryListener);
         recyclerView = binding.categoryView;
@@ -106,18 +115,20 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
     private View.OnClickListener categoryListener = view -> {
         Category category = (Category) view.getTag();
 
-        Fragment fragment = new StagesFragment();
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        Bundle args = new Bundle();
-        args.putString("CategoryId", category.getId());
-        fragment.setArguments(args);
-        transaction.replace(R.id.frame_container, fragment)
-                .addToBackStack(null)
-                .commit();
-
+        Intent intent = new Intent(getActivity(), StageActivity.class);
+        intent.putExtra("CategoryId", category.getId());
+        getActivity().startActivity(intent);
     };
 
+    /**
+     * Save list position state
+     * @param outState
+     */
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //outState.putParcelableArrayList("list", (ArrayList<? extends Parcelable>) categoryList);
+    }
 
     @Override
     public void onDestroy() {

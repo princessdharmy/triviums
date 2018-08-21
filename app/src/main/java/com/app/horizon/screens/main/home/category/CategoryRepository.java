@@ -63,7 +63,6 @@ public class CategoryRepository {
 
                             @Override
                             public void onError(Throwable e) {
-                                Log.e("ERROR", e.getMessage());
                             }
                         }));
     }

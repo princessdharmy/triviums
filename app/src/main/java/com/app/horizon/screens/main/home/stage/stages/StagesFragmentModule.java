@@ -1,10 +1,9 @@
-package com.app.horizon.screens.main.home.stages;
+package com.app.horizon.screens.main.home.stage.stages;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
 import android.view.View;
 
-import com.app.horizon.core.store.MainAppStore;
 import com.app.horizon.core.store.online.services.ApiService;
 import com.app.horizon.utils.ViewModelProviderFactory;
 

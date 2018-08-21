@@ -1,4 +1,4 @@
-package com.app.horizon.screens.main.home.stages;
+package com.app.horizon.screens.main.home.stage.stages;
 
 
 import android.arch.lifecycle.ViewModelProvider;
@@ -104,7 +104,7 @@ public class StagesFragment extends BaseFragment<StagesViewModel>{
 
     public class MyHandler{
         public void onButtonClick(View view) {
-            getActivity().onBackPressed();
+            getActivity().finish();
         }
     }
 

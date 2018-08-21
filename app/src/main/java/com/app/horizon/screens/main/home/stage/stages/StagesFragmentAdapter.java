@@ -1,4 +1,4 @@
-package com.app.horizon.screens.main.home.stages;
+package com.app.horizon.screens.main.home.stage.stages;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
