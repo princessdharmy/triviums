@@ -15,6 +15,10 @@ public interface ApiService {
     @GET("categories/read.php")
     Single<Response<CategoryResponse>> fetchCategories();
 
-    @GET("questions/read_paging.php?")
+    @GET("questions/read_paging.php")
     Single<Response<QuestionResponse>> fetchStages(@Query("category_id") String categoryId);
+
+    @GET("questions/read_paging.php")
+    Single<Response<QuestionResponse>> fetchQuestions(@Query("category_id") String categoryId,
+                                                      @Query("page") String pageNumber);
 }

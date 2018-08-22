@@ -28,11 +28,17 @@
     <string name="slide3_desc">You think you know entertainment?</string>
 
     <string name="get_started">Get Started</string>
-    <string name="categories">Categories</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="categories">Categories</string>
     <string name="stages">Stages</string>
+    <string name="questions">Questions</string>
+
+    <!--dummt data-->
+    <string name="hello_blank_fragment">Hello Blank Fragment</string>
+    <string name="question">What was the name of the WWF professional wrestling tag team
+    made up of the wrestlers Ax and Smash?</string>
+    <string name="button_option">The Dream Team</string>
 
 
 </resources>

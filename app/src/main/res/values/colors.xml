@@ -9,7 +9,10 @@
 
     <!--Text Colors-->
     <color name="textColor">#FFFFFF</color>
+    <color name="alt_text_color">#f5f3f3</color>
+    <color name="option_text_color">#99FFFFFF</color>
     <color name="tintedTextColor">#87FFFFFF</color>
+    <color name="question_label">#75FFFFFF</color>
 
     <!--Icons Colors-->
     <color name="navIconColor">#06C8D4</color>
@@ -24,5 +27,9 @@
     <!-- stage unselected color -->
     <color name="stage_unselected_color">#66FFFFFF</color>
 
+    <!--Progressbar color-->
+    <color name="progress_bar">#2E303C</color>
+    <color name="ring1">#41a50f</color>
+    <color name="ring2">#5F626A</color>
 
 </resources>

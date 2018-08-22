@@ -6,6 +6,7 @@ import com.app.horizon.screens.main.MainActivity;
 import com.app.horizon.screens.main.MainActivityModule;
 import com.app.horizon.screens.main.home.category.CategoryFragmentProvider;
 import com.app.horizon.screens.main.home.stage.StageActivity;
+import com.app.horizon.screens.main.home.stage.questions.QuestionFragmentProvider;
 import com.app.horizon.screens.main.home.stage.stages.StagesFragmentProvider;
 import com.app.horizon.screens.onboarding.OnBoardingActivity;
 import com.app.horizon.screens.onboarding.OnBoardingActivityModule;
@@ -33,7 +34,9 @@ public abstract class ActivityBuilder {
             CategoryFragmentProvider.class})
     abstract MainActivity contributeMainActivity();
 
-    @ContributesAndroidInjector(modules = {StagesFragmentProvider.class})
+    @ContributesAndroidInjector(modules = {
+            StagesFragmentProvider.class,
+            QuestionFragmentProvider.class})
     abstract StageActivity contributeStageActivity();
 
 }

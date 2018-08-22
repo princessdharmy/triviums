@@ -23,6 +23,7 @@
     <dimen name="card_view_radius">10dp</dimen>
     <dimen name="card_view_marginH">10dp</dimen>
     <dimen name="card_view_marginV">8dp</dimen>
+    <dimen name="question_spacing">2dp</dimen>
 
 
 </resources>

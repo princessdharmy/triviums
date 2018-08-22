@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="click"
+            type="com.app.horizon.screens.main.home.stage.questions.QuestionFragment.MyHandler"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        tools:context=".screens.main.home.stage.stages.StagesFragment">
+
+
+        <ImageView
+            android:id="@+id/nav_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_arrow_back"
+            android:onClick="@{click::onButtonClick}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.023"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.015" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/questions"
+            android:textColor="@color/textColor"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.393"
+            app:layout_constraintStart_toEndOf="@+id/nav_back"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.015" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            app:layout_constraintVertical_bias="0.016">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/question_spacing"
+                android:layout_marginStart="@dimen/question_spacing"
+                android:text="@string/questions"
+                android:textColor="@color/question_label"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/question_spacing"
+                android:layout_marginStart="@dimen/question_spacing"
+                android:text="1"
+                android:textColor="@color/question_label"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="/"
+                android:textColor="@color/question_label"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/question_spacing"
+                android:layout_marginStart="@dimen/question_spacing"
+                android:text="10"
+                android:textColor="@color/question_label"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/progressBar2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintVertical_bias="0.62">
+
+            <TextView
+                android:id="@+id/question_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_padding"
+                android:layout_marginEnd="@dimen/card_view_marginV"
+                android:layout_marginStart="@dimen/card_view_marginV"
+                android:layout_marginTop="@dimen/card_view_marginV"
+                android:gravity="center"
+                android:text="@string/question"
+                android:textColor="@color/alt_text_color"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/option1"
+                android:layout_width="299dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="@dimen/card_view_marginV"
+                android:layout_marginEnd="@dimen/card_view_marginV"
+                android:layout_marginStart="@dimen/card_view_marginV"
+                android:layout_marginTop="@dimen/card_view_marginV"
+                android:text="@string/button_option"
+                android:textColor="@color/option_text_color"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:padding="@dimen/card_view_marginV"
+                android:background="@drawable/option_button" />
+
+            <Button
+                android:id="@+id/option2"
+                android:layout_width="299dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="@dimen/card_view_marginV"
+                android:layout_marginEnd="@dimen/card_view_marginV"
+                android:layout_marginStart="@dimen/card_view_marginV"
+                android:layout_marginTop="@dimen/card_view_marginV"
+                android:text="@string/button_option"
+                android:textColor="@color/option_text_color"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:padding="@dimen/card_view_marginV"
+                android:background="@drawable/option_button" />
+
+            <Button
+                android:id="@+id/option3"
+                android:layout_width="299dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="@dimen/card_view_marginV"
+                android:layout_marginEnd="@dimen/card_view_marginV"
+                android:layout_marginStart="@dimen/card_view_marginV"
+                android:layout_marginTop="@dimen/card_view_marginV"
+                android:text="@string/button_option"
+                android:textColor="@color/option_text_color"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:padding="@dimen/card_view_marginV"
+                android:background="@drawable/option_button" />
+
+            <Button
+                android:id="@+id/option4"
+                android:layout_width="299dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="@dimen/card_view_marginV"
+                android:layout_marginEnd="@dimen/card_view_marginV"
+                android:layout_marginStart="@dimen/card_view_marginV"
+                android:layout_marginTop="@dimen/card_view_marginV"
+                android:text="@string/button_option"
+                android:textColor="@color/option_text_color"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:padding="@dimen/card_view_marginV"
+                android:background="@drawable/option_button" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="399dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorPrimaryDark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintVertical_bias="0.981" />
+
+        <ProgressBar
+            android:id="@+id/progressBar2"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:indeterminate="false"
+            android:max="10"
+            android:progress="4"
+            android:progressDrawable="@drawable/progressbar"
+            android:rotation="270"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:text="4"
+            android:textColor="@color/textColor"
+            android:textSize="35sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/view"
+            app:layout_constraintEnd_toEndOf="@+id/progressBar2"
+            app:layout_constraintHorizontal_bias="0.487"
+            app:layout_constraintStart_toStartOf="@+id/progressBar2"
+            app:layout_constraintTop_toTopOf="@+id/progressBar2"
+            app:layout_constraintVertical_bias="1.0" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

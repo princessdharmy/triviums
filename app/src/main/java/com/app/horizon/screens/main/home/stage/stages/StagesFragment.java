@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import android.view.ViewGroup;
 import com.app.horizon.R;
 import com.app.horizon.core.base.BaseFragment;
 import com.app.horizon.databinding.FragmentStagesBinding;
+import com.app.horizon.screens.main.home.stage.questions.QuestionFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +59,11 @@ public class StagesFragment extends BaseFragment<StagesViewModel>{
         return viewModel;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        showStage(categoryId);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,7 +81,7 @@ public class StagesFragment extends BaseFragment<StagesViewModel>{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        showStage(categoryId);
+
     }
 
     private void initRecyclerView(){
@@ -99,7 +107,15 @@ public class StagesFragment extends BaseFragment<StagesViewModel>{
     }
 
     public View.OnClickListener listener = view -> {
-
+        Fragment fragment = new QuestionFragment();
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        /*Bundle args = new Bundle();
+        args.putString("CategoryId", value);
+        fragment.setArguments(args);*/
+        transaction.replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
     };
 
     public class MyHandler{
