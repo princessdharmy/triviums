@@ -12,9 +12,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.app.horizon.R;
 import com.app.horizon.core.base.BaseFragment;
@@ -59,11 +62,6 @@ public class StagesFragment extends BaseFragment<StagesViewModel>{
         return viewModel;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        showStage(categoryId);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,16 +70,20 @@ public class StagesFragment extends BaseFragment<StagesViewModel>{
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_stages, container,
                 false);
         View view = binding.getRoot();
-        categoryId = getArguments().getString("CategoryId");
         binding.setClick(new MyHandler());
+
+        //Get intent extras
+        categoryId = getArguments().getString("CategoryId");
+
+        //Clear the adapter to avoid duplicates
+        totalPage.clear();
+
+        //Initialize the recyclerview
         initRecyclerView();
+
+        //Call the showStage method
+        showStage(categoryId);
         return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
     }
 
     private void initRecyclerView(){
@@ -91,6 +93,7 @@ public class StagesFragment extends BaseFragment<StagesViewModel>{
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
     }
+
 
     /**
      * Fetches stages of category
@@ -107,6 +110,7 @@ public class StagesFragment extends BaseFragment<StagesViewModel>{
     }
 
     public View.OnClickListener listener = view -> {
+
         Fragment fragment = new QuestionFragment();
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();

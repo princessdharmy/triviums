@@ -120,15 +120,6 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
         getActivity().startActivity(intent);
     };
 
-    /**
-     * Save list position state
-     * @param outState
-     */
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        //outState.putParcelableArrayList("list", (ArrayList<? extends Parcelable>) categoryList);
-    }
 
     @Override
     public void onDestroy() {

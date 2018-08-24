@@ -3,6 +3,7 @@ package com.app.horizon.screens.main.home.stage.stages;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
+import android.view.View;
 
 import com.app.horizon.core.store.offline.entities.question.QuestionResponse;
 
@@ -16,6 +17,9 @@ public class StagesViewModel extends ViewModel {
         this.stageRepository = repository;
     }
 
+    public void onButtonClick(){
+
+    }
 
     LiveData<QuestionResponse> getStage(String categoryId){
         if(responseLiveData == null)

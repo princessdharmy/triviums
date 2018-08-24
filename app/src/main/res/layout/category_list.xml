@@ -50,7 +50,7 @@
 
             <TextView
                 android:layout_width="132dp"
-                android:layout_height="29dp"
+                android:layout_height="38dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginLeft="8dp"
@@ -58,6 +58,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
+                android:maxLines="3"
                 android:text="@{category.name}"
                 android:textColor="@color/textColor"
                 android:textSize="16sp"

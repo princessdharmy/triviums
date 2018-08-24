@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="click"
-            type="com.app.horizon.screens.main.home.stage.stages.StagesFragment.MyHandler"/>
+            type="com.app.horizon.screens.main.home.stage.stages.StagesFragment.MyHandler" />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -27,8 +28,8 @@
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:src="@drawable/ic_arrow_back"
             android:onClick="@{click::onButtonClick}"
+            android:src="@drawable/ic_arrow_back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.023"
@@ -57,23 +58,32 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.015" />
 
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/stage_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <FrameLayout
+            android:layout_width="388dp"
+            android:layout_height="525dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2"
-            app:layout_constraintVertical_bias="0.029" />
+            app:layout_constraintVertical_bias="0.909">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/stage_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="20dp" />
+        </FrameLayout>
 
     </android.support.constraint.ConstraintLayout>
 

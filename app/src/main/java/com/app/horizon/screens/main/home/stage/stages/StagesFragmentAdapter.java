@@ -44,7 +44,6 @@ public class StagesFragmentAdapter extends RecyclerView.Adapter<StagesFragmentAd
     public void onBindViewHolder(@NonNull StageViewHolder holder, int i) {
         holder.getBinding().setNumber(totalPage.get(i));
         holder.getBinding().setVariable(BR.on_click, listener);
-
     }
 
 
