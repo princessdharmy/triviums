@@ -6,13 +6,13 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +22,8 @@ import com.app.horizon.core.base.BaseFragment;
 import com.app.horizon.core.store.offline.entities.category.Category;
 import com.app.horizon.databinding.FragmentCategoryBinding;
 import com.app.horizon.screens.main.home.stage.StageActivity;
-import com.app.horizon.screens.main.home.stage.stages.StagesFragment;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +41,10 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
     private List<Category> categoryList = new ArrayList<>();
     private CategoryFragmentAdapter adapter;
     private CompositeDisposable disposable = new CompositeDisposable();
+    private RecyclerView.LayoutManager layoutManager;
+
+    private final static String VIEW_STATE = "view_state";
+    private static Parcelable BundleList;
 
     @Inject
     ViewModelProvider.Factory factory;
@@ -51,12 +55,6 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
         // Required empty public constructor
     }
 
-    public static CategoryFragment newInstance(){
-        CategoryFragment fragment = new CategoryFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public CategoryViewModel getViewModel() {
@@ -73,28 +71,14 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
         View view = binding.getRoot();
 
         initRecyclerView();
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         showCategory();
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        /*if(savedInstanceState != null){
-            categoryList = (List<Category>) savedInstanceState.getSerializable("list");
-        }*/
+        return view;
     }
 
     private void initRecyclerView(){
         adapter = new CategoryFragmentAdapter(getActivity(), categoryList, categoryListener);
         recyclerView = binding.categoryView;
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
+        layoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
     }
@@ -103,8 +87,9 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
      * Fetches list of Category
      */
     public void showCategory(){
-        viewModel.getCategory().observe(this, category -> {
+        viewModel.getCategory().observe(getViewLifecycleOwner(), category -> {
             if (category != null) {
+                Log.e("TEST","display data");
                 categoryList.clear();
                 categoryList.addAll(category);
                 adapter.notifyDataSetChanged();
@@ -120,6 +105,42 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
         getActivity().startActivity(intent);
     };
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        //Save the list state
+        BundleList = layoutManager.onSaveInstanceState();
+        outState.putParcelable(VIEW_STATE, BundleList);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+        //Retrieve the list state and list/item position
+        if(savedInstanceState != null){
+            BundleList = savedInstanceState.getParcelable(VIEW_STATE);
+        }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if(savedInstanceState != null) {
+            if (BundleList != null) {
+                layoutManager.onRestoreInstanceState(BundleList);
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(BundleList != null){
+            layoutManager.onRestoreInstanceState(BundleList);
+        }
+    }
 
     @Override
     public void onDestroy() {

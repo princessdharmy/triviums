@@ -8,6 +8,7 @@ import com.app.horizon.core.store.offline.entities.category.Category;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
@@ -19,5 +20,5 @@ public interface CategoryDAO {
     void insert(List<Category> category);
 
     @Query("SELECT * FROM category_table")
-    Single<List<Category>> getAll();
+    Flowable<List<Category>> getAll();
 }

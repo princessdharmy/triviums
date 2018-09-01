@@ -15,11 +15,13 @@ import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
 
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
@@ -39,9 +41,13 @@ public class CategoryRepository {
     }
 
     public LiveData<List<Category>> getCategory() {
-        if(categoryDAO.getAll() != null)
-            fetchCategoryFromApi();
+        //Flowable<List<Category>> listSingle = categoryDAO.getAll();
 
+        if(categoryDAO.getAll() != null) {
+            fetchCategoryFromApi();
+            Log.e("TEST","Call API");
+        }
+        Log.e("TEST","Call DB");
         return fetchCategoryFromDb();
     }
 
@@ -59,6 +65,7 @@ public class CategoryRepository {
                             @Override
                             public void onSuccess(Response<CategoryResponse> categoryResponseResponse) {
                                 categoryDAO.insert(categoryResponseResponse.body().getData());
+                                //fetchCategoryFromDb();
                             }
 
                             @Override
@@ -68,10 +75,18 @@ public class CategoryRepository {
     }
 
     public LiveData<List<Category>> fetchCategoryFromDb() {
-        Single<List<Category>> categoryObservable = categoryDAO.getAll();
+        Flowable<List<Category>> categoryObservable = categoryDAO.getAll();
+        disposable.add(
         categoryObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<List<Category>>() {
+                .subscribe(new Consumer<List<Category>>() {
+                    @Override
+                    public void accept(List<Category> categories) throws Exception {
+                        mutableLiveData.postValue(categories);
+                    }
+                })
+        );
+                /*.subscribe(new Obs<List<Category>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
@@ -86,7 +101,7 @@ public class CategoryRepository {
                     public void onError(Throwable e) {
 
                     }
-                });
+                });*/
         return mutableLiveData;
     }
 }
