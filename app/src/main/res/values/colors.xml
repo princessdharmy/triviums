@@ -31,5 +31,8 @@
     <color name="progress_bar">#2E303C</color>
     <color name="ring1">#41a50f</color>
     <color name="ring2">#5F626A</color>
+    <color name="ring3">#C83A5A</color>
 
+    <!--Button color-->
+    <color name="ripple_effect">#FFFFFF</color>
 </resources>

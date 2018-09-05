@@ -11,7 +11,6 @@ import dagger.android.support.DaggerFragment;
 
 public abstract class BaseFragment<T extends ViewModel> extends DaggerFragment {
 
-    private BaseActivity baseActivity;
     private T viewModel;
 
     /**
@@ -23,22 +22,13 @@ public abstract class BaseFragment<T extends ViewModel> extends DaggerFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof BaseActivity){
-            BaseActivity activity = (BaseActivity) context;
-            this.baseActivity = activity;
-        }
         viewModel = getViewModel();
     }
 
 
     @Override
     public void onDetach() {
-        baseActivity = null;
         super.onDetach();
-    }
-
-    public BaseActivity getBaseActivity() {
-        return baseActivity;
     }
 
 }

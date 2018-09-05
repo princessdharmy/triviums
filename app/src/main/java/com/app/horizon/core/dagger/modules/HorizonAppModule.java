@@ -62,6 +62,7 @@ public class HorizonAppModule {
     HorizonDatabase provideMainAppDatabase(Context context){
         return Room.databaseBuilder(context, HorizonDatabase.class, "horizon.db")
                 .allowMainThreadQueries()
+                .fallbackToDestructiveMigration()
                 .build();
     }
 

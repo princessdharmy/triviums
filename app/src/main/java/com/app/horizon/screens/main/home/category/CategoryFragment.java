@@ -43,8 +43,6 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
     private CompositeDisposable disposable = new CompositeDisposable();
     private RecyclerView.LayoutManager layoutManager;
 
-    private final static String VIEW_STATE = "view_state";
-    private static Parcelable BundleList;
 
     @Inject
     ViewModelProvider.Factory factory;
@@ -89,7 +87,6 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
     public void showCategory(){
         viewModel.getCategory().observe(getViewLifecycleOwner(), category -> {
             if (category != null) {
-                Log.e("TEST","display data");
                 categoryList.clear();
                 categoryList.addAll(category);
                 adapter.notifyDataSetChanged();
@@ -105,42 +102,6 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
         getActivity().startActivity(intent);
     };
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        //Save the list state
-        BundleList = layoutManager.onSaveInstanceState();
-        outState.putParcelable(VIEW_STATE, BundleList);
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-
-        //Retrieve the list state and list/item position
-        if(savedInstanceState != null){
-            BundleList = savedInstanceState.getParcelable(VIEW_STATE);
-        }
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if(savedInstanceState != null) {
-            if (BundleList != null) {
-                layoutManager.onRestoreInstanceState(BundleList);
-            }
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if(BundleList != null){
-            layoutManager.onRestoreInstanceState(BundleList);
-        }
-    }
 
     @Override
     public void onDestroy() {

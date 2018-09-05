@@ -41,13 +41,9 @@ public class CategoryRepository {
     }
 
     public LiveData<List<Category>> getCategory() {
-        //Flowable<List<Category>> listSingle = categoryDAO.getAll();
-
         if(categoryDAO.getAll() != null) {
             fetchCategoryFromApi();
-            Log.e("TEST","Call API");
         }
-        Log.e("TEST","Call DB");
         return fetchCategoryFromDb();
     }
 
@@ -65,7 +61,6 @@ public class CategoryRepository {
                             @Override
                             public void onSuccess(Response<CategoryResponse> categoryResponseResponse) {
                                 categoryDAO.insert(categoryResponseResponse.body().getData());
-                                //fetchCategoryFromDb();
                             }
 
                             @Override
@@ -86,22 +81,7 @@ public class CategoryRepository {
                     }
                 })
         );
-                /*.subscribe(new Obs<List<Category>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
 
-                    }
-
-                    @Override
-                    public void onSuccess(List<Category> categories) {
-                        mutableLiveData.postValue(categories);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-                });*/
         return mutableLiveData;
     }
 }
