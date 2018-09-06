@@ -140,7 +140,17 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
         countDownTimer = new CountDownTimer(10L, TimeUnit.SECONDS) {
             @Override
             public void onTick(long tickValue) {
+                //Set timer tick value on progressbar text view
                 binding.timer.setText(String.valueOf(tickValue));
+
+                //Since the progressbar moves in opposite direction with the tick value, e.g
+                // tickValue[10,9,8,7,...], progressBar[10,9,8,7,...], a little
+                //calculation is done to make the progressbar move as expected. e.g
+                //tickValue[10,9,8,7,...], progressBar[1,2,3,4,...]
+                long progress = (10 - tickValue) + 1; //10 is the start value
+
+                //Set the progress of the progressbar alongside with the timer tick value
+                binding.progressBar2.setProgress((int) progress);
             }
 
             @Override
