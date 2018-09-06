@@ -3,7 +3,8 @@ package com.app.horizon.screens.main.home.stage.stages;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
-import com.app.horizon.core.store.offline.entities.question.QuestionResponse;
+
+import com.app.horizon.core.store.online.question.QuestionResponse;
 import com.app.horizon.core.store.online.services.ApiService;
 
 import io.reactivex.Single;

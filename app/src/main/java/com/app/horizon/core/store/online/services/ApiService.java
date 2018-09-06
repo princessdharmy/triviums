@@ -1,7 +1,7 @@
 package com.app.horizon.core.store.online.services;
 
 import com.app.horizon.core.store.offline.entities.category.CategoryResponse;
-import com.app.horizon.core.store.offline.entities.question.QuestionResponse;
+import com.app.horizon.core.store.online.question.QuestionResponse;
 
 
 import io.reactivex.Single;

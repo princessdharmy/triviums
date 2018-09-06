@@ -36,9 +36,13 @@
 
     <!--dummt data-->
     <string name="hello_blank_fragment">Hello Blank Fragment</string>
-    <string name="question">What was the name of the WWF professional wrestling tag team
-    made up of the wrestlers Ax and Smash?</string>
-    <string name="button_option">The Dream Team</string>
+    <string name="second">s</string>
 
+    <!--Score text-->
+    <string name="score_pass">Congrats </string>
+    <string name="score_fail">Ooppss! </string>
+    <string name="pass_message">Yeh! You just proceeded to the next stage</string>
+    <string name="fail_message">Sorry, you could do better. Please, try again!</string>
+    <string name="score_value">Score: </string>
 
 </resources>

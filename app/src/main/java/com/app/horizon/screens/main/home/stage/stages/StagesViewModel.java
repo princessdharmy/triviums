@@ -5,7 +5,8 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import android.view.View;
 
-import com.app.horizon.core.store.offline.entities.question.QuestionResponse;
+import com.app.horizon.core.store.online.question.QuestionResponse;
+
 
 public class StagesViewModel extends ViewModel {
 

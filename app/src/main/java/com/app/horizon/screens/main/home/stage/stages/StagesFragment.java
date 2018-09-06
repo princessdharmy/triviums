@@ -99,7 +99,7 @@ public class StagesFragment extends BaseFragment<StagesViewModel>{
      * Fetches stages of category
      */
     public void showStage(String categoryId){
-        viewModel.getStage(categoryId).observe(this, response -> {
+        viewModel.getStage(categoryId).observe(getViewLifecycleOwner(), response -> {
             int page = response.getPaging().getTotalPages().intValue();
             for(int i = 1; i <= page; i++){
                 totalPage.add(i);
@@ -118,7 +118,7 @@ public class StagesFragment extends BaseFragment<StagesViewModel>{
         args.putString("CategoryId", value);
         fragment.setArguments(args);*/
         transaction.replace(R.id.fragment_container, fragment)
-                .addToBackStack(null)
+                .addToBackStack("dialog")
                 .commit();
     };
 

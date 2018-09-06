@@ -1,4 +1,5 @@
-package com.app.horizon.core.store.offline.entities.question;
+
+package com.app.horizon.core.store.online.question;
 
 import com.google.gson.annotations.SerializedName;
 

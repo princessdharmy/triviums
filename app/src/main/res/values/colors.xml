@@ -35,4 +35,5 @@
 
     <!--Button color-->
     <color name="ripple_effect">#FFFFFF</color>
+    <color name="facebook_color">#3a71e1</color>
 </resources>
