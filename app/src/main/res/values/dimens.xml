@@ -21,9 +21,12 @@
     <dimen name="indicator_size">10dp</dimen>
     <dimen name="indicator_margin">5dp</dimen>
     <dimen name="card_view_radius">10dp</dimen>
-    <dimen name="card_view_marginH">10dp</dimen>
+    <dimen name="card_view_marginH">8dp</dimen>
     <dimen name="card_view_marginV">8dp</dimen>
     <dimen name="question_spacing">2dp</dimen>
 
+    <!--Profile dimens-->
+    <dimen name="username">16sp</dimen>
+    <dimen name="profile_texts">16sp</dimen>
 
 </resources>

@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "1032665251185-e2d1jkpak6pje0548vhedmau7484vj7p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.horizon",
+            "certificate_hash": "7d3a4200dc583b9ff4d88b06530a286541fdc73c"
+          }
+        },
+        {
           "client_id": "1032665251185-q6233dj9sroj6h1btp17lj190k1r7tlv.apps.googleusercontent.com",
           "client_type": 3
         }

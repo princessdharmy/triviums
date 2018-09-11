@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
+    android:minHeight="145dp"
     tools:context=".screens.authentication.login.LoginActivity"
     tools:layout_editor_absoluteY="25dp">
 
@@ -12,25 +13,36 @@
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
-        android:paddingTop="@dimen/activity_horizontal_padding"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="48dp"
         android:paddingBottom="@dimen/activity_horizontal_padding"
+        android:paddingEnd="@dimen/activity_vertical_padding"
         android:paddingLeft="@dimen/activity_vertical_padding"
         android:paddingRight="@dimen/activity_vertical_padding"
         android:paddingStart="@dimen/activity_vertical_padding"
-        android:paddingEnd="@dimen/activity_vertical_padding"
-        android:layout_marginBottom="@dimen/margin"
-        android:layout_marginEnd="@dimen/margin"
-        android:layout_marginLeft="@dimen/margin"
-        android:layout_marginRight="@dimen/margin"
-        android:layout_marginStart="@dimen/margin"
-        android:layout_marginTop="@dimen/margin"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
+        android:paddingTop="@dimen/activity_horizontal_padding"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.843" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/signInButton"
+        android:layout_width="239dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_button" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -61,28 +73,29 @@
         android:layout_marginLeft="@dimen/margin"
         android:layout_marginRight="@dimen/margin"
         android:layout_marginStart="@dimen/margin"
-        android:layout_marginTop="92dp"
+        android:layout_marginTop="72dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/login" />
 
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="300dp"
         android:layout_height="51dp"
-        android:layout_marginBottom="@dimen/marginBottom"
         android:layout_marginEnd="@dimen/margin"
         android:layout_marginLeft="@dimen/margin"
         android:layout_marginRight="@dimen/margin"
         android:layout_marginStart="@dimen/margin"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
         android:text="@string/login_text"
         android:textColor="@color/textColor"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signInButton" />
 
 </android.support.constraint.ConstraintLayout>
 

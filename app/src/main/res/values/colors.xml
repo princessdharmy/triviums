@@ -32,6 +32,8 @@
     <color name="ring1">#41a50f</color>
     <color name="ring2">#5F626A</color>
     <color name="ring3">#C83A5A</color>
+    <color name="linear1">#EFEFEF</color>
+    <color name="linear2">#FCC344</color>
 
     <!--Button color-->
     <color name="ripple_effect">#FFFFFF</color>
