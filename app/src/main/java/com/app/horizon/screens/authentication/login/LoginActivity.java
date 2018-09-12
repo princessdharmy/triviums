@@ -4,7 +4,9 @@ package com.app.horizon.screens.authentication.login;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -20,21 +22,35 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 
 public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
 
+    //Firebase declaration
     private FirebaseAuth mAuth;
     private FirebaseAnalytics mFirebaseAnalytics;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
+    private FirebaseUser user;
+    private FirebaseFirestore db;
 
+    //Facebook initialisation
     private CallbackManager mCallbackManager;
     LoginButton loginButton;
     private ProgressBar progressBar;
@@ -65,6 +81,9 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
+        //Initialize Cloud Firestore
+        db = FirebaseFirestore.getInstance();
+
         //Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
         loginButton = findViewById(R.id.login_button);
@@ -92,7 +111,7 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
         });
 
         firebaseAuthListener = firebaseAuth -> {
-            FirebaseUser user = firebaseAuth.getCurrentUser();
+            user = firebaseAuth.getCurrentUser();
             if (user != null) {
                 goMainScreen();
             }
@@ -125,8 +144,7 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         viewModel.setLoggedIn(true);
-                        Toast.makeText(getApplicationContext(), "Login Successful",
-                                Toast.LENGTH_SHORT).show();
+                        addNewContact();
                         // Sign in success, update UI with the signed-in user's information
                         progressBar.setVisibility(View.GONE);
                     } else {
@@ -137,6 +155,29 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
 
                 });
     }
+
+    //Create a new user with name, email and profile pix
+    private void addNewContact(){
+        if(user != null) {
+            String name = user.getDisplayName();
+            String email = user.getEmail();
+            Uri profile = user.getPhotoUrl();
+
+            Map<String, Object> newUser = new HashMap<>();
+            newUser.put("Name", name);
+            newUser.put("Email", email);
+//            newUser.put("Profile", profile);
+
+            db.collection("users")
+                    .add(newUser)
+                    .addOnSuccessListener(documentReference ->
+                            Log.e("Success", "DocumentSnapshot added with ID: " +
+                                    documentReference.getId()))
+                    .addOnFailureListener(e -> Log.e("Error!", e.getMessage()));
+        }
+    }
+
+
 
     private void goMainScreen() {
         Intent intent = new Intent(this, MainActivity.class);
@@ -150,4 +191,5 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
         super.onStop();
         mAuth.removeAuthStateListener(firebaseAuthListener);
     }
+
 }

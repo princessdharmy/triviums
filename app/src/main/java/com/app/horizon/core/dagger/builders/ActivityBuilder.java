@@ -8,6 +8,8 @@ import com.app.horizon.screens.main.home.category.CategoryFragmentProvider;
 import com.app.horizon.screens.main.home.stage.StageActivity;
 import com.app.horizon.screens.main.home.stage.questions.QuestionFragmentProvider;
 import com.app.horizon.screens.main.home.stage.stages.StagesFragmentProvider;
+import com.app.horizon.screens.main.leaderboard.LeaderboardFragmentProvider;
+import com.app.horizon.screens.main.profile.ProfileFragmentProvider;
 import com.app.horizon.screens.onboarding.OnBoardingActivity;
 import com.app.horizon.screens.onboarding.OnBoardingActivityModule;
 import com.app.horizon.screens.splashscreen.SplashScreenActivity;
@@ -31,7 +33,9 @@ public abstract class ActivityBuilder {
 
     @ContributesAndroidInjector(modules = {
             MainActivityModule.class,
-            CategoryFragmentProvider.class})
+            CategoryFragmentProvider.class,
+            ProfileFragmentProvider.class,
+            LeaderboardFragmentProvider.class})
     abstract MainActivity contributeMainActivity();
 
     @ContributesAndroidInjector(modules = {
