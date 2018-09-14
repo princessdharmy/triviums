@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.app.horizon.BR;
 import com.app.horizon.R;
-import com.app.horizon.core.store.offline.entities.category.Category;
+import com.app.horizon.core.store.offline.category.Category;
 import com.app.horizon.databinding.CategoryListBinding;
 
 import java.util.List;

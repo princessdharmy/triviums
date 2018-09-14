@@ -8,8 +8,6 @@ import com.app.horizon.core.network.models.UserProfile;
 import com.app.horizon.utils.Constants;
 import com.google.gson.Gson;
 
-import java.util.Calendar;
-
 import javax.inject.Inject;
 
 public class PrefManager {

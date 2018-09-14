@@ -2,10 +2,10 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "0ecc6b7af65baa37ea250c48b27f838d",
+    "identityHash": "c7da2064e8561bfe4e1ed6b428fc133d",
     "entities": [
       {
-        "tableName": "category_table",
+        "tableName": "Category",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `category` TEXT NOT NULL, `mIconUrl` TEXT, `mQuestions` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
@@ -45,7 +45,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"0ecc6b7af65baa37ea250c48b27f838d\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c7da2064e8561bfe4e1ed6b428fc133d\")"
     ]
   }
 }

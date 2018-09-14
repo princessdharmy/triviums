@@ -1,6 +1,6 @@
 package com.app.horizon.core.store.online.services;
 
-import com.app.horizon.core.store.offline.entities.category.CategoryResponse;
+import com.app.horizon.core.store.offline.category.CategoryResponse;
 import com.app.horizon.core.store.online.question.QuestionResponse;
 
 

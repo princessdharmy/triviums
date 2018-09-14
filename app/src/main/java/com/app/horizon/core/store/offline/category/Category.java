@@ -1,33 +1,30 @@
 
-package com.app.horizon.core.store.offline.entities.category;
+package com.app.horizon.core.store.offline.category;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.databinding.BindingAdapter;
 import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.firebase.firestore.Exclude;
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "category_table")
 public class Category {
 
     @NonNull
     @PrimaryKey
-    @ColumnInfo(name = "id")
     @SerializedName("id")
     private String mId;
 
     @NonNull
-    @ColumnInfo(name = "category")
     @SerializedName("name")
     private String mName;
 
     @SerializedName("icon_url")
     private String mIconUrl;
 
+    @Exclude
     @SerializedName("questions")
     private String mQuestions;
 

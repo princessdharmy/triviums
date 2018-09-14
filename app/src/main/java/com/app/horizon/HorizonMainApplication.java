@@ -23,8 +23,4 @@ public class HorizonMainApplication extends DaggerApplication {
         return DaggerHorizonMainComponent.builder().create(this);
     }
 
-    /*public static HorizonMainApplication get(Activity activity){
-        return (HorizonMainApplication) activity.getApplication();
-    }*/
-
 }

@@ -5,8 +5,8 @@ import android.content.Context;
 import android.view.View;
 
 import com.app.horizon.core.store.MainAppStore;
-import com.app.horizon.core.store.offline.daos.CategoryDAO;
 import com.app.horizon.core.store.online.services.ApiService;
+import com.app.horizon.core.store.online.services.FirestoreService;
 import com.app.horizon.utils.ViewModelProviderFactory;
 
 import java.util.ArrayList;
@@ -29,8 +29,8 @@ public class CategoryFragmentModule {
     }
 
     @Provides
-    CategoryRepository provideRepository(ApiService apiService, CategoryDAO categoryDAO){
-        return new CategoryRepository(apiService, categoryDAO);
+    CategoryRepository provideRepository(ApiService apiService, FirestoreService firestoreService){
+        return new CategoryRepository(apiService, firestoreService);
     }
 
     @Provides

@@ -4,24 +4,27 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.util.Log;
 
-import com.app.horizon.core.store.offline.daos.CategoryDAO;
-import com.app.horizon.core.store.offline.entities.category.Category;
-import com.app.horizon.core.store.offline.entities.category.CategoryResponse;
+import com.app.horizon.core.store.offline.category.Category;
+import com.app.horizon.core.store.offline.category.CategoryResponse;
 import com.app.horizon.core.store.online.services.ApiService;
+import com.app.horizon.core.store.online.services.FirestoreService;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Executor;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import io.reactivex.Flowable;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.Single;
-import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
@@ -30,21 +33,22 @@ import retrofit2.Response;
 public class CategoryRepository {
 
     private ApiService apiService;
-    private CategoryDAO categoryDAO;
+    private FirestoreService firestoreService;
     final MutableLiveData<List<Category>> mutableLiveData = new MutableLiveData<>();
     private CompositeDisposable disposable = new CompositeDisposable();
 
     @Inject
-    public CategoryRepository(ApiService apiService, CategoryDAO categoryDAO) {
+    public CategoryRepository(ApiService apiService, FirestoreService firestoreService) {
         this.apiService = apiService;
-        this.categoryDAO = categoryDAO;
+        this.firestoreService = firestoreService;
     }
 
     public LiveData<List<Category>> getCategory() {
-        if(categoryDAO.getAll() != null) {
+        if(firestoreService.getCategoryFromCloud() != null) {
             fetchCategoryFromApi();
         }
-        return fetchCategoryFromDb();
+
+        return fetchCategoryFromCloud();
     }
 
     public void fetchCategoryFromApi() {
@@ -60,7 +64,7 @@ public class CategoryRepository {
                         .subscribeWith(new DisposableSingleObserver<Response<CategoryResponse>>() {
                             @Override
                             public void onSuccess(Response<CategoryResponse> categoryResponseResponse) {
-                                categoryDAO.insert(categoryResponseResponse.body().getData());
+                                firestoreService.addCategoryToCloud(categoryResponseResponse.body());
                             }
 
                             @Override
@@ -69,17 +73,30 @@ public class CategoryRepository {
                         }));
     }
 
-    public LiveData<List<Category>> fetchCategoryFromDb() {
-        Flowable<List<Category>> categoryObservable = categoryDAO.getAll();
+    public LiveData<List<Category>> fetchCategoryFromCloud() {
+        Observable<DocumentSnapshot> categoryObservable = firestoreService.getCategoryFromCloud();
         disposable.add(
-        categoryObservable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Category>>() {
-                    @Override
-                    public void accept(List<Category> categories) throws Exception {
-                        mutableLiveData.postValue(categories);
-                    }
-                })
+                categoryObservable
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(new DisposableObserver<DocumentSnapshot>() {
+                            @Override
+                            public void onNext(DocumentSnapshot documentSnapshot) {
+                                Log.e("Next!", "Next Data to emit..." + documentSnapshot
+                                .getData().toString());
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                Log.e("Completed!", "Completed Successfully...");
+                            }
+                        })
         );
 
         return mutableLiveData;

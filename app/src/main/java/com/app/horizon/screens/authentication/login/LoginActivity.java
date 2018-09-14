@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.app.horizon.R;
 import com.app.horizon.core.base.BaseActivity;
+import com.app.horizon.core.store.online.services.FirestoreService;
 import com.app.horizon.screens.main.MainActivity;
 import com.app.horizon.screens.splashscreen.SplashScreenViewModel;
 import com.facebook.AccessToken;
@@ -45,10 +46,8 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
 
     //Firebase declaration
     private FirebaseAuth mAuth;
-    private FirebaseAnalytics mFirebaseAnalytics;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
     private FirebaseUser user;
-    private FirebaseFirestore db;
 
     //Facebook initialisation
     private CallbackManager mCallbackManager;
@@ -75,14 +74,8 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
 
         progressBar = findViewById(R.id.progressBar);
 
-        //Obtain the FirebaseAnalytics instance.
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-
-        //Initialize Cloud Firestore
-        db = FirebaseFirestore.getInstance();
 
         //Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
@@ -156,28 +149,19 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
                 });
     }
 
+
     //Create a new user with name, email and profile pix
     private void addNewContact(){
         if(user != null) {
+            String uId = user.getUid();
             String name = user.getDisplayName();
             String email = user.getEmail();
-            Uri profile = user.getPhotoUrl();
+            String profilePic = user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : null;
 
-            Map<String, Object> newUser = new HashMap<>();
-            newUser.put("Name", name);
-            newUser.put("Email", email);
-//            newUser.put("Profile", profile);
-
-            db.collection("users")
-                    .add(newUser)
-                    .addOnSuccessListener(documentReference ->
-                            Log.e("Success", "DocumentSnapshot added with ID: " +
-                                    documentReference.getId()))
-                    .addOnFailureListener(e -> Log.e("Error!", e.getMessage()));
+            viewModel.addNewUser(uId, name, email, profilePic);
         }
+
     }
-
-
 
     private void goMainScreen() {
         Intent intent = new Intent(this, MainActivity.class);

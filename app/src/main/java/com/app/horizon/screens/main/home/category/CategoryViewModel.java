@@ -3,7 +3,7 @@ package com.app.horizon.screens.main.home.category;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
-import com.app.horizon.core.store.offline.entities.category.Category;
+import com.app.horizon.core.store.offline.category.Category;
 
 import java.util.List;
 
