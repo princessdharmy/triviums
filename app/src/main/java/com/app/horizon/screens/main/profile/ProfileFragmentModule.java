@@ -2,6 +2,7 @@ package com.app.horizon.screens.main.profile;
 
 import android.arch.lifecycle.ViewModelProvider;
 
+import com.app.horizon.core.network.models.UserProfile;
 import com.app.horizon.utils.ViewModelProviderFactory;
 
 import dagger.Module;
@@ -11,8 +12,13 @@ import dagger.Provides;
 public class ProfileFragmentModule {
 
     @Provides
-    ProfileViewModel provideProfileViewModel(){
-        return new ProfileViewModel();
+    ProfileViewModel provideProfileViewModel(ProfileRepository repository){
+        return new ProfileViewModel(repository);
+    }
+
+    @Provides
+    ProfileRepository provideProfileRepository(UserProfile userProfile){
+        return new ProfileRepository(userProfile);
     }
 
     @Provides

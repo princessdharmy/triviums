@@ -4,6 +4,7 @@ package com.app.horizon.screens.main.profile;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.app.horizon.R;
 import com.app.horizon.core.base.BaseFragment;
+import com.app.horizon.core.network.models.UserProfile;
 import com.app.horizon.databinding.FragmentProfileBinding;
 import com.app.horizon.screens.main.home.category.CategoryFragment;
 
@@ -51,7 +53,18 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container,
                 false);
         View view = binding.getRoot();
+
+        showProfile();
         return view;
+    }
+
+    public void showProfile(){
+        UserProfile userProfile = viewModel.getUserDetails();
+        binding.username.setText(userProfile.getName());
+
+        Uri imageUri = Uri.parse(userProfile.getProfilePicture());
+        binding.profilePix.setImageURI(imageUri);
+
     }
 
 
