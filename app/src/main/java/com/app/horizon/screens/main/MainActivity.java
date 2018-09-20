@@ -25,6 +25,7 @@ public class MainActivity extends BaseActivity<MainActivityViewModel>{
     @Inject
     MainActivityViewModel viewModel;
 
+
     public BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
         Fragment fragment;

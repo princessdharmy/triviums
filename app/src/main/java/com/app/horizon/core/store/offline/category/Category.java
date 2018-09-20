@@ -28,6 +28,10 @@ public class Category {
     @SerializedName("questions")
     private String mQuestions;
 
+    //Required no-argument constructor
+    public Category() {
+
+    }
 
     public Category(@NonNull String mId, @NonNull String mName, String mIconUrl, String mQuestions) {
         this.mId = mId;

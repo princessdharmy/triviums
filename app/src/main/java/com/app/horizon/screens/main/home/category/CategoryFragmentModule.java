@@ -4,15 +4,12 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
 import android.view.View;
 
-import com.app.horizon.core.store.MainAppStore;
+import com.app.horizon.core.network.models.UserProfile;
 import com.app.horizon.core.store.online.services.ApiService;
-import com.app.horizon.core.store.online.services.FirestoreService;
 import com.app.horizon.utils.ViewModelProviderFactory;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.concurrent.Executor;
-
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -29,8 +26,9 @@ public class CategoryFragmentModule {
     }
 
     @Provides
-    CategoryRepository provideRepository(ApiService apiService, FirestoreService firestoreService){
-        return new CategoryRepository(apiService, firestoreService);
+    CategoryRepository provideRepository(ApiService apiService, FirebaseFirestore firebaseFirestore,
+                                         UserProfile userProfile){
+        return new CategoryRepository(apiService, firebaseFirestore, userProfile);
     }
 
     @Provides

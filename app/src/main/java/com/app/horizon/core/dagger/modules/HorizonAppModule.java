@@ -12,6 +12,8 @@ import com.app.horizon.utils.Constants;
 import com.google.gson.Gson;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import retrofit2.Retrofit;
@@ -21,19 +23,19 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class HorizonAppModule {
 
-    @MainAppScope
+    @Singleton
     @Provides
     Context provideContext(HorizonMainApplication application){
         return application;
     }
 
-    @MainAppScope
+    @Singleton
     @Provides
     MainAppStore provideMainAppStore(OnlineStore onlineStore, OfflineStore offlineStore){
         return new MainAppStore(onlineStore, offlineStore);
     }
 
-    @MainAppScope
+    @Singleton
     @Provides
     Retrofit provideRetrofit(){
         Retrofit retrofit = new Retrofit.Builder()
@@ -44,13 +46,13 @@ public class HorizonAppModule {
         return retrofit;
     }
 
-    @MainAppScope
+    @Singleton
     @Provides
     public ApiService provideApiService(Retrofit retrofit){
         return retrofit.create(ApiService.class);
     }
 
-    @MainAppScope
+    @Singleton
     @Provides
     Gson provideGson(){
         return new Gson();

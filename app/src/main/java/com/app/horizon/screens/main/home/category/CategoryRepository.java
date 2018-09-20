@@ -4,27 +4,20 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.util.Log;
 
-import com.app.horizon.core.store.offline.category.Category;
+import com.app.horizon.core.network.models.UserProfile;
 import com.app.horizon.core.store.offline.category.CategoryResponse;
 import com.app.horizon.core.store.online.services.ApiService;
-import com.app.horizon.core.store.online.services.FirestoreService;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
-import io.reactivex.Flowable;
-import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
@@ -33,23 +26,27 @@ import retrofit2.Response;
 public class CategoryRepository {
 
     private ApiService apiService;
-    private FirestoreService firestoreService;
-    final MutableLiveData<List<Category>> mutableLiveData = new MutableLiveData<>();
+    private FirebaseFirestore firestore;
+    private UserProfile userProfile;
     private CompositeDisposable disposable = new CompositeDisposable();
+    private MutableLiveData<CategoryResponse> mutableLiveData = new MutableLiveData<>();
+
 
     @Inject
-    public CategoryRepository(ApiService apiService, FirestoreService firestoreService) {
+    public CategoryRepository(ApiService apiService, FirebaseFirestore firestore,
+                              UserProfile userProfile) {
         this.apiService = apiService;
-        this.firestoreService = firestoreService;
+        this.firestore = firestore;
+        this.userProfile = userProfile;
     }
 
-    public LiveData<List<Category>> getCategory() {
-        if(firestoreService.getCategoryFromCloud() != null) {
+    public LiveData<CategoryResponse> getCategory() {
+        if(fetchCategoryFromCloud().getValue() == null) {
             fetchCategoryFromApi();
         }
-
         return fetchCategoryFromCloud();
     }
+
 
     public void fetchCategoryFromApi() {
         Single<Response<CategoryResponse>> responseObservable = apiService.fetchCategories();
@@ -63,8 +60,18 @@ public class CategoryRepository {
                         })
                         .subscribeWith(new DisposableSingleObserver<Response<CategoryResponse>>() {
                             @Override
-                            public void onSuccess(Response<CategoryResponse> categoryResponseResponse) {
-                                firestoreService.addCategoryToCloud(categoryResponseResponse.body());
+                            public void onSuccess(Response<CategoryResponse> response) {
+                                firestore.collection("users")
+                                        .document(userProfile.getUserUid())
+                                        .collection("categories")
+                                        .document("category")
+                                        .set(response.body())
+                                        .addOnSuccessListener(aVoid -> Log.e("Firestore Service", "Category has been" +
+                                                " added!"))
+                                        .addOnFailureListener(e -> Log.e("Error!", "Could not write categories to " +
+                                                "cloud!"));
+
+                                getCategory();
                             }
 
                             @Override
@@ -73,32 +80,30 @@ public class CategoryRepository {
                         }));
     }
 
-    public LiveData<List<Category>> fetchCategoryFromCloud() {
-        Observable<DocumentSnapshot> categoryObservable = firestoreService.getCategoryFromCloud();
-        disposable.add(
-                categoryObservable
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeWith(new DisposableObserver<DocumentSnapshot>() {
-                            @Override
-                            public void onNext(DocumentSnapshot documentSnapshot) {
-                                Log.e("Next!", "Next Data to emit..." + documentSnapshot
-                                .getData().toString());
 
-                            }
+    public LiveData<CategoryResponse> fetchCategoryFromCloud() {
+        DocumentReference docRef = firestore.collection("users")
+                .document(userProfile.getUserUid())
+                .collection("categories")
+                .document("category");
 
-                            @Override
-                            public void onError(Throwable e) {
+        docRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
 
-                            }
+                if (document.exists()) {
+                    CategoryResponse response = document.toObject(CategoryResponse.class);
+                    mutableLiveData.postValue(response);
 
-                            @Override
-                            public void onComplete() {
-                                Log.e("Completed!", "Completed Successfully...");
-                            }
-                        })
-        );
+                } else {
+                    Log.e("Failed!", "No such document");
+                }
 
+            } else {
+                Log.e("Error", task.getException().toString());
+            }
+        });
         return mutableLiveData;
     }
+
 }

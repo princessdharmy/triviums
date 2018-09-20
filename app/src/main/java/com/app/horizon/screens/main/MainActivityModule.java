@@ -1,5 +1,6 @@
 package com.app.horizon.screens.main;
 
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -11,4 +12,6 @@ public class MainActivityModule {
     MainActivityViewModel provideMainActivityViewModel(){
         return new MainActivityViewModel();
     }
+
+
 }

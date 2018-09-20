@@ -4,9 +4,7 @@ package com.app.horizon.screens.authentication.login;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -14,30 +12,18 @@ import android.widget.Toast;
 
 import com.app.horizon.R;
 import com.app.horizon.core.base.BaseActivity;
-import com.app.horizon.core.store.online.services.FirestoreService;
+import com.app.horizon.core.network.models.UserProfile;
 import com.app.horizon.screens.main.MainActivity;
-import com.app.horizon.screens.splashscreen.SplashScreenViewModel;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -54,6 +40,7 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
     LoginButton loginButton;
     private ProgressBar progressBar;
 
+    UserProfile userProfile;
     LoginActivityViewModel viewModel;
     @Inject
     ViewModelProvider.Factory factory;
@@ -73,6 +60,9 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
         setContentView(R.layout.activity_login);
 
         progressBar = findViewById(R.id.progressBar);
+
+        //Initialise UserProfile
+        userProfile = new UserProfile();
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -106,6 +96,7 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
         firebaseAuthListener = firebaseAuth -> {
             user = firebaseAuth.getCurrentUser();
             if (user != null) {
+                setProfile();
                 goMainScreen();
             }
         };
@@ -137,7 +128,6 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         viewModel.setLoggedIn(true);
-                        addNewContact();
                         // Sign in success, update UI with the signed-in user's information
                         progressBar.setVisibility(View.GONE);
                     } else {
@@ -149,24 +139,21 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
                 });
     }
 
+    //Set user profile to UserProfile
+    private void setProfile(){
+        userProfile.setUserUid(user.getUid());
+        userProfile.setEmail(user.getEmail());
+        userProfile.setName(user.getDisplayName());
+        userProfile.setProfilePicture(user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : null);
 
-    //Create a new user with name, email and profile pix
-    private void addNewContact(){
-        if(user != null) {
-            String uId = user.getUid();
-            String name = user.getDisplayName();
-            String email = user.getEmail();
-            String profilePic = user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : null;
-
-            viewModel.addNewUser(uId, name, email, profilePic);
-        }
-
+        viewModel.addUserToCloud(userProfile);
     }
+
 
     private void goMainScreen() {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
-        Intent.FLAG_ACTIVITY_NEW_TASK);
+                Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 

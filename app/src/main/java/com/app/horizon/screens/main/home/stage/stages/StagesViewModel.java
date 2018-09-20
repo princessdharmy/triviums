@@ -18,9 +18,6 @@ public class StagesViewModel extends ViewModel {
         this.stageRepository = repository;
     }
 
-    public void onButtonClick(){
-
-    }
 
     LiveData<QuestionResponse> getStage(String categoryId){
         if(responseLiveData == null)

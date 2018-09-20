@@ -25,21 +25,22 @@ public class StageRepository {
         this.apiService = apiService;
     }
 
-    public LiveData<QuestionResponse> fetchStages(String categoryId){
+    public LiveData<QuestionResponse> fetchStages(String categoryId) {
         Single<Response<QuestionResponse>> responseObservable = apiService.fetchStages(categoryId);
         disposable.add(
-                responseObservable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<Response<QuestionResponse>>() {
-                    @Override
-                    public void onSuccess(Response<QuestionResponse> questionResponseResponse) {
-                        mutableLiveData.postValue(questionResponseResponse.body());
-                    }
+                responseObservable
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(new DisposableSingleObserver<Response<QuestionResponse>>() {
+                            @Override
+                            public void onSuccess(Response<QuestionResponse> questionResponseResponse) {
+                                mutableLiveData.postValue(questionResponseResponse.body());
+                            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                    }
-                })
+                            @Override
+                            public void onError(Throwable e) {
+                            }
+                        })
         );
         return mutableLiveData;
     }
