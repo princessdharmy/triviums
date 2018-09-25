@@ -82,6 +82,8 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
      */
     public void showCategory(){
         viewModel.getCategory().observe(getViewLifecycleOwner(), category -> {
+            binding.progressBar.setVisibility(View.GONE);
+            binding.loadingTxt.setVisibility(View.GONE);
             if (category != null) {
                 categoryList.clear();
                 categoryList.addAll(category.getData());

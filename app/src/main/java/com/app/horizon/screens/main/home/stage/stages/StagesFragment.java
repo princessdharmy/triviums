@@ -100,13 +100,15 @@ public class StagesFragment extends BaseFragment<StagesViewModel>{
      */
     public void showStage(String categoryId){
         viewModel.getStage(categoryId).observe(getViewLifecycleOwner(), response -> {
+            binding.progressBar.setVisibility(View.GONE);
+            binding.loadingTxt.setVisibility(View.GONE);
+
             int page = response.getPaging().getTotalPages().intValue();
             for(int i = 1; i <= page; i++){
                 totalPage.add(i);
             }
             adapter.updateStages(totalPage);
         });
-
     }
 
     public View.OnClickListener listener = view -> {

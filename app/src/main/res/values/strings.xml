@@ -52,5 +52,6 @@
     <string name="view_all">VIEW ALL</string>
     <string name="leaderboard">Leaderboard</string>
     <string name="add">ADD</string>
+    <string name="loading">Loading...</string>
 
 </resources>

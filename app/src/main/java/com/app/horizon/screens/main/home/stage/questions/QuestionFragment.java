@@ -79,6 +79,9 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
      */
     public void getQuestion(String categoryId, String page) {
         viewModel.getQuestion(categoryId, page).observe(getViewLifecycleOwner(), response -> {
+            binding.progressBar.setVisibility(View.GONE);
+            binding.loadingTxt.setVisibility(View.GONE);
+            binding.questionLayout.setVisibility(View.VISIBLE);
             if (response != null) {
                 questionList.clear();
                 questionList.addAll(response.getData());
@@ -102,7 +105,7 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
     }
 
     /**
-     * Displays question
+     * Display question
      */
     public void displayQuestion(int position) {
         if (position <= (randomPicks.size() - 1)) {

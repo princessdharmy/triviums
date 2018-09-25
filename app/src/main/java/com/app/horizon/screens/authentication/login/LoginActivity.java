@@ -120,8 +120,9 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
-        progressBar.setVisibility(View.VISIBLE);
+        //progressBar.setVisibility(View.VISIBLE);
         loginButton.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
