@@ -2,8 +2,13 @@
 package com.app.horizon.core.store.online.question;
 
 import android.arch.persistence.room.PrimaryKey;
+import android.databinding.BindingAdapter;
 import android.support.annotation.NonNull;
+import android.text.Html;
+import android.text.Spanned;
+import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.annotations.SerializedName;
 
 
@@ -48,6 +53,13 @@ public class Question {
         this.mOptionC = mOptionC;
         this.mOptionD = mOptionD;
     }
+
+    @BindingAdapter("textView")
+    public static void loadQuestion(TextView view, String text){
+        Spanned formattedText = Html.fromHtml(text);
+        view.setText(formattedText);
+    }
+
 
     public String getCategoryId() {
         return mCategoryId;

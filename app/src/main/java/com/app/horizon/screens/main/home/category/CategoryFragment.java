@@ -97,6 +97,7 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
 
         Intent intent = new Intent(getActivity(), StageActivity.class);
         intent.putExtra("CategoryId", category.getId());
+        intent.putExtra("categoryName", category.getName());
         getActivity().startActivity(intent);
     };
 

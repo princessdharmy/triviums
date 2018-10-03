@@ -66,10 +66,10 @@ public class CategoryRepository {
                                         .collection("categories")
                                         .document("category")
                                         .set(response.body())
-                                        .addOnSuccessListener(aVoid -> Log.e("Firestore Service", "Category has been" +
-                                                " added!"))
-                                        .addOnFailureListener(e -> Log.e("Error!", "Could not write categories to " +
-                                                "cloud!"));
+                                        .addOnSuccessListener(aVoid -> Log.e("Firestore Service",
+                                                "Category has been added!"))
+                                        .addOnFailureListener(e -> Log.e("Error!",
+                                                "Could not write categories to cloud!"));
 
                                 getCategory();
                             }

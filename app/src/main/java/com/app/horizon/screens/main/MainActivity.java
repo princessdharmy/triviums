@@ -6,6 +6,11 @@ import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import com.app.horizon.R;
 import com.app.horizon.core.base.BaseActivity;
@@ -19,7 +24,8 @@ import com.app.horizon.utils.BottomNavigationBehaviour;
 import javax.inject.Inject;
 
 
-public class MainActivity extends BaseActivity<MainActivityViewModel>{
+public class MainActivity extends BaseActivity<MainActivityViewModel> implements
+        PopupMenu.OnMenuItemClickListener{
 
     private ActivityMainBinding binding;
     @Inject
@@ -41,9 +47,10 @@ public class MainActivity extends BaseActivity<MainActivityViewModel>{
                         loadFragment(fragment);
                         return true;
                     case R.id.navigation_leader:
-                        binding.title.setText(R.string.people);
-                        fragment = new LeaderboardFragment();
-                        loadFragment(fragment);
+                        Toast.makeText(this, "Not yet available!", Toast.LENGTH_LONG).show();
+                        //binding.title.setText(R.string.people);
+                        //fragment = new LeaderboardFragment();
+                        //loadFragment(fragment);
                         return true;
                 }
                 return false;
@@ -60,9 +67,17 @@ public class MainActivity extends BaseActivity<MainActivityViewModel>{
         super.onCreate(savedInstanceState);
 
         initBinding();
+
         //load the category fragment by default
         binding.title.setText(R.string.categories);
         loadFragment(new CategoryFragment());
+
+        binding.menuBtn.setOnClickListener(view -> {
+            PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
+            popupMenu.setOnMenuItemClickListener(MainActivity.this);
+            popupMenu.inflate(R.menu.menu);
+            popupMenu.show();
+        });
     }
 
     private void initBinding(){
@@ -86,10 +101,23 @@ public class MainActivity extends BaseActivity<MainActivityViewModel>{
         }
     }
 
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        switch (menuItem.getItemId()){
+            case R.id.action_logout:
+                goLoginScreen();
+                return true;
+        }
+        return false;
+    }
+
     private void goLoginScreen() {
         Intent intent = new Intent(this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
                 Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
+
+
+
 }

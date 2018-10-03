@@ -17,6 +17,7 @@ public class StageActivity extends BaseActivity<StageActivityViewModel> {
 
     private ActivityStageBinding binding;
     String value;
+    String categoryName;
     @Inject
     StageActivityViewModel viewModel;
 
@@ -31,6 +32,8 @@ public class StageActivity extends BaseActivity<StageActivityViewModel> {
 
         initBinding();
         value = getIntent().getExtras().getString("CategoryId");
+        categoryName = getIntent().getExtras().getString("categoryName");
+
         showStageFragment();
     }
 
@@ -44,6 +47,7 @@ public class StageActivity extends BaseActivity<StageActivityViewModel> {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         Bundle args = new Bundle();
         args.putString("CategoryId", value);
+        args.putString("categoryName", categoryName);
         fragment.setArguments(args);
         transaction.replace(R.id.fragment_container, fragment)
                 .addToBackStack(null)

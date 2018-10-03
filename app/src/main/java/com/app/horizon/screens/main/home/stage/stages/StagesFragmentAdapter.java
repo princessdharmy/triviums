@@ -4,6 +4,7 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ public class StagesFragmentAdapter extends RecyclerView.Adapter<StagesFragmentAd
 
     Context context;
     List<Integer> totalPage;
+    int stage;
     private View.OnClickListener listener;
 
     @Inject
@@ -41,9 +43,16 @@ public class StagesFragmentAdapter extends RecyclerView.Adapter<StagesFragmentAd
     }
 
     @Override
-    public void onBindViewHolder(@NonNull StageViewHolder holder, int i) {
-        holder.getBinding().setNumber(totalPage.get(i));
+    public void onBindViewHolder(@NonNull StageViewHolder holder, int position) {
+        holder.getBinding().setNumber(totalPage.get(position));
         holder.getBinding().setVariable(BR.on_click, listener);
+
+        for(int i=0; i<stage; i++){
+            if(i == position){
+               holder.getBinding().stageButton.setBackgroundResource(R.drawable.stage_button_selected);
+               holder.getBinding().stageButton.setTextColor(R.color.textColor);
+            }
+        }
     }
 
 
@@ -55,6 +64,11 @@ public class StagesFragmentAdapter extends RecyclerView.Adapter<StagesFragmentAd
     public void updateStages(List<Integer> totalPage){
         this.totalPage = totalPage;
         notifyDataSetChanged();
+    }
+
+    public void updateButtonColor(int stage){
+        this.stage = stage;
+        notifyItemChanged(stage);
     }
 
 
@@ -71,5 +85,6 @@ public class StagesFragmentAdapter extends RecyclerView.Adapter<StagesFragmentAd
         public StageItemBinding getBinding() {
             return binding;
         }
+
     }
 }

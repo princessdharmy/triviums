@@ -4,8 +4,10 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
 import android.view.View;
 
+import com.app.horizon.core.network.models.UserProfile;
 import com.app.horizon.core.store.online.services.ApiService;
 import com.app.horizon.utils.ViewModelProviderFactory;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
@@ -21,8 +23,8 @@ public class StagesFragmentModule {
     }
 
     @Provides
-    StageRepository provideRepository(ApiService apiService){
-        return new StageRepository(apiService);
+    StageRepository provideRepository(ApiService apiService, FirebaseFirestore firestore, UserProfile userProfile){
+        return new StageRepository(apiService, firestore, userProfile);
     }
 
     @Provides
@@ -35,4 +37,5 @@ public class StagesFragmentModule {
     ViewModelProvider.Factory provideViewModelProvider(StagesViewModel viewModel){
         return new ViewModelProviderFactory<>(viewModel);
     }
+
 }

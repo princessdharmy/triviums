@@ -47,7 +47,7 @@ public class CategoryFragmentAdapter extends RecyclerView.Adapter<CategoryFragme
         holder.getBinding().setCategory(categoryList.get(position));
         holder.getBinding().setVariable(BR.handlers, listener);
 
-        //riggers the View to be updated with the new values provided.
+        //Triggers the View to be updated with the new values provided.
         // This method has to be run on the UI thread.
         holder.getBinding().executePendingBindings();
     }

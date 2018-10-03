@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.text.Html"/>
         <variable
             name="click"
             type="com.app.horizon.screens.main.home.stage.questions.QuestionFragment.MyHandler"/>
@@ -163,7 +165,7 @@
                 android:layout_marginStart="@dimen/card_view_marginV"
                 android:layout_marginTop="@dimen/card_view_marginV"
                 android:gravity="center"
-                android:text="@{question.question}"
+                bind:textView='@{question.question ?? ""}'
                 android:textColor="@color/alt_text_color"
                 android:textSize="16sp" />
 
@@ -182,7 +184,7 @@
                 android:gravity="center"
                 android:onClick="@{click::onOptionClick}"
                 android:padding="@dimen/card_view_marginV"
-                android:text="@{question.optionA}"
+                bind:textView='@{question.optionA ?? ""}'
                 android:textAllCaps="false"
                 android:textColor="@color/option_text_color"
                 android:textSize="14sp" />
@@ -202,7 +204,7 @@
                 android:gravity="center"
                 android:onClick="@{click::onOptionClick}"
                 android:padding="@dimen/card_view_marginV"
-                android:text="@{question.optionB}"
+                bind:textView='@{question.optionB ?? ""}'
                 android:textAllCaps="false"
                 android:textColor="@color/option_text_color"
                 android:textSize="14sp" />
@@ -222,7 +224,7 @@
                 android:gravity="center"
                 android:onClick="@{click::onOptionClick}"
                 android:padding="@dimen/card_view_marginV"
-                android:text="@{question.optionC}"
+                bind:textView='@{question.optionC ?? ""}'
                 android:textAllCaps="false"
                 android:textColor="@color/option_text_color"
                 android:textSize="14sp" />
@@ -242,7 +244,7 @@
                 android:gravity="center"
                 android:onClick="@{click::onOptionClick}"
                 android:padding="@dimen/card_view_marginV"
-                android:text="@{question.optionD}"
+                bind:textView='@{question.optionD ?? ""}'
                 android:textAllCaps="false"
                 android:textColor="@color/option_text_color"
                 android:textSize="14sp" />

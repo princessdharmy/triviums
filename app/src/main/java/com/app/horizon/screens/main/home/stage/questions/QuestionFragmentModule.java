@@ -2,8 +2,10 @@ package com.app.horizon.screens.main.home.stage.questions;
 
 import android.arch.lifecycle.ViewModelProvider;
 
+import com.app.horizon.core.network.models.UserProfile;
 import com.app.horizon.core.store.online.services.ApiService;
 import com.app.horizon.utils.ViewModelProviderFactory;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import dagger.Module;
 import dagger.Provides;
@@ -17,12 +19,14 @@ public class QuestionFragmentModule {
     }
 
     @Provides
-    QuestionRepository provideQuestionRepository(ApiService apiService){
-        return new QuestionRepository(apiService);
+    QuestionRepository provideQuestionRepository(ApiService apiService, FirebaseFirestore firestore,
+                                                 UserProfile userProfile){
+        return new QuestionRepository(apiService, firestore, userProfile);
     }
 
     @Provides
     ViewModelProvider.Factory provideViewModelProvider(QuestionViewModel viewModel){
         return new ViewModelProviderFactory<>(viewModel);
     }
+
 }

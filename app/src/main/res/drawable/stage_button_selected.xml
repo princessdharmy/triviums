@@ -6,7 +6,7 @@
             <size android:height="40dp" android:width="40dp"/>
             <padding android:top="10dp" android:bottom="10dp" android:left="10dp"
                 android:right="10dp"/>
-            <stroke android:width="10dp" android:color="@color/textColor"/>
+            <stroke android:width="10dp" android:color="@color/linear2"/>
         </shape>
     </item>
 

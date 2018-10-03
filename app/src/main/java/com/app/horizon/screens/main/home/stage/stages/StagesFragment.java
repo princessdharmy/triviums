@@ -1,12 +1,9 @@
 package com.app.horizon.screens.main.home.stage.stages;
 
-
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -17,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.app.horizon.R;
 import com.app.horizon.core.base.BaseFragment;
@@ -34,13 +30,15 @@ import javax.inject.Inject;
  */
 public class StagesFragment extends BaseFragment<StagesViewModel>{
 
-    public static final String TAG = StagesFragment.class.getSimpleName();
-
     FragmentStagesBinding binding;
     StagesFragmentAdapter adapter;
     RecyclerView recyclerView;
     List<Integer> totalPage = new ArrayList<>();
     String categoryId;
+    String categoryName;
+    int currentScore;
+    Button button;
+
     @Inject
     ViewModelProvider.Factory factory;
     private StagesViewModel viewModel;
@@ -74,6 +72,7 @@ public class StagesFragment extends BaseFragment<StagesViewModel>{
 
         //Get intent extras
         categoryId = getArguments().getString("CategoryId");
+        categoryName = getArguments().getString("categoryName");
 
         //Clear the adapter to avoid duplicates
         totalPage.clear();
@@ -81,8 +80,11 @@ public class StagesFragment extends BaseFragment<StagesViewModel>{
         //Initialize the recyclerview
         initRecyclerView();
 
+        getProgress(categoryName);
+
         //Call the showStage method
         showStage(categoryId);
+
         return view;
     }
 
@@ -111,17 +113,51 @@ public class StagesFragment extends BaseFragment<StagesViewModel>{
         });
     }
 
-    public View.OnClickListener listener = view -> {
+    /**
+     * Gets the progress of the user
+     * @param category
+     */
+    public void getProgress(String category){
+        viewModel.getProgressDetails(category).observe(getViewLifecycleOwner(), data -> {
+            if(data != null){
+                Log.e("Score", data.get("score").getClass().getSimpleName());
+                //currentScore = data.get("score");
 
-        Fragment fragment = new QuestionFragment();
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        /*Bundle args = new Bundle();
-        args.putString("CategoryId", value);
-        fragment.setArguments(args);*/
-        transaction.replace(R.id.fragment_container, fragment)
-                .addToBackStack("dialog")
-                .commit();
+                Log.e("Stage level", String.valueOf(data.get("stageNumber")));
+                int stageNumber = Integer.parseInt(data.get("stageNumber").toString());
+                Log.e("Stage Number", String.valueOf(stageNumber));
+                adapter.updateButtonColor(stageNumber);
+            }
+        });
+    }
+
+
+    public View.OnClickListener listener = view -> {
+        Log.e("Score", String.valueOf(currentScore));
+        //Check to confirm the instance of view i.e Button
+        if(view instanceof Button){
+            button = (Button) view;
+
+            if(){
+
+            }
+            Fragment fragment = new QuestionFragment();
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            Bundle args = new Bundle();
+            args.putString("categoryId", categoryId);
+            args.putString("categoryName", categoryName);
+            args.putString("stageNumber", String.valueOf(button.getText()));
+            fragment.setArguments(args);
+
+            transaction.replace(R.id.fragment_container, fragment)
+                    .addToBackStack("dialog")
+                    .commit();
+        } else {
+            Log.e("View Instance:", "Error in getting the instance of view");
+        }
+
+
     };
 
     public class MyHandler{
@@ -129,6 +165,8 @@ public class StagesFragment extends BaseFragment<StagesViewModel>{
             getActivity().finish();
         }
     }
+
+
 
 
 }

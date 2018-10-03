@@ -56,7 +56,7 @@
             android:authorities="com.facebook.app.FacebookContentProvider@string/facebook_app_id"
             android:exported="true" />
 
-        <activity android:name=".screens.main.home.stage.StageActivity"></activity>
+        <activity android:name=".screens.main.home.stage.StageActivity"/>
     </application>
 
 </manifest>

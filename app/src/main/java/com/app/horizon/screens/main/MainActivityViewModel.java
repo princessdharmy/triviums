@@ -9,7 +9,7 @@ public class MainActivityViewModel extends ViewModel {
 
 
     @Inject
-    public MainActivityViewModel(){
+    public MainActivityViewModel() {
     }
 
 }

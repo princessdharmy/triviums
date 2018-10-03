@@ -1,12 +1,14 @@
 package com.app.horizon.screens.main.home.stage.questions;
 
 
+import android.app.Dialog;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import com.app.horizon.R;
 import com.app.horizon.core.base.BaseFragment;
 import com.app.horizon.core.store.online.question.Question;
 import com.app.horizon.databinding.FragmentQuestionBinding;
+import com.app.horizon.databinding.ScoreDialogBinding;
 import com.app.horizon.utils.CountDownTimer;
 
 
@@ -38,11 +41,13 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
     ViewModelProvider.Factory factory;
     public QuestionViewModel viewModel;
     public CountDownTimer countDownTimer;
+    Dialog dialog;
 
     public List<Question> questionList = new ArrayList<>();
     public List<Question> randomPicks = new ArrayList<>();
-    public String categoryId = "10";
-    public String page = "1";
+    public String categoryId;
+    public String categoryName;
+    public String page;
     public int position = 0;
     public int totalQuestion = 3;
     public int count = 0;
@@ -67,6 +72,11 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
         View view = binding.getRoot();
         binding.setClick(new MyHandler());
 
+        //Get intent extras
+        categoryId = getArguments().getString("categoryId");
+        categoryName = getArguments().getString("categoryName");
+        page = getArguments().getString("stageNumber");
+
         getQuestion(categoryId, page);
         return view;
     }
@@ -82,6 +92,7 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
             binding.progressBar.setVisibility(View.GONE);
             binding.loadingTxt.setVisibility(View.GONE);
             binding.questionLayout.setVisibility(View.VISIBLE);
+
             if (response != null) {
                 questionList.clear();
                 questionList.addAll(response.getData());
@@ -115,7 +126,7 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
             binding.setQuestion(randomPicks.get(position));
             questionTimer();
         } else {
-            showScore();
+            showScoreDialog();
         }
 
     }
@@ -168,25 +179,55 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
 
 
     /**
-     * This method shows the quiz score by calling a DialogFragment
+     * This method shows the quiz score by calling a Dialog
      */
-    private void showScore() {
+    private void showScoreDialog() {
 
-        DialogFragment dialogFragment = new ScoreFragment();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-        if (prev != null) {
-            ft.remove(prev);
+        //Create a dialog
+        dialog = new Dialog(getActivity());
+
+        //Get custom view
+        ScoreDialogBinding dialogBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(getActivity()), R.layout.score_dialog, null,
+                false);
+        dialog.setContentView(dialogBinding.getRoot());
+
+        //Score conditions
+        if(score >= 1){
+            saveProgressInCloud();
+
+            dialogBinding.playerName.setText(R.string.score_pass );
+
+            dialogBinding.congratsMsg.setText(R.string.pass_message);
+
+            dialogBinding.scoreTxt.setText(String.valueOf(score));
+
+        } else {
+            dialogBinding.playerName.setText(R.string.score_fail );
+
+            dialogBinding.congratsMsg.setText(R.string.fail_message);
+
+            dialogBinding.scoreTxt.setText(String.valueOf(score));
         }
-        ft.addToBackStack("dialog");
 
-        //Pass the score value via bundle
-        Bundle args = new Bundle();
-        args.putInt("score", score);
-        Log.e("Bundle Score", String.valueOf(score));
-        dialogFragment.setArguments(args);
+        countDownTimer = new CountDownTimer(5L, TimeUnit.SECONDS) {
+            @Override
+            public void onTick(long tickValue) {
 
-        dialogFragment.show(ft, "dialog");
+            }
+
+            @Override
+            public void onFinish() {
+                dismissDialog();
+            }
+        };
+        countDownTimer.start();
+
+        dialog.show();
+    }
+
+    public void saveProgressInCloud(){
+        viewModel.saveProgress(categoryName, page, score, 15);
     }
 
     /**
@@ -194,6 +235,7 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
      */
     public class MyHandler {
         public void onButtonClick(View view) {
+            countDownTimer.cancel();
             getActivity().onBackPressed();
         }
 
@@ -228,6 +270,16 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
                     throw new RuntimeException("Unknow button ID");
             }
         }
+    }
+
+    /**
+     * This removes all back stack states with name dialog from top until bottom of
+     * stack is reached or a back stack state entry with different name is reached.
+     * No need to explicitly call dismiss on dialog.
+     */
+    public void dismissDialog(){
+        getActivity().getSupportFragmentManager().popBackStack("dialog", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        dialog.dismiss();
     }
 
     @Override

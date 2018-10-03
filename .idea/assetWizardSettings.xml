@@ -77,7 +77,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/home/eipeks/.local/share/umake/android/android-studio/home/eipeks/Desktop/plugins/android/lib/android.jar!/images/material_design_icons/content/ic_add_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio1/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_lock_outline_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -89,8 +89,8 @@
                           <map>
                             <entry key="autoMirrored" value="true" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_add" />
-                            <entry key="sourceFile" value="$USER_HOME$/C:\Users\Princess\Desktop\Material Design Icons\horizon\ic_person_black_24px.svg" />
+                            <entry key="outputName" value="ic_lock_outline_black_24dp" />
+                            <entry key="sourceFile" value="C:\Users\Princess\C:\Users\Princess\Desktop\Material Design Icons\horizon\ic_person_black_24px.svg" />
                           </map>
                         </option>
                       </PersistentState>
