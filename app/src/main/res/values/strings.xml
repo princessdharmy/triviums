@@ -12,22 +12,45 @@
     <string name="fb_login_protocol_scheme">fb197952730877848</string>
 
     <!--Texts-->
-    <string name="login_text">You will be redirected automatically to Facebook to authenticate your login account</string>
+    <string name="login_text">You will be redirected automatically to authenticate your login account</string>
     <string name="title_activity_on_boarding">OnBoardingActivity</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
 
+    <!--OnBoarding texts-->
     <string name="slide1_title">Technology</string>
-    <string name="slide1_desc">What was the name of the WWF professional</string>
+    <string name="slide1_desc">Find out how much you know about the technology</string>
 
     <string name="slide2_title">Sport</string>
-    <string name="slide2_desc">What was the name of the WWF professional</string>
+    <string name="slide2_desc">How much do you know? Are you a real fan?</string>
 
     <string name="slide3_title">Entertainment</string>
-    <string name="slide3_desc">What was the name of the WWF professional</string>
+    <string name="slide3_desc">You think you know entertainment?</string>
 
     <string name="get_started">Get Started</string>
-    <string name="categories">Categories</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="categories">Categories</string>
+    <string name="stages">Stages</string>
+    <string name="questions">Questions</string>
+
+    <!--dummt data-->
+    <string name="hello_blank_fragment">Hello Blank Fragment</string>
+    <string name="second">s</string>
+
+    <!--Score text-->
+    <string name="score_pass">Congrats </string>
+    <string name="score_fail">Ooppss! </string>
+    <string name="pass_message">Yeh! You just proceeded to the next stage</string>
+    <string name="fail_message">Sorry, you could do better. Please, try again!</string>
+    <string name="score_value">Score: </string>
+
+    <!--Others-->
+    <string name="people">People</string>
+    <string name="profile">Profile</string>
+    <string name="achievements">Achievements</string>
+    <string name="view_all">VIEW ALL</string>
+    <string name="leaderboard">Leaderboard</string>
+    <string name="add">ADD</string>
 
 </resources>

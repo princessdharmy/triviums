@@ -1,15 +1,16 @@
 package com.app.horizon.screens.onboarding;
 
+import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
 
 import com.app.horizon.core.store.MainAppStore;
+import com.app.horizon.screens.splashscreen.SplashScreenActivity;
+import com.app.horizon.utils.ViewModelProviderFactory;
 
 import dagger.Module;
 import dagger.Provides;
 
-/**
- * Created by Ayokunle Paul on 7/19/18.
- */
+
 @Module
 public class OnBoardingActivityModule {
 
@@ -21,6 +22,11 @@ public class OnBoardingActivityModule {
     @Provides
     OnBoardingPagerAdapter providePagerAdapter(Context context){
         return new OnBoardingPagerAdapter(context);
+    }
+
+    @Provides
+    ViewModelProvider.Factory provideViewModelProvider(OnBoardingViewModel viewModel){
+        return new ViewModelProviderFactory<>(viewModel);
     }
 
 }

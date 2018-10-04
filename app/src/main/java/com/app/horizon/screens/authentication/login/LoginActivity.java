@@ -1,6 +1,8 @@
 package com.app.horizon.screens.authentication.login;
 
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,7 +11,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.app.horizon.R;
-import com.app.horizon.core.view.BaseActivity;
+import com.app.horizon.core.base.BaseActivity;
+import com.app.horizon.core.network.models.UserProfile;
 import com.app.horizon.screens.main.MainActivity;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -17,25 +20,39 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import javax.inject.Inject;
 
-public class LoginActivity extends BaseActivity {
 
+public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
+
+    //Firebase declaration
     private FirebaseAuth mAuth;
-    private FirebaseAnalytics mFirebaseAnalytics;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
+    private FirebaseUser user;
 
+    //Facebook initialisation
     private CallbackManager mCallbackManager;
     LoginButton loginButton;
     private ProgressBar progressBar;
 
+    UserProfile userProfile;
+    LoginActivityViewModel viewModel;
+    @Inject
+    ViewModelProvider.Factory factory;
+
     private static final String EMAIL = "email";
     private static final String PUBLIC_PROFILE = "public_profile";
+
+    @Override
+    public LoginActivityViewModel getViewModel() {
+        viewModel = ViewModelProviders.of(this, factory).get(LoginActivityViewModel.class);
+        return viewModel;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +61,8 @@ public class LoginActivity extends BaseActivity {
 
         progressBar = findViewById(R.id.progressBar);
 
-        //Obtain the FirebaseAnalytics instance.
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        //Initialise UserProfile
+        userProfile = new UserProfile();
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -77,13 +94,15 @@ public class LoginActivity extends BaseActivity {
         });
 
         firebaseAuthListener = firebaseAuth -> {
-            FirebaseUser user = firebaseAuth.getCurrentUser();
+            user = firebaseAuth.getCurrentUser();
             if (user != null) {
+                setProfile();
                 goMainScreen();
             }
         };
 
     }
+
 
     @Override
     public void onStart() {
@@ -108,8 +127,7 @@ public class LoginActivity extends BaseActivity {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        Toast.makeText(getApplicationContext(), "Login Successful",
-                                Toast.LENGTH_SHORT).show();
+                        viewModel.setLoggedIn(true);
                         // Sign in success, update UI with the signed-in user's information
                         progressBar.setVisibility(View.GONE);
                     } else {
@@ -121,10 +139,21 @@ public class LoginActivity extends BaseActivity {
                 });
     }
 
+    //Set user profile to UserProfile
+    private void setProfile(){
+        userProfile.setUserUid(user.getUid());
+        userProfile.setEmail(user.getEmail());
+        userProfile.setName(user.getDisplayName());
+        userProfile.setProfilePicture(user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : null);
+
+        viewModel.addUserToCloud(userProfile);
+    }
+
+
     private void goMainScreen() {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
-        Intent.FLAG_ACTIVITY_NEW_TASK);
+                Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
@@ -133,4 +162,5 @@ public class LoginActivity extends BaseActivity {
         super.onStop();
         mAuth.removeAuthStateListener(firebaseAuthListener);
     }
+
 }

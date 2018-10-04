@@ -11,9 +11,6 @@ import com.app.horizon.R;
 
 import javax.inject.Inject;
 
-/**
- * Created by Ayokunle Paul on 7/18/18.
- */
 public class OnBoardingPagerAdapter extends PagerAdapter {
 
     private LayoutInflater layoutInflater;

@@ -9,7 +9,10 @@
 
     <!--Text Colors-->
     <color name="textColor">#FFFFFF</color>
+    <color name="alt_text_color">#f5f3f3</color>
+    <color name="option_text_color">#99FFFFFF</color>
     <color name="tintedTextColor">#87FFFFFF</color>
+    <color name="question_label">#75FFFFFF</color>
 
     <!--Icons Colors-->
     <color name="navIconColor">#06C8D4</color>
@@ -21,5 +24,18 @@
     <!-- dots active color -->
     <color name="dots_active_color">#FFFFFF</color>
 
+    <!-- stage unselected color -->
+    <color name="stage_unselected_color">#66FFFFFF</color>
 
+    <!--Progressbar color-->
+    <color name="progress_bar">#2E303C</color>
+    <color name="ring1">#41a50f</color>
+    <color name="ring2">#5F626A</color>
+    <color name="ring3">#C83A5A</color>
+    <color name="linear1">#EFEFEF</color>
+    <color name="linear2">#FCC344</color>
+
+    <!--Button color-->
+    <color name="ripple_effect">#FFFFFF</color>
+    <color name="facebook_color">#3a71e1</color>
 </resources>

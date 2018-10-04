@@ -44,4 +44,13 @@ public class PrefManager {
         return gson.fromJson(user, UserProfile.class);
     }
 
+    public boolean isLoggedIn(){
+        return sharedPreferences.getBoolean(Constants.LOGGED_IN, false);
+    }
+
+    public void setLoggedIn(boolean isLoggedIn){
+        editor.putBoolean(Constants.LOGGED_IN, isLoggedIn);
+        editor.commit();
+    }
+
 }
