@@ -4,6 +4,7 @@ package com.app.horizon.screens.main.home.stage.questions;
 import android.app.Dialog;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -151,7 +152,7 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
      * This displays the countdown timer per question
      */
     public void questionTimer() {
-        countDownTimer = new CountDownTimer(10L, TimeUnit.SECONDS) {
+        countDownTimer = new CountDownTimer(15L, TimeUnit.SECONDS) {
             @Override
             public void onTick(long tickValue) {
                 //Set timer tick value on progressbar text view
@@ -161,7 +162,7 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
                 // tickValue[10,9,8,7,...], progressBar[10,9,8,7,...], a little
                 //calculation is done to make the progressbar move as expected. e.g
                 //tickValue[10,9,8,7,...], progressBar[1,2,3,4,...]
-                long progress = (10 - tickValue) + 1; //10 is the start value
+                long progress = (15 - tickValue) + 1; //10 is the start value
 
                 //Set the progress of the progressbar alongside with the timer tick value
                 binding.progressBar2.setProgress((int) progress);
@@ -193,7 +194,7 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
         dialog.setContentView(dialogBinding.getRoot());
 
         //Score conditions
-        if(score >= 1){
+        if(score >= 2){
             saveProgressInCloud();
 
             dialogBinding.playerName.setText(R.string.score_pass );
@@ -210,15 +211,22 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
             dialogBinding.scoreTxt.setText(String.valueOf(score));
         }
 
-        countDownTimer = new CountDownTimer(5L, TimeUnit.SECONDS) {
+        countDownTimer = new CountDownTimer(3L, TimeUnit.SECONDS) {
             @Override
             public void onTick(long tickValue) {
 
+                //Checks if the dialog is dismissed and cancel the count down timer
+                dialog.setOnDismissListener(dialogInterface -> {
+                    countDownTimer.cancel();
+                    dismissDialog();
+
+                });
             }
 
             @Override
             public void onFinish() {
                 dismissDialog();
+                dialog.dismiss();
             }
         };
         countDownTimer.start();
@@ -279,7 +287,6 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
      */
     public void dismissDialog(){
         getActivity().getSupportFragmentManager().popBackStack("dialog", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        dialog.dismiss();
     }
 
     @Override
@@ -287,4 +294,6 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
         countDownTimer.cancel();
         super.onDestroyView();
     }
+
+
 }

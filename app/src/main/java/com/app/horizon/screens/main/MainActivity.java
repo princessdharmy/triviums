@@ -20,6 +20,7 @@ import com.app.horizon.screens.main.home.category.CategoryFragment;
 import com.app.horizon.screens.main.leaderboard.LeaderboardFragment;
 import com.app.horizon.screens.main.profile.ProfileFragment;
 import com.app.horizon.utils.BottomNavigationBehaviour;
+import com.google.firebase.auth.FirebaseAuth;
 
 import javax.inject.Inject;
 
@@ -112,6 +113,7 @@ public class MainActivity extends BaseActivity<MainActivityViewModel> implements
     }
 
     private void goLoginScreen() {
+        FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
                 Intent.FLAG_ACTIVITY_NEW_TASK);

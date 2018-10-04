@@ -27,7 +27,7 @@
     <dimen name="score_text">35sp</dimen>
 
     <!--Profile dimens-->
-    <dimen name="username">16sp</dimen>
+    <dimen name="username">18sp</dimen>
     <dimen name="profile_texts">16sp</dimen>
 
 </resources>

@@ -7,6 +7,9 @@ import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +19,16 @@ import com.app.horizon.core.base.BaseFragment;
 import com.app.horizon.core.network.models.UserProfile;
 import com.app.horizon.databinding.FragmentProfileBinding;
 import com.app.horizon.screens.main.home.category.CategoryFragment;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.common.ResizeOptions;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
+import com.google.firebase.firestore.DocumentSnapshot;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -25,6 +38,9 @@ import javax.inject.Inject;
 public class ProfileFragment extends BaseFragment<ProfileViewModel> {
 
     FragmentProfileBinding binding;
+    AchievementAdapter adapter;
+    List<DocumentSnapshot> achievements = new ArrayList<>();
+    RecyclerView recyclerView;
     @Inject
     ViewModelProvider.Factory factory;
     private ProfileViewModel viewModel;
@@ -54,7 +70,9 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
                 false);
         View view = binding.getRoot();
 
+        initAchievementRecyclerview();
         showProfile();
+        getAchievementData();
         return view;
     }
 
@@ -63,9 +81,34 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
         binding.username.setText(userProfile.getName());
 
         Uri imageUri = Uri.parse(userProfile.getProfilePicture());
-        binding.profilePix.setImageURI(imageUri);
+        ImageRequest request = ImageRequestBuilder.newBuilderWithSource(imageUri)
+                .setResizeOptions(new ResizeOptions(500, 500))
+                .build();
+        //binding.profilePix.setImageURI(imageUri);
+        binding.profilePix.setController(
+                Fresco.newDraweeControllerBuilder()
+                .setOldController(binding.profilePix.getController())
+                .setImageRequest(request)
+                .build()
+        );
 
     }
 
+    public void initAchievementRecyclerview(){
+        adapter = new AchievementAdapter(getActivity(), achievements);
+        recyclerView = binding.achievements;
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+    }
+
+    public void getAchievementData(){
+        viewModel.getLiveData().observe(getViewLifecycleOwner(), data -> {
+            if(data !=null){
+                Log.e("Data", String.valueOf(data));
+                adapter.updateData(data);
+            }
+        });
+    }
 
 }

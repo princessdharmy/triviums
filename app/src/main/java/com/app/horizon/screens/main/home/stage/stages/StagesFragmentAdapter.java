@@ -1,5 +1,6 @@
 package com.app.horizon.screens.main.home.stage.stages;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
@@ -50,7 +51,7 @@ public class StagesFragmentAdapter extends RecyclerView.Adapter<StagesFragmentAd
         for(int i=0; i<stage; i++){
             if(i == position){
                holder.getBinding().stageButton.setBackgroundResource(R.drawable.stage_button_selected);
-               holder.getBinding().stageButton.setTextColor(R.color.textColor);
+               //holder.getBinding().stageButton.setTextColor(Integer.parseInt("#FFFFFF"));
             }
         }
     }

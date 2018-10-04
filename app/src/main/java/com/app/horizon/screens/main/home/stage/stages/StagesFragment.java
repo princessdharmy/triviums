@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.app.horizon.R;
 import com.app.horizon.core.base.BaseFragment;
@@ -34,8 +35,7 @@ public class StagesFragment extends BaseFragment<StagesViewModel>{
     StagesFragmentAdapter adapter;
     RecyclerView recyclerView;
     List<Integer> totalPage = new ArrayList<>();
-    String categoryId;
-    String categoryName;
+    String categoryId, categoryName, stageProgress;
     int currentScore;
     Button button;
 
@@ -126,33 +126,59 @@ public class StagesFragment extends BaseFragment<StagesViewModel>{
                 Log.e("Stage level", String.valueOf(data.get("stageNumber")));
                 int stageNumber = Integer.parseInt(data.get("stageNumber").toString());
                 Log.e("Stage Number", String.valueOf(stageNumber));
+                getStageNumber(String.valueOf(stageNumber));
                 adapter.updateButtonColor(stageNumber);
             }
         });
     }
 
+    public String getStageNumber(String stageNum){
+        stageProgress = stageNum;
+        return stageProgress;
+    }
+
 
     public View.OnClickListener listener = view -> {
         Log.e("Score", String.valueOf(currentScore));
+
         //Check to confirm the instance of view i.e Button
         if(view instanceof Button){
             button = (Button) view;
 
-            if(){
+            if(button.getText() == "1"){
+                Fragment fragment = new QuestionFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                Bundle args = new Bundle();
+                args.putString("categoryId", categoryId);
+                args.putString("categoryName", categoryName);
+                args.putString("stageNumber", String.valueOf(button.getText()));
+                fragment.setArguments(args);
 
+                transaction.replace(R.id.fragment_container, fragment)
+                        .addToBackStack("dialog")
+                        .commit();
+
+            } else if(stageProgress == button.getText()){
+                Fragment fragment = new QuestionFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                Bundle args = new Bundle();
+                args.putString("categoryId", categoryId);
+                args.putString("categoryName", categoryName);
+                args.putString("stageNumber", String.valueOf(button.getText()));
+                fragment.setArguments(args);
+
+                transaction.replace(R.id.fragment_container, fragment)
+                        .addToBackStack("dialog")
+                        .commit();
             }
-            Fragment fragment = new QuestionFragment();
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            Bundle args = new Bundle();
-            args.putString("categoryId", categoryId);
-            args.putString("categoryName", categoryName);
-            args.putString("stageNumber", String.valueOf(button.getText()));
-            fragment.setArguments(args);
+            else {
+                String message = String.valueOf(Integer.valueOf((String) button.getText()) - 1);
+                Toast.makeText(getActivity(), "You must pass stage " +
+                        message + " to continue ", Toast.LENGTH_SHORT).show();
+            }
 
-            transaction.replace(R.id.fragment_container, fragment)
-                    .addToBackStack("dialog")
-                    .commit();
         } else {
             Log.e("View Instance:", "Error in getting the instance of view");
         }
