@@ -4,7 +4,6 @@ import com.app.horizon.HorizonMainApplication;
 import com.app.horizon.core.dagger.builders.ActivityBuilder;
 import com.app.horizon.core.dagger.modules.FirebaseModule;
 import com.app.horizon.core.dagger.modules.HorizonAppModule;
-import com.app.horizon.core.dagger.scopes.MainAppScope;
 
 import javax.inject.Singleton;
 

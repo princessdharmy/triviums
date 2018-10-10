@@ -17,15 +17,16 @@ import java.util.List;
 import javax.inject.Inject;
 
 
-public class StagesFragmentAdapter extends RecyclerView.Adapter<StagesFragmentAdapter.StageViewHolder> {
+public class StagesAdapter extends RecyclerView.Adapter<StagesAdapter.StageViewHolder> {
 
     Context context;
     List<Integer> totalPage;
+    int stage;
     private View.OnClickListener listener;
 
     @Inject
-    public StagesFragmentAdapter(Context context, List<Integer> totalPage,
-                                 View.OnClickListener listener) {
+    public StagesAdapter(Context context, List<Integer> totalPage,
+                         View.OnClickListener listener) {
         this.context = context;
         this.totalPage = totalPage;
         this.listener = listener;
@@ -41,9 +42,16 @@ public class StagesFragmentAdapter extends RecyclerView.Adapter<StagesFragmentAd
     }
 
     @Override
-    public void onBindViewHolder(@NonNull StageViewHolder holder, int i) {
-        holder.getBinding().setNumber(totalPage.get(i));
+    public void onBindViewHolder(@NonNull StageViewHolder holder, int position) {
+        holder.getBinding().setNumber(totalPage.get(position));
         holder.getBinding().setVariable(BR.on_click, listener);
+
+        for(int i=0; i<stage; i++){
+            if(i == position){
+               holder.getBinding().stageButton.setBackgroundResource(R.drawable.stage_button_selected);
+               holder.getBinding().stageButton.setTextColor(context.getResources().getColor(R.color.textColor));
+            }
+        }
     }
 
 
@@ -52,8 +60,14 @@ public class StagesFragmentAdapter extends RecyclerView.Adapter<StagesFragmentAd
         return totalPage.size();
     }
 
-    public void updateStages(List<Integer> totalPage){
-        this.totalPage = totalPage;
+    public void updateStages(List<Integer> value){
+        this.totalPage = value;
+        notifyDataSetChanged();
+    }
+
+    public void updateButtonColor(int stage){
+        this.stage = stage;
+        notifyItemChanged(stage);
         notifyDataSetChanged();
     }
 
@@ -71,5 +85,6 @@ public class StagesFragmentAdapter extends RecyclerView.Adapter<StagesFragmentAd
         public StageItemBinding getBinding() {
             return binding;
         }
+
     }
 }

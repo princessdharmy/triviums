@@ -32,6 +32,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
 }
 
 ext {
@@ -64,7 +70,7 @@ dependencies {
     //Loads packaged libraries in the libs folder
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-//Android Libs
+    //Android Libs
     implementation "com.android.support:appcompat-v7:$appcompatVersion"
     implementation "com.android.support:design:$appcompatVersion"
     implementation "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"

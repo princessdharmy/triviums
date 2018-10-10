@@ -24,9 +24,10 @@
     <dimen name="card_view_marginH">8dp</dimen>
     <dimen name="card_view_marginV">8dp</dimen>
     <dimen name="question_spacing">2dp</dimen>
+    <dimen name="score_text">35sp</dimen>
 
     <!--Profile dimens-->
-    <dimen name="username">16sp</dimen>
+    <dimen name="username">18sp</dimen>
     <dimen name="profile_texts">16sp</dimen>
 
 </resources>

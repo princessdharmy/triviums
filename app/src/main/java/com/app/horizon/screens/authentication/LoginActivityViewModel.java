@@ -1,4 +1,4 @@
-package com.app.horizon.screens.authentication.login;
+package com.app.horizon.screens.authentication;
 
 import android.arch.lifecycle.ViewModel;
 import android.util.Log;

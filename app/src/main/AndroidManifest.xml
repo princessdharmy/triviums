@@ -3,6 +3,8 @@
     package="com.app.horizon">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
 
     <application
         android:name=".HorizonMainApplication"
@@ -14,23 +16,35 @@
         android:theme="@style/AppTheme.NoActionBar">
         <activity
             android:name=".screens.splashscreen.SplashScreenActivity"
-            android:theme="@style/AppTheme.Launcher">
+            android:theme="@style/AppTheme.Launcher"
+            android:screenOrientation="userPortrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".screens.onboarding.OnBoardingActivity"
+            android:label="@string/title_activity_on_boarding"
+            android:screenOrientation="userPortrait"/>
+
+        <activity
+            android:name=".screens.authentication.LoginActivity"
+            android:screenOrientation="userPortrait"/>
+
         <activity
             android:name=".screens.main.MainActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTop" />
-        <activity
-            android:name=".screens.onboarding.OnBoardingActivity"
-            android:label="@string/title_activity_on_boarding" />
-        <activity android:name=".screens.authentication.login.LoginActivity" />
+            android:launchMode="singleTop"
+            android:screenOrientation="userPortrait"/>
 
-        <meta-data
+        <activity
+            android:name=".screens.main.home.stage.StageActivity"
+            android:screenOrientation="userPortrait"/>
+
+        <!--<meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
@@ -54,9 +68,16 @@
         <provider
             android:name="com.facebook.FacebookContentProvider"
             android:authorities="com.facebook.app.FacebookContentProvider@string/facebook_app_id"
-            android:exported="true" />
+            android:exported="true" />-->
 
-        <activity android:name=".screens.main.home.stage.StageActivity"></activity>
+        <receiver
+            android:name=".ConnectivityReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

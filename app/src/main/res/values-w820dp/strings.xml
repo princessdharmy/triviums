@@ -3,4 +3,6 @@
     <string name="second">s</string>
     <string name="people">People</string>
     <string name="profile">Profile</string>
+    <string name="loading">Loading...</string>
+    <string name="message">You have not attempted any quiz</string>
 </resources>

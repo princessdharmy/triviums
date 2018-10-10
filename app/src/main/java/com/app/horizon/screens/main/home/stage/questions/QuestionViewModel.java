@@ -5,6 +5,8 @@ import android.arch.lifecycle.ViewModel;
 
 import com.app.horizon.core.store.online.question.QuestionResponse;
 
+import java.util.ArrayList;
+
 
 public class QuestionViewModel extends ViewModel{
 
@@ -19,5 +21,9 @@ public class QuestionViewModel extends ViewModel{
         if(liveData == null)
             liveData = repository.fetchQuestion(categoryId, page);
         return liveData;
+    }
+
+    public void saveProgress(String categoryName, String stageNumber, int score, int totalPages){
+        repository.saveQuizProgress(categoryName, stageNumber, score, totalPages);
     }
 }

@@ -2,11 +2,15 @@ package com.app.horizon.screens.main.home.category;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.app.horizon.core.network.models.UserProfile;
 import com.app.horizon.core.store.offline.category.CategoryResponse;
 import com.app.horizon.core.store.online.services.ApiService;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -28,6 +32,7 @@ public class CategoryRepository {
     private ApiService apiService;
     private FirebaseFirestore firestore;
     private UserProfile userProfile;
+    boolean isExisting;
     private CompositeDisposable disposable = new CompositeDisposable();
     private MutableLiveData<CategoryResponse> mutableLiveData = new MutableLiveData<>();
 
@@ -41,14 +46,16 @@ public class CategoryRepository {
     }
 
     public LiveData<CategoryResponse> getCategory() {
-        if(fetchCategoryFromCloud().getValue() == null) {
-            fetchCategoryFromApi();
-        }
-        return fetchCategoryFromCloud();
+        fetchDataFromCloud(dataExists -> {
+            if(!dataExists){
+                fetchCategoryFromApi();
+            }
+        });
+        return mutableLiveData;
     }
 
 
-    public void fetchCategoryFromApi() {
+    private void fetchCategoryFromApi() {
         Single<Response<CategoryResponse>> responseObservable = apiService.fetchCategories();
         disposable.add(
                 responseObservable.subscribeOn(Schedulers.io())
@@ -66,10 +73,10 @@ public class CategoryRepository {
                                         .collection("categories")
                                         .document("category")
                                         .set(response.body())
-                                        .addOnSuccessListener(aVoid -> Log.e("Firestore Service", "Category has been" +
-                                                " added!"))
-                                        .addOnFailureListener(e -> Log.e("Error!", "Could not write categories to " +
-                                                "cloud!"));
+                                        .addOnSuccessListener(aVoid -> Log.e("Firestore Service",
+                                                "Category has been added!"))
+                                        .addOnFailureListener(e -> Log.e("Error!",
+                                                "Could not write categories to cloud!"));
 
                                 getCategory();
                             }
@@ -81,7 +88,7 @@ public class CategoryRepository {
     }
 
 
-    public LiveData<CategoryResponse> fetchCategoryFromCloud() {
+    private void fetchDataFromCloud(DataExistsCallback callback) {
         DocumentReference docRef = firestore.collection("users")
                 .document(userProfile.getUserUid())
                 .collection("categories")
@@ -90,8 +97,8 @@ public class CategoryRepository {
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
-
                 if (document.exists()) {
+                    isExisting = true;
                     CategoryResponse response = document.toObject(CategoryResponse.class);
                     mutableLiveData.postValue(response);
 
@@ -102,8 +109,13 @@ public class CategoryRepository {
             } else {
                 Log.e("Error", task.getException().toString());
             }
+            callback.onCallback(isExisting);
         });
-        return mutableLiveData;
+    }
+
+
+    public interface DataExistsCallback {
+        void onCallback(boolean dataExists);
     }
 
 }

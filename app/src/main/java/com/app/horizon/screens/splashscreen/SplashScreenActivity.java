@@ -5,11 +5,9 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.app.horizon.R;
 import com.app.horizon.core.base.BaseActivity;
-import com.app.horizon.screens.authentication.login.LoginActivity;
+import com.app.horizon.screens.authentication.LoginActivity;
 import com.app.horizon.screens.main.MainActivity;
-import com.app.horizon.screens.main.home.category.CategoryViewModel;
 import com.app.horizon.screens.onboarding.OnBoardingActivity;
 
 import javax.inject.Inject;

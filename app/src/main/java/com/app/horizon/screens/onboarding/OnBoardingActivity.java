@@ -15,8 +15,7 @@ import android.view.WindowManager;
 import com.app.horizon.R;
 import com.app.horizon.core.base.BaseActivity;
 import com.app.horizon.databinding.ActivityOnBoardingBinding;
-import com.app.horizon.screens.authentication.login.LoginActivity;
-import com.app.horizon.screens.authentication.login.LoginActivityViewModel;
+import com.app.horizon.screens.authentication.LoginActivity;
 
 import javax.inject.Inject;
 

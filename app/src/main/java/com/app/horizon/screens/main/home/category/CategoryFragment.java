@@ -14,11 +14,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.app.horizon.HorizonMainApplication;
 import com.app.horizon.R;
 import com.app.horizon.core.base.BaseFragment;
 import com.app.horizon.core.store.offline.category.Category;
 import com.app.horizon.databinding.FragmentCategoryBinding;
 import com.app.horizon.screens.main.home.stage.StageActivity;
+import com.app.horizon.utils.ConnectivityReceiver;
+import com.app.horizon.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +33,8 @@ import io.reactivex.disposables.CompositeDisposable;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CategoryFragment extends BaseFragment<CategoryViewModel> {
+public class CategoryFragment extends BaseFragment<CategoryViewModel> implements
+        ConnectivityReceiver.ConnectivityReceiverListener{
 
     private FragmentCategoryBinding binding;
     private RecyclerView recyclerView;
@@ -43,7 +47,8 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
     @Inject
     ViewModelProvider.Factory factory;
     private CategoryViewModel viewModel;
-
+    @Inject
+    Utils utils;
 
     public CategoryFragment() {
         // Required empty public constructor
@@ -65,7 +70,15 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
         View view = binding.getRoot();
 
         initRecyclerView();
-        showCategory();
+
+        if(checkConnection()){
+            showCategory();
+        } else {
+            utils.showSnackbar(getActivity(), getResources().getString(R.string.newtwork_unavailable));
+            showCategory();
+        }
+
+
         return view;
     }
 
@@ -82,6 +95,8 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
      */
     public void showCategory(){
         viewModel.getCategory().observe(getViewLifecycleOwner(), category -> {
+            binding.progressBar.setVisibility(View.GONE);
+            binding.loadingTxt.setVisibility(View.GONE);
             if (category != null) {
                 categoryList.clear();
                 categoryList.addAll(category.getData());
@@ -93,10 +108,41 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
     private View.OnClickListener categoryListener = view -> {
         Category category = (Category) view.getTag();
 
-        Intent intent = new Intent(getActivity(), StageActivity.class);
-        intent.putExtra("CategoryId", category.getId());
-        getActivity().startActivity(intent);
+        if(checkConnection()){
+            Intent intent = new Intent(getActivity(), StageActivity.class);
+            intent.putExtra("CategoryId", category.getId());
+            intent.putExtra("categoryName", category.getName());
+            getActivity().startActivity(intent);
+        } else {
+            utils.showSnackbar(getActivity(), getResources().getString(R.string.newtwork_unavailable));
+        }
+
     };
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        //register connection status listener
+        HorizonMainApplication.getInstance().setConnectivityListener(this);
+    }
+
+    public boolean checkConnection(){
+        return ConnectivityReceiver.isConnected();
+    }
+
+    /**
+     * Callback will be triggered when there is change in
+     * network connection
+     */
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if(isConnected){
+            utils.showSnackbar(getActivity(), getResources().getString(R.string.newtwork_available));
+        } else {
+            utils.showSnackbar(getActivity(), getResources().getString(R.string.newtwork_unavailable));
+        }
+    }
 
 
     @Override

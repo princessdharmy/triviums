@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Define the background properties like color etc -->
     <item android:id="@android:id/background">
         <shape>
-            <solid android:color="@color/linear1"/>
+            <corners android:radius="10dp" />
+            <solid android:color="@color/textColor"/>
         </shape>
     </item>
-
-    <!-- Define the progress properties like start color, end color etc -->
     <item android:id="@android:id/progress">
         <clip>
             <shape>
+                <corners android:radius="10dp" />
                 <solid android:color="@color/bottomNavIconColor"/>
             </shape>
         </clip>

@@ -1,6 +1,5 @@
 package com.app.horizon.core.dagger.modules;
 
-import com.app.horizon.core.dagger.scopes.MainAppScope;
 import com.app.horizon.core.network.models.UserProfile;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
