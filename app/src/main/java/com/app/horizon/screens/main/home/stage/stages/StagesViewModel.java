@@ -3,10 +3,8 @@ package com.app.horizon.screens.main.home.stage.stages;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
-import android.view.View;
 
 import com.app.horizon.core.store.online.question.QuestionResponse;
-import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.Map;
 

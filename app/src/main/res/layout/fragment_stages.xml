@@ -17,7 +17,6 @@
         android:background="@color/colorPrimary"
         tools:context=".screens.main.home.stage.stages.StagesFragment">
 
-
         <ImageView
             android:id="@+id/nav_back"
             android:layout_width="30dp"

@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -12,15 +13,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
 import com.app.horizon.R;
 import com.app.horizon.core.base.BaseFragment;
 import com.app.horizon.core.store.online.question.Question;
 import com.app.horizon.databinding.FragmentQuestionBinding;
 import com.app.horizon.databinding.ScoreDialogBinding;
+import com.app.horizon.screens.main.home.stage.StageActivity;
 import com.app.horizon.utils.CountDownTimer;
 
 
@@ -31,6 +35,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,13 +51,9 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
 
     public List<Question> questionList = new ArrayList<>();
     public List<Question> randomPicks = new ArrayList<>();
-    public String categoryId;
-    public String categoryName;
-    public String page;
-    public int position = 0;
-    public int totalQuestion = 3;
-    public int count = 0;
-    public int score;
+    public String categoryId, categoryName, page;
+    public int currentScore, questionScore, totalPage, position = 0, count = 0, totalQuestion = 10;
+
 
     public QuestionFragment() {
         // Required empty public constructor
@@ -73,13 +74,19 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
         View view = binding.getRoot();
         binding.setClick(new MyHandler());
 
+        getIntents();
+
+        getQuestion(categoryId, page);
+        return view;
+    }
+
+    public void getIntents(){
         //Get intent extras
         categoryId = getArguments().getString("categoryId");
         categoryName = getArguments().getString("categoryName");
         page = getArguments().getString("stageNumber");
-
-        getQuestion(categoryId, page);
-        return view;
+        currentScore = getArguments().getInt("currentScore");
+        totalPage = getArguments().getInt("totalPages");
     }
 
     /**
@@ -140,10 +147,10 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
      */
     private void calculateScore(String buttonText, int position) {
         if (buttonText.equals(randomPicks.get(position).getCorrectAnswer())) {
-            if(score == 0){
-                score = count + 1;
+            if(questionScore == 0){
+                questionScore = count + 1;
             } else {
-                score = score + 1;
+                questionScore = questionScore + 1;
             }
         }
     }
@@ -152,7 +159,7 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
      * This displays the countdown timer per question
      */
     public void questionTimer() {
-        countDownTimer = new CountDownTimer(15L, TimeUnit.SECONDS) {
+        countDownTimer = new CountDownTimer(20L, TimeUnit.SECONDS) {
             @Override
             public void onTick(long tickValue) {
                 //Set timer tick value on progressbar text view
@@ -162,10 +169,11 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
                 // tickValue[10,9,8,7,...], progressBar[10,9,8,7,...], a little
                 //calculation is done to make the progressbar move as expected. e.g
                 //tickValue[10,9,8,7,...], progressBar[1,2,3,4,...]
-                long progress = (15 - tickValue) + 1; //10 is the start value
+                long progress = (20 - tickValue) + 1; //10 is the start value
 
                 //Set the progress of the progressbar alongside with the timer tick value
                 binding.progressBar2.setProgress((int) progress);
+                binding.progressBar2.setMax(20);
             }
 
             @Override
@@ -194,39 +202,32 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
         dialog.setContentView(dialogBinding.getRoot());
 
         //Score conditions
-        if(score >= 2){
+        if(questionScore >= 8){
             saveProgressInCloud();
 
             dialogBinding.playerName.setText(R.string.score_pass );
 
             dialogBinding.congratsMsg.setText(R.string.pass_message);
 
-            dialogBinding.scoreTxt.setText(String.valueOf(score));
+            dialogBinding.scoreTxt.setText(String.valueOf(questionScore));
 
         } else {
             dialogBinding.playerName.setText(R.string.score_fail );
 
             dialogBinding.congratsMsg.setText(R.string.fail_message);
 
-            dialogBinding.scoreTxt.setText(String.valueOf(score));
+            dialogBinding.scoreTxt.setText(String.valueOf(questionScore));
         }
 
-        countDownTimer = new CountDownTimer(3L, TimeUnit.SECONDS) {
+        countDownTimer = new CountDownTimer(2L, TimeUnit.SECONDS) {
             @Override
             public void onTick(long tickValue) {
 
-                //Checks if the dialog is dismissed and cancel the count down timer
-                dialog.setOnDismissListener(dialogInterface -> {
-                    countDownTimer.cancel();
-                    dismissDialog();
-
-                });
             }
 
             @Override
             public void onFinish() {
                 dismissDialog();
-                dialog.dismiss();
             }
         };
         countDownTimer.start();
@@ -234,9 +235,15 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
         dialog.show();
     }
 
+
+    /**
+     * Saves user's quiz progress in the database(Firestore)
+     */
     public void saveProgressInCloud(){
-        viewModel.saveProgress(categoryName, page, score, 15);
+        int totalScore = currentScore + questionScore;
+        viewModel.saveProgress(categoryName, page, totalScore, totalPage);
     }
+
 
     /**
      * Handles the button click
@@ -280,14 +287,18 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
         }
     }
 
+
     /**
      * This removes all back stack states with name dialog from top until bottom of
      * stack is reached or a back stack state entry with different name is reached.
      * No need to explicitly call dismiss on dialog.
      */
     public void dismissDialog(){
-        getActivity().getSupportFragmentManager().popBackStack("dialog", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        dialog.dismiss();
+        getActivity().startActivity(getActivity().getIntent());
+        getActivity().finish();
     }
+
 
     @Override
     public void onDestroyView() {

@@ -22,7 +22,6 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter.
 
     private Context context;
     List<DocumentSnapshot> achievements;
-    int totalStages;
 
 
     @Inject
@@ -41,12 +40,18 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull AchievementViewHolder holder, int position) {
-        Log.e("Achievements", String.valueOf(achievements));
-        //Log.e("Achievements", String.valueOf(achievements));
-        //Log.e("Achievements", String.valueOf(achievements.get("totalPages")));
-        //Log.e("Achievements", String.valueOf(achievements.get("stageNumber")));
 
-        //holder.getBinding().categoryTitle.setText((CharSequence) achievements.get(""));
+        String categoryTitle = String.valueOf(achievements.get(position).getId());
+        String stageNumber = String.valueOf(achievements.get(position).getData().get("stageNumber"));
+        String totalPages = String.valueOf(achievements.get(position).getData().get("totalPages"));
+
+        holder.getBinding().categoryTitle.setText(categoryTitle);
+        holder.getBinding().stage.setText(stageNumber);
+        holder.getBinding().totalStages.setText(totalPages);
+
+        holder.getBinding().linearProgress.setMax(Integer.parseInt(totalPages));
+        holder.getBinding().linearProgress.setProgress(Integer.parseInt(stageNumber));
+
     }
 
     @Override

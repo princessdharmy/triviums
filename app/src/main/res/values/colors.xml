@@ -36,7 +36,7 @@
     <color name="linear2">#FCC344</color>
 
     <!--Button color-->
-    <color name="ripple_effect">#FFFFFF</color>
+    <color name="ripple_effect">#7b7f91</color>
     <color name="facebook_color">#3a71e1</color>
 
 </resources>

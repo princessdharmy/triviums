@@ -7,21 +7,10 @@
             <solid android:color="@color/textColor"/>
         </shape>
     </item>
-
-    <item android:id="@android:id/secondaryProgress">
+    <item android:id="@android:id/progress">
         <clip>
             <shape>
                 <corners android:radius="10dp" />
-                <solid android:color="@color/bottomNavIconColor"/>
-            </shape>
-        </clip>
-    </item>
-    <item
-        android:id="@android:id/progress">
-        <clip>
-            <shape>
-                <corners
-                    android:radius="10dp" />
                 <solid android:color="@color/bottomNavIconColor"/>
             </shape>
         </clip>

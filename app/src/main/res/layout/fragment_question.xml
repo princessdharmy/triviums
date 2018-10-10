@@ -276,7 +276,6 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:indeterminate="false"
-            android:max="10"
             android:progressDrawable="@drawable/timer_progressbar"
             android:rotation="270"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -27,6 +27,7 @@ public class ProfileRepository {
 
     private UserProfile userProfile;
     private FirebaseFirestore firestore;
+    List<DocumentSnapshot> document;
     private MutableLiveData<List<DocumentSnapshot>> liveData = new MutableLiveData<>();
 
     @Inject
@@ -40,6 +41,13 @@ public class ProfileRepository {
     }
 
     public LiveData<List<DocumentSnapshot>> getProgress(){
+        fetchProgress(snapshotList -> {
+            liveData.postValue(snapshotList);
+        });
+        return liveData;
+    }
+
+    private void fetchProgress(ProgressCallback callback){
         CollectionReference collectionReference = firestore.collection("users")
                 .document(userProfile.getUserUid())
                 .collection("categories")
@@ -48,15 +56,17 @@ public class ProfileRepository {
 
         collectionReference.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                List<DocumentSnapshot> document = task.getResult().getDocuments();
-                Log.e("Collection", String.valueOf(document));
-                liveData.postValue(document);
+                document = task.getResult().getDocuments();
+//                liveData.postValue(document);
+
             } else {
                 Log.e("Error getting documents", task.getException().toString());
             }
+            callback.onCallback(document);
         });
+    }
 
-
-        return liveData;
+    public interface ProgressCallback {
+        void onCallback(List<DocumentSnapshot> snapshotList);
     }
 }

@@ -7,6 +7,8 @@ import com.app.horizon.core.store.online.services.ApiService;
 import com.app.horizon.utils.ViewModelProviderFactory;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import javax.inject.Named;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -25,6 +27,7 @@ public class QuestionFragmentModule {
     }
 
     @Provides
+    //@Named("QuestionFragment")
     ViewModelProvider.Factory provideViewModelProvider(QuestionViewModel viewModel){
         return new ViewModelProviderFactory<>(viewModel);
     }

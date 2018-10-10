@@ -16,10 +16,10 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:textColor="@color/textColor"
+        android:textColor="@color/option_text_color"
         android:textSize="@dimen/profile_texts"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.13"
+        app:layout_constraintHorizontal_bias="0.12"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,12 +33,12 @@
         android:layout_marginTop="16dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.917"
+        app:layout_constraintHorizontal_bias="0.82"
         app:layout_constraintStart_toEndOf="@+id/category_title"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/progress_score"
+            android:id="@+id/stage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="2dp"
@@ -46,14 +46,14 @@
             android:layout_marginRight="2dp"
             android:layout_marginStart="2dp"
             android:text="3"
-            android:textColor="@color/textColor"
+            android:textColor="@color/option_text_color"
             android:textSize="@dimen/profile_texts" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="/"
-            android:textColor="@color/textColor"
+            android:textColor="@color/option_text_color"
             android:textSize="@dimen/profile_texts" />
 
         <TextView
@@ -65,7 +65,7 @@
             android:layout_marginRight="2dp"
             android:layout_marginStart="2dp"
             android:text="10"
-            android:textColor="@color/textColor"
+            android:textColor="@color/option_text_color"
             android:textSize="@dimen/profile_texts" />
     </LinearLayout>
 
@@ -80,10 +80,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:indeterminate="false"
-        android:max="10"
-        android:progress="6"
         android:progressDrawable="@drawable/linear_progress_bar"
-        android:secondaryProgress="7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
@@ -91,13 +88,13 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="0.25dp"
+        android:layout_height="0.1dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="20dp"
-        android:background="@color/textColor"
+        android:background="@color/question_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

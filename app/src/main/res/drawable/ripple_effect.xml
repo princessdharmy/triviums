@@ -4,7 +4,8 @@
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
             <corners android:radius="10dp" />
-            <solid android:color="@color/ripple_effect" />
+            <stroke android:color="@color/ripple_effect"
+                android:width="0.75dp"/>
         </shape>
     </item>
 

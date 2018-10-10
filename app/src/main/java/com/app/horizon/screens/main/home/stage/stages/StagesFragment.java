@@ -27,12 +27,14 @@ import java.util.List;
 import javax.inject.Inject;
 
 /**
- * A simple {@link Fragment} subclass.
+ * A simple{@link Fragment } subclass.
  */
-public class StagesFragment extends BaseFragment<StagesViewModel>{
+
+
+public class StagesFragment extends BaseFragment<StagesViewModel> {
 
     FragmentStagesBinding binding;
-    StagesFragmentAdapter adapter;
+    StagesAdapter adapter;
     RecyclerView recyclerView;
     List<Integer> totalPage = new ArrayList<>();
     String categoryId, categoryName, stageProgress;
@@ -47,12 +49,6 @@ public class StagesFragment extends BaseFragment<StagesViewModel>{
         // Required empty public constructor
     }
 
-    public static StagesFragment newInstance(){
-        StagesFragment fragment = new StagesFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public StagesViewModel getViewModel() {
@@ -74,11 +70,11 @@ public class StagesFragment extends BaseFragment<StagesViewModel>{
         categoryId = getArguments().getString("CategoryId");
         categoryName = getArguments().getString("categoryName");
 
-        //Clear the adapter to avoid duplicates
-        totalPage.clear();
-
         //Initialize the recyclerview
         initRecyclerView();
+
+        //Clear the adapter to avoid duplicates
+        totalPage.clear();
 
         getProgress(categoryName);
 
@@ -88,8 +84,8 @@ public class StagesFragment extends BaseFragment<StagesViewModel>{
         return view;
     }
 
-    private void initRecyclerView(){
-        adapter = new StagesFragmentAdapter(getActivity(), totalPage, listener);
+    private void initRecyclerView() {
+        adapter = new StagesAdapter(getActivity(), totalPage, listener);
         recyclerView = binding.stageView;
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
@@ -99,14 +95,19 @@ public class StagesFragment extends BaseFragment<StagesViewModel>{
 
     /**
      * Fetches stages of category
+     *
+     * @param categoryId
      */
-    public void showStage(String categoryId){
+
+
+    public void showStage(String categoryId) {
         viewModel.getStage(categoryId).observe(getViewLifecycleOwner(), response -> {
             binding.progressBar.setVisibility(View.GONE);
             binding.loadingTxt.setVisibility(View.GONE);
 
             int page = response.getPaging().getTotalPages().intValue();
-            for(int i = 1; i <= page; i++){
+            totalPage.clear();
+            for (int i = 1; i <= page; i++) {
                 totalPage.add(i);
             }
             adapter.updateStages(totalPage);
@@ -115,70 +116,56 @@ public class StagesFragment extends BaseFragment<StagesViewModel>{
 
     /**
      * Gets the progress of the user
+     *
      * @param category
      */
-    public void getProgress(String category){
-        viewModel.getProgressDetails(category).observe(getViewLifecycleOwner(), data -> {
-            if(data != null){
-                Log.e("Score", data.get("score").getClass().getSimpleName());
-                //currentScore = data.get("score");
 
-                Log.e("Stage level", String.valueOf(data.get("stageNumber")));
+
+    public void getProgress(String category) {
+        viewModel.getProgressDetails(category).observe(getViewLifecycleOwner(), data -> {
+            if (data != null) {
+                int score = Integer.parseInt(String.valueOf(data.get("score")));
+                getCurrentScore(score);
+
                 int stageNumber = Integer.parseInt(data.get("stageNumber").toString());
-                Log.e("Stage Number", String.valueOf(stageNumber));
                 getStageNumber(String.valueOf(stageNumber));
                 adapter.updateButtonColor(stageNumber);
             }
         });
     }
 
-    public String getStageNumber(String stageNum){
+
+    public String getStageNumber(String stageNum) {
         stageProgress = stageNum;
         return stageProgress;
     }
 
+    public int getCurrentScore(int score) {
+        currentScore = score;
+        return currentScore;
+    }
+
 
     public View.OnClickListener listener = view -> {
-        Log.e("Score", String.valueOf(currentScore));
 
         //Check to confirm the instance of view i.e Button
-        if(view instanceof Button){
+        if (view instanceof Button) {
             button = (Button) view;
 
-            if(button.getText() == "1"){
-                Fragment fragment = new QuestionFragment();
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                Bundle args = new Bundle();
-                args.putString("categoryId", categoryId);
-                args.putString("categoryName", categoryName);
-                args.putString("stageNumber", String.valueOf(button.getText()));
-                fragment.setArguments(args);
+            if (button.getText() == "1") {
+                loadFragment();
 
-                transaction.replace(R.id.fragment_container, fragment)
-                        .addToBackStack("dialog")
-                        .commit();
-
-            } else if(stageProgress == button.getText()){
-                Fragment fragment = new QuestionFragment();
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                Bundle args = new Bundle();
-                args.putString("categoryId", categoryId);
-                args.putString("categoryName", categoryName);
-                args.putString("stageNumber", String.valueOf(button.getText()));
-                fragment.setArguments(args);
-
-                transaction.replace(R.id.fragment_container, fragment)
-                        .addToBackStack("dialog")
-                        .commit();
-            }
-            else {
+            } else if (stageProgress == null) {
+                String message = String.valueOf(Integer.valueOf((String) button.getText()) - 1);
+                Toast.makeText(getActivity(), "You must pass stage " +
+                        message + " to continue ", Toast.LENGTH_SHORT).show();
+            } else if (Integer.parseInt(String.valueOf(button.getText())) <= (Integer.parseInt(stageProgress) + 1)) {
+                loadFragment();
+            } else {
                 String message = String.valueOf(Integer.valueOf((String) button.getText()) - 1);
                 Toast.makeText(getActivity(), "You must pass stage " +
                         message + " to continue ", Toast.LENGTH_SHORT).show();
             }
-
         } else {
             Log.e("View Instance:", "Error in getting the instance of view");
         }
@@ -186,13 +173,34 @@ public class StagesFragment extends BaseFragment<StagesViewModel>{
 
     };
 
-    public class MyHandler{
-        public void onButtonClick(View view) {
-            getActivity().finish();
-        }
+    public void loadFragment() {
+        Fragment fragment = new QuestionFragment();
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        Bundle args = new Bundle();
+        args.putString("categoryId", categoryId);
+        args.putString("categoryName", categoryName);
+        args.putString("stageNumber", String.valueOf(button.getText()));
+        args.putInt("currentScore", currentScore);
+        args.putInt("totalPages", totalPage.size());
+        fragment.setArguments(args);
+
+        transaction.replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getProgress(categoryName);
+        showStage(categoryId);
+    }
 
-
+    public class MyHandler {
+        public void onButtonClick(View view) {
+            getActivity().onBackPressed();
+        }
+    }
 
 }

@@ -1,7 +1,7 @@
 package com.app.horizon.core.dagger.builders;
 
-import com.app.horizon.screens.authentication.login.LoginActivity;
-import com.app.horizon.screens.authentication.login.LoginActivityModule;
+import com.app.horizon.screens.authentication.LoginActivity;
+import com.app.horizon.screens.authentication.LoginActivityModule;
 import com.app.horizon.screens.main.MainActivity;
 import com.app.horizon.screens.main.MainActivityModule;
 import com.app.horizon.screens.main.home.category.CategoryFragmentProvider;

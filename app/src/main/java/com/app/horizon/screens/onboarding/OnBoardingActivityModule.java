@@ -4,7 +4,6 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
 
 import com.app.horizon.core.store.MainAppStore;
-import com.app.horizon.screens.splashscreen.SplashScreenActivity;
 import com.app.horizon.utils.ViewModelProviderFactory;
 
 import dagger.Module;

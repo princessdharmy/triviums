@@ -2,12 +2,15 @@ package com.app.horizon.screens.main.home.stage.stages;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 
 import com.app.horizon.core.network.models.UserProfile;
 import com.app.horizon.core.store.online.question.QuestionResponse;
 import com.app.horizon.core.store.online.services.ApiService;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -27,6 +30,7 @@ public class StageRepository {
     private ApiService apiService;
     private FirebaseFirestore firestore;
     private UserProfile userProfile;
+    DocumentSnapshot document;
     private MutableLiveData<Map<String, Object>> liveData = new MutableLiveData<>();
     final MutableLiveData<QuestionResponse> mutableLiveData = new MutableLiveData<>();
     CompositeDisposable disposable = new CompositeDisposable();
@@ -58,6 +62,13 @@ public class StageRepository {
     }
 
     public LiveData<Map<String, Object>> getProgress(String categoryName){
+        fetchProgress(categoryName, data -> {
+            liveData.postValue(data);
+        });
+        return liveData;
+    }
+
+    private void fetchProgress(String categoryName, ProgressCallback callback){
         DocumentReference docRef = firestore.collection("users")
                 .document(userProfile.getUserUid())
                 .collection("categories")
@@ -66,11 +77,11 @@ public class StageRepository {
                 .document(categoryName);
 
         docRef.get().addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
-                DocumentSnapshot document = task.getResult();
+            if (task.isSuccessful()) {
+                document = task.getResult();
 
                 if (document.exists()) {
-                    liveData.postValue(document.getData());
+//                    liveData.postValue(document.getData());
 
                 } else {
                     Log.e("Failed!", "No such document");
@@ -79,9 +90,12 @@ public class StageRepository {
             } else {
                 Log.e("Error", task.getException().toString());
             }
+            callback.onCallback(document.getData());
         });
 
+    }
 
-        return liveData;
+    public interface ProgressCallback {
+        void onCallback(Map<String, Object> data);
     }
 }

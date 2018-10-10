@@ -28,9 +28,9 @@ public class StagesFragmentModule {
     }
 
     @Provides
-    StagesFragmentAdapter provideStageAdapter(Context context, List<Integer> totalPage,
-                                              View.OnClickListener listener){
-        return new StagesFragmentAdapter(context, totalPage, listener);
+    StagesAdapter provideStageAdapter(Context context, List<Integer> totalPage,
+                                      View.OnClickListener listener){
+        return new StagesAdapter(context, totalPage, listener);
     }
 
     @Provides

@@ -1,11 +1,9 @@
 package com.app.horizon.screens.main.home.stage.stages;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +17,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 
-public class StagesFragmentAdapter extends RecyclerView.Adapter<StagesFragmentAdapter.StageViewHolder> {
+public class StagesAdapter extends RecyclerView.Adapter<StagesAdapter.StageViewHolder> {
 
     Context context;
     List<Integer> totalPage;
@@ -27,8 +25,8 @@ public class StagesFragmentAdapter extends RecyclerView.Adapter<StagesFragmentAd
     private View.OnClickListener listener;
 
     @Inject
-    public StagesFragmentAdapter(Context context, List<Integer> totalPage,
-                                 View.OnClickListener listener) {
+    public StagesAdapter(Context context, List<Integer> totalPage,
+                         View.OnClickListener listener) {
         this.context = context;
         this.totalPage = totalPage;
         this.listener = listener;
@@ -51,7 +49,7 @@ public class StagesFragmentAdapter extends RecyclerView.Adapter<StagesFragmentAd
         for(int i=0; i<stage; i++){
             if(i == position){
                holder.getBinding().stageButton.setBackgroundResource(R.drawable.stage_button_selected);
-               //holder.getBinding().stageButton.setTextColor(Integer.parseInt("#FFFFFF"));
+               holder.getBinding().stageButton.setTextColor(context.getResources().getColor(R.color.textColor));
             }
         }
     }
@@ -62,14 +60,15 @@ public class StagesFragmentAdapter extends RecyclerView.Adapter<StagesFragmentAd
         return totalPage.size();
     }
 
-    public void updateStages(List<Integer> totalPage){
-        this.totalPage = totalPage;
+    public void updateStages(List<Integer> value){
+        this.totalPage = value;
         notifyDataSetChanged();
     }
 
     public void updateButtonColor(int stage){
         this.stage = stage;
         notifyItemChanged(stage);
+        notifyDataSetChanged();
     }
 
 

@@ -18,17 +18,11 @@ import com.app.horizon.R;
 import com.app.horizon.core.base.BaseFragment;
 import com.app.horizon.core.network.models.UserProfile;
 import com.app.horizon.databinding.FragmentProfileBinding;
-import com.app.horizon.screens.main.home.category.CategoryFragment;
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.imagepipeline.common.ResizeOptions;
-import com.facebook.imagepipeline.request.ImageRequest;
-import com.facebook.imagepipeline.request.ImageRequestBuilder;
+
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -44,6 +38,9 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
     @Inject
     ViewModelProvider.Factory factory;
     private ProfileViewModel viewModel;
+    int totalScore = 0;
+    ArrayList<Integer> values = new ArrayList<>();
+
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -55,12 +52,6 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
         return viewModel;
     }
 
-    public static ProfileFragment newInstance(){
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,8 +62,9 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
         View view = binding.getRoot();
 
         initAchievementRecyclerview();
-        showProfile();
         getAchievementData();
+        showProfile();
+
         return view;
     }
 
@@ -81,17 +73,7 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
         binding.username.setText(userProfile.getName());
 
         Uri imageUri = Uri.parse(userProfile.getProfilePicture());
-        ImageRequest request = ImageRequestBuilder.newBuilderWithSource(imageUri)
-                .setResizeOptions(new ResizeOptions(500, 500))
-                .build();
-        //binding.profilePix.setImageURI(imageUri);
-        binding.profilePix.setController(
-                Fresco.newDraweeControllerBuilder()
-                .setOldController(binding.profilePix.getController())
-                .setImageRequest(request)
-                .build()
-        );
-
+        binding.profilePix.setImageURI(imageUri);
     }
 
     public void initAchievementRecyclerview(){
@@ -104,9 +86,33 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
 
     public void getAchievementData(){
         viewModel.getLiveData().observe(getViewLifecycleOwner(), data -> {
+            binding.progressBar.setVisibility(View.GONE);
+            binding.loadingTxt.setVisibility(View.GONE);
             if(data !=null){
-                Log.e("Data", String.valueOf(data));
+                for(DocumentSnapshot document : data){
+                    values.add(Integer.valueOf(String.valueOf(document.getData().get("score"))));
+                }
+
+                for(Integer score : values) {
+                    totalScore += score;
+                }
+                if (totalScore > 0){
+                    //Check if user has played any quiz
+                    binding.message.setVisibility(View.GONE);
+                    binding.achievements.setVisibility(View.VISIBLE);
+                } else {
+                    //Check if user has played any quiz
+                    binding.message.setVisibility(View.VISIBLE);
+                    binding.achievements.setVisibility(View.GONE);
+                }
                 adapter.updateData(data);
+
+                if(totalScore <= 1){
+                    binding.totalXp.setText(String.format(getString(R.string.point), totalScore));
+                } else {
+                    binding.totalXp.setText(String.format(getString(R.string.points), totalScore));
+                }
+
             }
         });
     }

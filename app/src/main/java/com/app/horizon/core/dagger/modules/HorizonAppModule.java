@@ -3,12 +3,12 @@ package com.app.horizon.core.dagger.modules;
 import android.content.Context;
 
 import com.app.horizon.HorizonMainApplication;
-import com.app.horizon.core.dagger.scopes.MainAppScope;
 import com.app.horizon.core.store.MainAppStore;
 import com.app.horizon.core.store.offline.OfflineStore;
 import com.app.horizon.core.store.online.OnlineStore;
 import com.app.horizon.core.store.online.services.ApiService;
 import com.app.horizon.utils.Constants;
+import com.app.horizon.utils.Utils;
 import com.google.gson.Gson;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -48,7 +48,7 @@ public class HorizonAppModule {
 
     @Singleton
     @Provides
-    public ApiService provideApiService(Retrofit retrofit){
+    ApiService provideApiService(Retrofit retrofit){
         return retrofit.create(ApiService.class);
     }
 
@@ -56,6 +56,12 @@ public class HorizonAppModule {
     @Provides
     Gson provideGson(){
         return new Gson();
+    }
+
+    @Singleton
+    @Provides
+    Utils provideUtils(Context context){
+        return new Utils(context);
     }
 
 }
