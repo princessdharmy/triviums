@@ -20,6 +20,8 @@ import com.app.horizon.R;
 import com.app.horizon.core.base.BaseFragment;
 import com.app.horizon.databinding.FragmentStagesBinding;
 import com.app.horizon.screens.main.home.stage.questions.QuestionFragment;
+import com.app.horizon.utils.ConnectivityReceiver;
+import com.app.horizon.utils.CountDownTimer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,13 @@ public class StagesFragment extends BaseFragment<StagesViewModel> {
     String categoryId, categoryName, stageProgress;
     int currentScore;
     Button button;
+    public CountDownTimer countDownTimer;
+
+    public static final int MobileData = 2;
+    public static final int WifiData = 1;
+    boolean isConnected;
+    @Inject
+    ConnectivityReceiver connectivityReceiver;
 
     @Inject
     ViewModelProvider.Factory factory;
@@ -76,10 +85,21 @@ public class StagesFragment extends BaseFragment<StagesViewModel> {
         //Clear the adapter to avoid duplicates
         totalPage.clear();
 
-        getProgress(categoryName);
+        connectivityReceiver.observe(this, connectionModel -> {
+            if (connectionModel.isConnected()) {
+                isConnected = true;
+                binding.noInternet.setVisibility(View.GONE);
+                binding.loader.setVisibility(View.VISIBLE);
+                binding.stageView.setVisibility(View.VISIBLE);
+                getProgress(categoryName);
 
-        //Call the showStage method
-        showStage(categoryId);
+                //Call the showStage method
+                showStage(categoryId);
+            } else {
+                isConnected = false;
+                noInternet();
+            }
+        });
 
         return view;
     }
@@ -102,8 +122,7 @@ public class StagesFragment extends BaseFragment<StagesViewModel> {
 
     public void showStage(String categoryId) {
         viewModel.getStage(categoryId).observe(getViewLifecycleOwner(), response -> {
-            binding.progressBar.setVisibility(View.GONE);
-            binding.loadingTxt.setVisibility(View.GONE);
+            binding.loader.setVisibility(View.GONE);
 
             int page = response.getPaging().getTotalPages().intValue();
             totalPage.clear();
@@ -148,29 +167,31 @@ public class StagesFragment extends BaseFragment<StagesViewModel> {
 
     public View.OnClickListener listener = view -> {
 
-        //Check to confirm the instance of view i.e Button
-        if (view instanceof Button) {
-            button = (Button) view;
+            //Check to confirm the instance of view i.e Button
+            if (view instanceof Button) {
+                button = (Button) view;
 
-            if (button.getText() == "1") {
-                loadFragment();
+                //Checks to play stage 1 at default
+                if (button.getText().toString().equals("1")) {
+                    loadFragment();
 
-            } else if (stageProgress == null) {
-                String message = String.valueOf(Integer.valueOf((String) button.getText()) - 1);
-                Toast.makeText(getActivity(), "You must pass stage " +
-                        message + " to continue ", Toast.LENGTH_SHORT).show();
-            } else if (Integer.parseInt(String.valueOf(button.getText())) <= (Integer.parseInt(stageProgress) + 1)) {
-                loadFragment();
+                } else if (stageProgress == null) {
+                    String message = String.valueOf(Integer.valueOf((String) button.getText()) - 1);
+                    Log.e("Message", message);
+
+                    Toast.makeText(getActivity(), "You must pass stage " +
+                            message + " to continue ", Toast.LENGTH_SHORT).show();
+
+                } else if (Integer.parseInt(String.valueOf(button.getText())) <= (Integer.parseInt(stageProgress) + 1)) {
+                    loadFragment();
+                } else {
+                    String message = String.valueOf(Integer.valueOf((String) button.getText()) - 1);
+                    Toast.makeText(getActivity(), "You must pass stage " +
+                            message + " to continue ", Toast.LENGTH_SHORT).show();
+                }
             } else {
-                String message = String.valueOf(Integer.valueOf((String) button.getText()) - 1);
-                Toast.makeText(getActivity(), "You must pass stage " +
-                        message + " to continue ", Toast.LENGTH_SHORT).show();
+                Log.e("View Instance:", "Error in getting the instance of view");
             }
-        } else {
-            Log.e("View Instance:", "Error in getting the instance of view");
-        }
-
-
     };
 
     public void loadFragment() {
@@ -190,17 +211,37 @@ public class StagesFragment extends BaseFragment<StagesViewModel> {
                 .commit();
     }
 
+    private void noInternet() {
+        binding.loader.setVisibility(View.GONE);
+        binding.stageView.setVisibility(View.GONE);
+
+        //show no internet status
+        binding.noInternet.setVisibility(View.VISIBLE);
+    }
+
+
     @Override
     public void onResume() {
         super.onResume();
-        getProgress(categoryName);
-        showStage(categoryId);
+
+        if (isConnected) {
+            binding.noInternet.setVisibility(View.GONE);
+            binding.loader.setVisibility(View.VISIBLE);
+            binding.stageView.setVisibility(View.VISIBLE);
+            //getActivity().getIntent();
+            getProgress(categoryName);
+            showStage(categoryId);
+        } else {
+           noInternet();
+        }
     }
+
 
     public class MyHandler {
         public void onButtonClick(View view) {
             getActivity().onBackPressed();
         }
+
     }
 
 }

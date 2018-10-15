@@ -19,13 +19,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
+import com.app.horizon.HorizonMainApplication;
 import com.app.horizon.R;
 import com.app.horizon.core.base.BaseFragment;
 import com.app.horizon.core.store.online.question.Question;
 import com.app.horizon.databinding.FragmentQuestionBinding;
 import com.app.horizon.databinding.ScoreDialogBinding;
 import com.app.horizon.screens.main.home.stage.StageActivity;
+import com.app.horizon.utils.ConnectivityReceiver;
 import com.app.horizon.utils.CountDownTimer;
+import com.app.horizon.utils.Utils;
 
 
 import java.util.ArrayList;
@@ -48,6 +51,14 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
     public QuestionViewModel viewModel;
     public CountDownTimer countDownTimer;
     Dialog dialog;
+
+    public static final int MobileData = 2;
+    public static final int WifiData = 1;
+    boolean isConnected;
+    @Inject
+    ConnectivityReceiver connectivityReceiver;
+    @Inject
+    Utils utils;
 
     public List<Question> questionList = new ArrayList<>();
     public List<Question> randomPicks = new ArrayList<>();
@@ -76,11 +87,21 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
 
         getIntents();
 
-        getQuestion(categoryId, page);
+        connectivityReceiver.observe(this, connectionModel -> {
+            if (connectionModel.isConnected()) {
+                isConnected = true;
+                binding.loader.setVisibility(View.VISIBLE);
+                getQuestion(categoryId, page);
+            } else {
+                isConnected = false;
+                utils.showSnackbar(getActivity(), getResources().getString(R.string.newtwork_unavailable));
+            }
+        });
+
         return view;
     }
 
-    public void getIntents(){
+    public void getIntents() {
         //Get intent extras
         categoryId = getArguments().getString("categoryId");
         categoryName = getArguments().getString("categoryName");
@@ -97,8 +118,7 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
      */
     public void getQuestion(String categoryId, String page) {
         viewModel.getQuestion(categoryId, page).observe(getViewLifecycleOwner(), response -> {
-            binding.progressBar.setVisibility(View.GONE);
-            binding.loadingTxt.setVisibility(View.GONE);
+            binding.loader.setVisibility(View.GONE);
             binding.questionLayout.setVisibility(View.VISIBLE);
 
             if (response != null) {
@@ -129,6 +149,7 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
     public void displayQuestion(int position) {
         if (position <= (randomPicks.size() - 1)) {
             int currentQuestion = position + 1;
+            binding.linearLayout.setVisibility(View.VISIBLE);
             binding.currentQuestion.setText(String.valueOf(currentQuestion));
             binding.totalQuestions.setText(String.valueOf(totalQuestion));
             binding.setQuestion(randomPicks.get(position));
@@ -147,7 +168,7 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
      */
     private void calculateScore(String buttonText, int position) {
         if (buttonText.equals(randomPicks.get(position).getCorrectAnswer())) {
-            if(questionScore == 0){
+            if (questionScore == 0) {
                 questionScore = count + 1;
             } else {
                 questionScore = questionScore + 1;
@@ -193,53 +214,56 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
     private void showScoreDialog() {
 
         //Create a dialog
-        dialog = new Dialog(getActivity());
+        if (getActivity() != null) {
 
-        //Get custom view
-        ScoreDialogBinding dialogBinding = DataBindingUtil.inflate(
-                LayoutInflater.from(getActivity()), R.layout.score_dialog, null,
-                false);
-        dialog.setContentView(dialogBinding.getRoot());
+            dialog = new Dialog(getActivity());
 
-        //Score conditions
-        if(questionScore >= 8){
-            saveProgressInCloud();
+            //Get custom view
+            ScoreDialogBinding dialogBinding = DataBindingUtil.inflate(
+                    LayoutInflater.from(getActivity()), R.layout.score_dialog, null,
+                    false);
+            dialog.setContentView(dialogBinding.getRoot());
 
-            dialogBinding.playerName.setText(R.string.score_pass );
+            //Score conditions
+            if (questionScore >= 8) {
+                saveProgressInCloud();
 
-            dialogBinding.congratsMsg.setText(R.string.pass_message);
+                dialogBinding.playerName.setText(getResources().getString(R.string.score_pass));
 
-            dialogBinding.scoreTxt.setText(String.valueOf(questionScore));
+                dialogBinding.congratsMsg.setText(getResources().getString(R.string.pass_message));
 
-        } else {
-            dialogBinding.playerName.setText(R.string.score_fail );
+                dialogBinding.scoreTxt.setText(String.valueOf(questionScore));
 
-            dialogBinding.congratsMsg.setText(R.string.fail_message);
+            } else {
+                dialogBinding.playerName.setText(getResources().getString(R.string.score_fail));
 
-            dialogBinding.scoreTxt.setText(String.valueOf(questionScore));
+                dialogBinding.congratsMsg.setText(getResources().getString(R.string.fail_message));
+
+                dialogBinding.scoreTxt.setText(String.valueOf(questionScore));
+            }
+
+            countDownTimer = new CountDownTimer(2L, TimeUnit.SECONDS) {
+                @Override
+                public void onTick(long tickValue) {
+
+                }
+
+                @Override
+                public void onFinish() {
+                    dismissDialog();
+                }
+            };
+            countDownTimer.start();
+
+            dialog.show();
         }
-
-        countDownTimer = new CountDownTimer(2L, TimeUnit.SECONDS) {
-            @Override
-            public void onTick(long tickValue) {
-
-            }
-
-            @Override
-            public void onFinish() {
-                dismissDialog();
-            }
-        };
-        countDownTimer.start();
-
-        dialog.show();
     }
 
 
     /**
      * Saves user's quiz progress in the database(Firestore)
      */
-    public void saveProgressInCloud(){
+    public void saveProgressInCloud() {
         int totalScore = currentScore + questionScore;
         viewModel.saveProgress(categoryName, page, totalScore, totalPage);
     }
@@ -250,7 +274,7 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
      */
     public class MyHandler {
         public void onButtonClick(View view) {
-            countDownTimer.cancel();
+            //countDownTimer.cancel();
             getActivity().onBackPressed();
         }
 
@@ -293,16 +317,28 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
      * stack is reached or a back stack state entry with different name is reached.
      * No need to explicitly call dismiss on dialog.
      */
-    public void dismissDialog(){
+    public void dismissDialog() {
         dialog.dismiss();
         getActivity().startActivity(getActivity().getIntent());
         getActivity().finish();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (isConnected) {
+            binding.loader.setVisibility(View.VISIBLE);
+            //getActivity().getIntent();
+            getQuestion(categoryId, page);
+        } else {
+            utils.showSnackbar(getActivity(), getResources().getString(R.string.newtwork_unavailable));
+        }
+    }
 
     @Override
     public void onDestroyView() {
-        countDownTimer.cancel();
+        //countDownTimer.cancel();
         super.onDestroyView();
     }
 

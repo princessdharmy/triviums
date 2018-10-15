@@ -79,14 +79,6 @@ public class StageRepository {
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 document = task.getResult();
-
-                if (document.exists()) {
-//                    liveData.postValue(document.getData());
-
-                } else {
-                    Log.e("Failed!", "No such document");
-                }
-
             } else {
                 Log.e("Error", task.getException().toString());
             }

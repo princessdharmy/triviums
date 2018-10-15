@@ -56,5 +56,6 @@
     <!--Network connection-->
     <string name="newtwork_available">Good! Connected to Internet</string>
     <string name="newtwork_unavailable">Sorry! Please check your Internet Connection</string>
+    <string name="no_internet">Please check your Internet</string>
 
 </resources>

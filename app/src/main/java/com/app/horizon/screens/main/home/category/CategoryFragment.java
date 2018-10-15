@@ -3,10 +3,14 @@ package com.app.horizon.screens.main.home.category;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,6 +21,7 @@ import android.view.ViewGroup;
 import com.app.horizon.HorizonMainApplication;
 import com.app.horizon.R;
 import com.app.horizon.core.base.BaseFragment;
+import com.app.horizon.core.managers.ForceUpdateChecker;
 import com.app.horizon.core.store.offline.category.Category;
 import com.app.horizon.databinding.FragmentCategoryBinding;
 import com.app.horizon.screens.main.home.stage.StageActivity;
@@ -33,8 +38,8 @@ import io.reactivex.disposables.CompositeDisposable;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CategoryFragment extends BaseFragment<CategoryViewModel> implements
-        ConnectivityReceiver.ConnectivityReceiverListener{
+public class CategoryFragment extends BaseFragment<CategoryViewModel>  implements
+        ForceUpdateChecker.OnUpdateNeededListener{
 
     private FragmentCategoryBinding binding;
     private RecyclerView recyclerView;
@@ -47,6 +52,12 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> implements
     @Inject
     ViewModelProvider.Factory factory;
     private CategoryViewModel viewModel;
+
+    public  static  final int MobileData = 2;
+    public static final int WifiData = 1;
+    boolean isConnected;
+    @Inject
+    ConnectivityReceiver connectivityReceiver;
     @Inject
     Utils utils;
 
@@ -62,6 +73,13 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> implements
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        ForceUpdateChecker.with(getActivity()).onUpdateNeeded(this).check();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this
@@ -71,13 +89,16 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> implements
 
         initRecyclerView();
 
-        if(checkConnection()){
-            showCategory();
-        } else {
-            utils.showSnackbar(getActivity(), getResources().getString(R.string.newtwork_unavailable));
-            showCategory();
-        }
-
+        connectivityReceiver.observe(this, connectionModel -> {
+            if(connectionModel.isConnected()){
+                isConnected = true;
+                showCategory();
+            } else {
+                isConnected = false;
+                utils.showSnackbar(getActivity(), getResources().getString(R.string.newtwork_unavailable));
+                showCategory();
+            }
+        });
 
         return view;
     }
@@ -108,41 +129,11 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> implements
     private View.OnClickListener categoryListener = view -> {
         Category category = (Category) view.getTag();
 
-        if(checkConnection()){
             Intent intent = new Intent(getActivity(), StageActivity.class);
             intent.putExtra("CategoryId", category.getId());
             intent.putExtra("categoryName", category.getName());
             getActivity().startActivity(intent);
-        } else {
-            utils.showSnackbar(getActivity(), getResources().getString(R.string.newtwork_unavailable));
-        }
-
     };
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        //register connection status listener
-        HorizonMainApplication.getInstance().setConnectivityListener(this);
-    }
-
-    public boolean checkConnection(){
-        return ConnectivityReceiver.isConnected();
-    }
-
-    /**
-     * Callback will be triggered when there is change in
-     * network connection
-     */
-    @Override
-    public void onNetworkConnectionChanged(boolean isConnected) {
-        if(isConnected){
-            utils.showSnackbar(getActivity(), getResources().getString(R.string.newtwork_available));
-        } else {
-            utils.showSnackbar(getActivity(), getResources().getString(R.string.newtwork_unavailable));
-        }
-    }
 
 
     @Override
@@ -152,4 +143,20 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> implements
     }
 
 
+    @Override
+    public void onUpdateNeeded(String updateUrl) {
+        AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                .setTitle("New version available")
+                .setMessage("Please, update app to new version to continue brainstorming.")
+                .setPositiveButton("Update",
+                        (dialog1, which) -> redirectStore(updateUrl)).setNegativeButton("No, thanks",
+                        (dialog12, which) -> getActivity().finish()).create();
+        dialog.show();
+    }
+
+    private void redirectStore(String updateUrl) {
+        final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(updateUrl));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
 }
