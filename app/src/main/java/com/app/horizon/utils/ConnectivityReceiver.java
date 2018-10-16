@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import com.app.horizon.HorizonMainApplication;
 
@@ -46,25 +47,30 @@ public class ConnectivityReceiver extends LiveData<ConnectionModel> {
     private BroadcastReceiver networkReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getExtras() != null) {
-                NetworkInfo activeNetwork = (NetworkInfo)
-                        intent.getExtras().get(ConnectivityManager.EXTRA_NETWORK_INFO);
-                boolean isConnected = activeNetwork != null &&
-                        activeNetwork.isConnectedOrConnecting();
+            try {
+                if (intent.getExtras() != null) {
+                    NetworkInfo activeNetwork = (NetworkInfo)
+                            intent.getExtras().get(ConnectivityManager.EXTRA_NETWORK_INFO);
+                    boolean isConnected = activeNetwork != null &&
+                            activeNetwork.isConnectedOrConnecting();
 
-                if (isConnected) {
-                    switch (activeNetwork.getType()) {
-                        case ConnectivityManager.TYPE_WIFI:
-                            postValue(new ConnectionModel(WifiData, true));
-                            break;
-                        case ConnectivityManager.TYPE_MOBILE:
-                            postValue(new ConnectionModel(MobileData, true));
-                            break;
+                    if (isConnected) {
+                        switch (activeNetwork.getType()) {
+                            case ConnectivityManager.TYPE_WIFI:
+                                postValue(new ConnectionModel(WifiData, true));
+                                break;
+                            case ConnectivityManager.TYPE_MOBILE:
+                                postValue(new ConnectionModel(MobileData, true));
+                                break;
 
+                        }
+                    } else {
+                        postValue(new ConnectionModel(0, false));
                     }
-                } else {
-                    postValue(new ConnectionModel(0, false));
                 }
+
+            } catch(Exception e){
+                Log.e("Catched Error!", "Not able to connect to Internet!");
             }
 
         }

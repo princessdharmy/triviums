@@ -8,9 +8,6 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -59,7 +56,7 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
     @Inject
     ViewModelProvider.Factory factory;
 
-    public  static  final int MobileData = 2;
+    public static final int MobileData = 2;
     public static final int WifiData = 1;
     boolean isConnected;
     @Inject
@@ -92,12 +89,16 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
 
         binding.signInButton.setOnClickListener(view -> {
             connectivityReceiver.observe(this, connectionModel -> {
-                if(connectionModel.isConnected()){
-                    isConnected = true;
-                    signIn();
-                } else {
-                    isConnected = false;
-                    utils.showSnackbar(this, getResources().getString(R.string.newtwork_unavailable));
+                try {
+                    if (connectionModel.isConnected()) {
+                        isConnected = true;
+                        signIn();
+                    } else {
+                        isConnected = false;
+                        utils.showSnackbar(this, getResources().getString(R.string.newtwork_unavailable));
+                    }
+                } catch(Exception e){
+                    utils.showSnackbar(this, "Error fetching data");
                 }
             });
         });

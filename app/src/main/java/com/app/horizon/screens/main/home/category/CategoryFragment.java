@@ -3,7 +3,6 @@ package com.app.horizon.screens.main.home.category;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -13,15 +12,12 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.app.horizon.HorizonMainApplication;
 import com.app.horizon.R;
 import com.app.horizon.core.base.BaseFragment;
-import com.app.horizon.core.managers.ForceUpdateChecker;
 import com.app.horizon.core.store.offline.category.Category;
 import com.app.horizon.databinding.FragmentCategoryBinding;
 import com.app.horizon.screens.main.home.stage.StageActivity;
@@ -38,8 +34,7 @@ import io.reactivex.disposables.CompositeDisposable;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CategoryFragment extends BaseFragment<CategoryViewModel>  implements
-        ForceUpdateChecker.OnUpdateNeededListener{
+public class CategoryFragment extends BaseFragment<CategoryViewModel> {
 
     private FragmentCategoryBinding binding;
     private RecyclerView recyclerView;
@@ -73,13 +68,6 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel>  implement
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        ForceUpdateChecker.with(getActivity()).onUpdateNeeded(this).check();
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this
@@ -90,6 +78,7 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel>  implement
         initRecyclerView();
 
         connectivityReceiver.observe(this, connectionModel -> {
+            try{
             if(connectionModel.isConnected()){
                 isConnected = true;
                 showCategory();
@@ -97,6 +86,9 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel>  implement
                 isConnected = false;
                 utils.showSnackbar(getActivity(), getResources().getString(R.string.newtwork_unavailable));
                 showCategory();
+            }
+            } catch (Exception e){
+                utils.showSnackbar(getActivity(), "Error fetching data");
             }
         });
 
@@ -142,21 +134,4 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel>  implement
         disposable.dispose();
     }
 
-
-    @Override
-    public void onUpdateNeeded(String updateUrl) {
-        AlertDialog dialog = new AlertDialog.Builder(getActivity())
-                .setTitle("New version available")
-                .setMessage("Please, update app to new version to continue brainstorming.")
-                .setPositiveButton("Update",
-                        (dialog1, which) -> redirectStore(updateUrl)).setNegativeButton("No, thanks",
-                        (dialog12, which) -> getActivity().finish()).create();
-        dialog.show();
-    }
-
-    private void redirectStore(String updateUrl) {
-        final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(updateUrl));
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }
 }

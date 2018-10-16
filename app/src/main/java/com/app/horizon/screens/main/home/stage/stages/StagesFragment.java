@@ -22,6 +22,7 @@ import com.app.horizon.databinding.FragmentStagesBinding;
 import com.app.horizon.screens.main.home.stage.questions.QuestionFragment;
 import com.app.horizon.utils.ConnectivityReceiver;
 import com.app.horizon.utils.CountDownTimer;
+import com.app.horizon.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +50,8 @@ public class StagesFragment extends BaseFragment<StagesViewModel> {
     boolean isConnected;
     @Inject
     ConnectivityReceiver connectivityReceiver;
+    @Inject
+    Utils utils;
 
     @Inject
     ViewModelProvider.Factory factory;
@@ -86,18 +89,22 @@ public class StagesFragment extends BaseFragment<StagesViewModel> {
         totalPage.clear();
 
         connectivityReceiver.observe(this, connectionModel -> {
-            if (connectionModel.isConnected()) {
-                isConnected = true;
-                binding.noInternet.setVisibility(View.GONE);
-                binding.loader.setVisibility(View.VISIBLE);
-                binding.stageView.setVisibility(View.VISIBLE);
-                getProgress(categoryName);
+            try {
+                if (connectionModel.isConnected()) {
+                    isConnected = true;
+                    binding.noInternet.setVisibility(View.GONE);
+                    binding.loader.setVisibility(View.VISIBLE);
+                    binding.stageView.setVisibility(View.VISIBLE);
+                    getProgress(categoryName);
 
-                //Call the showStage method
-                showStage(categoryId);
-            } else {
-                isConnected = false;
-                noInternet();
+                    //Call the showStage method
+                    showStage(categoryId);
+                } else {
+                    isConnected = false;
+                    noInternet();
+                }
+            } catch (Exception e){
+                utils.showSnackbar(getActivity(), "Error fetching data");
             }
         });
 
@@ -224,15 +231,19 @@ public class StagesFragment extends BaseFragment<StagesViewModel> {
     public void onResume() {
         super.onResume();
 
-        if (isConnected) {
-            binding.noInternet.setVisibility(View.GONE);
-            binding.loader.setVisibility(View.VISIBLE);
-            binding.stageView.setVisibility(View.VISIBLE);
-            //getActivity().getIntent();
-            getProgress(categoryName);
-            showStage(categoryId);
-        } else {
-           noInternet();
+        try {
+            if (isConnected) {
+                binding.noInternet.setVisibility(View.GONE);
+                binding.loader.setVisibility(View.VISIBLE);
+                binding.stageView.setVisibility(View.VISIBLE);
+                //getActivity().getIntent();
+                getProgress(categoryName);
+                showStage(categoryId);
+            } else {
+                noInternet();
+            }
+        } catch (Exception e){
+            utils.showSnackbar(getActivity(), "Error fetching data");
         }
     }
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Horizon</string>
+    <string name="app_name">Triviums</string>
     <string name="title_home">Home</string>
     <string name="title_profile">Profile</string>
     <string name="title_leader_board">Leaderboard</string>
