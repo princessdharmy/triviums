@@ -1,26 +1,24 @@
 package com.app.horizon.screens.main.home.category;
 
 
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.app.horizon.HorizonMainApplication;
 import com.app.horizon.R;
 import com.app.horizon.core.base.BaseFragment;
 import com.app.horizon.core.store.offline.category.Category;
 import com.app.horizon.databinding.FragmentCategoryBinding;
-import com.app.horizon.screens.main.home.stage.StageActivity;
+import com.app.horizon.screens.main.HomeScreen;
+import com.app.horizon.screens.main.home.StageActivityScreen;
+import com.app.horizon.screens.main.home.stage.StagesFragmentScreen;
+import com.app.horizon.screens.main.profile.ContainerProviderId;
 import com.app.horizon.utils.ConnectivityReceiver;
 import com.app.horizon.utils.Utils;
 
@@ -30,11 +28,15 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
+import me.aartikov.alligator.Navigator;
+import me.aartikov.alligator.annotations.RegisterScreen;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CategoryFragment extends BaseFragment<CategoryViewModel> {
+
+@RegisterScreen(HomeScreen.class)
+public class CategoryFragment extends BaseFragment implements ContainerProviderId {
 
     private FragmentCategoryBinding binding;
     private RecyclerView recyclerView;
@@ -43,10 +45,11 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
     private CompositeDisposable disposable = new CompositeDisposable();
     private RecyclerView.LayoutManager layoutManager;
 
-
-    @Inject
-    ViewModelProvider.Factory factory;
-    private CategoryViewModel viewModel;
+    private Navigator mNavigator = HorizonMainApplication.getNavigator();
+//
+//    @Inject
+//    ViewModelProvider.Factory factory;
+//    private CategoryViewModel viewModel;
 
     public  static  final int MobileData = 2;
     public static final int WifiData = 1;
@@ -61,11 +64,11 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
     }
 
 
-    @Override
-    public CategoryViewModel getViewModel() {
-        viewModel = ViewModelProviders.of(this, factory).get(CategoryViewModel.class);
-        return viewModel;
-    }
+//    @Override
+//    public CategoryViewModel getViewModel() {
+////        viewModel = ViewModelProviders.of(this, factory).get(CategoryViewModel.class);
+//        return null;
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,11 +84,11 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
             try{
             if(connectionModel.isConnected()){
                 isConnected = true;
-                showCategory();
+//                showCategory();
             } else {
                 isConnected = false;
                 utils.showSnackbar(getActivity(), getResources().getString(R.string.newtwork_unavailable));
-                showCategory();
+//                showCategory();
             }
             } catch (Exception e){
                 utils.showSnackbar(getActivity(), "Error fetching data");
@@ -96,6 +99,11 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
     }
 
     private void initRecyclerView(){
+        categoryList.add(new Category("1","First", "https://firebasestorage.googleapis.com/v0/b/labs-bac05.appspot.com/o/download%20(2).jpeg?alt=media&token=3dbf991c-c9a5-4dae-acf7-de4041f20195", "43" ));
+        categoryList.add(new Category("2","First", "https://firebasestorage.googleapis.com/v0/b/labs-bac05.appspot.com/o/download%20(2).jpeg?alt=media&token=3dbf991c-c9a5-4dae-acf7-de4041f20195", "43" ));
+        categoryList.add(new Category("3","First", "https://firebasestorage.googleapis.com/v0/b/labs-bac05.appspot.com/o/download%20(2).jpeg?alt=media&token=3dbf991c-c9a5-4dae-acf7-de4041f20195", "43" ));
+        categoryList.add(new Category("4","First", "https://firebasestorage.googleapis.com/v0/b/labs-bac05.appspot.com/o/download%20(2).jpeg?alt=media&token=3dbf991c-c9a5-4dae-acf7-de4041f20195", "43" ));
+        categoryList.add(new Category("5","First", "https://firebasestorage.googleapis.com/v0/b/labs-bac05.appspot.com/o/download%20(2).jpeg?alt=media&token=3dbf991c-c9a5-4dae-acf7-de4041f20195", "43" ));
         adapter = new CategoryFragmentAdapter(getActivity(), categoryList, categoryListener);
         recyclerView = binding.categoryView;
         layoutManager = new GridLayoutManager(getActivity(), 2);
@@ -107,24 +115,28 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
      * Fetches list of Category
      */
     public void showCategory(){
-        viewModel.getCategory().observe(getViewLifecycleOwner(), category -> {
-            binding.progressBar.setVisibility(View.GONE);
-            binding.loadingTxt.setVisibility(View.GONE);
-            if (category != null) {
-                categoryList.clear();
-                categoryList.addAll(category.getData());
-                adapter.notifyDataSetChanged();
-            }
-        });
+//        viewModel.getCategory().observe(getViewLifecycleOwner(), category -> {
+//            binding.progressBar.setVisibility(View.GONE);
+//            binding.loadingTxt.setVisibility(View.GONE);
+//            if (category != null) {
+//                categoryList.clear();
+//                categoryList.addAll(category.getData());
+//                adapter.notifyDataSetChanged();
+//            }
+//        });
     }
 
     private View.OnClickListener categoryListener = view -> {
+
+
         Category category = (Category) view.getTag();
 
-            Intent intent = new Intent(getActivity(), StageActivity.class);
-            intent.putExtra("CategoryId", category.getId());
-            intent.putExtra("categoryName", category.getName());
-            getActivity().startActivity(intent);
+        mNavigator.goForward(new StagesFragmentScreen(category.getId(), category.getName()));
+//
+//            Intent intent = new Intent(getActivity(), StageActivity.class);
+//            intent.putExtra("CategoryId", category.getId());
+//            intent.putExtra("categoryName", category.getName());
+//            getActivity().startActivity(intent);
     };
 
 
@@ -134,4 +146,8 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
         disposable.dispose();
     }
 
+    @Override
+    public int getContainerId() {
+        return R.id.category_container;
+    }
 }

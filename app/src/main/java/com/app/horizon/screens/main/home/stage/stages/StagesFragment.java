@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.app.horizon.HorizonMainApplication;
 import com.app.horizon.R;
 import com.app.horizon.core.base.BaseFragment;
 import com.app.horizon.databinding.FragmentStagesBinding;
@@ -28,6 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import me.aartikov.alligator.Navigator;
 
 /**
  * A simple{@link Fragment } subclass.
@@ -53,20 +56,22 @@ public class StagesFragment extends BaseFragment<StagesViewModel> {
     @Inject
     Utils utils;
 
-    @Inject
-    ViewModelProvider.Factory factory;
+//    @Inject
+//    ViewModelProvider.Factory factory;
     private StagesViewModel viewModel;
+
+    private Navigator mNavigator = HorizonMainApplication.getNavigator();
 
     public StagesFragment() {
         // Required empty public constructor
     }
 
 
-    @Override
-    public StagesViewModel getViewModel() {
-        viewModel = ViewModelProviders.of(this, factory).get(StagesViewModel.class);
-        return viewModel;
-    }
+//    @Override
+//    public StagesViewModel getViewModel() {
+//        viewModel = ViewModelProviders.of(this, factory).get(StagesViewModel.class);
+//        return viewModel;
+//    }
 
 
     @Override
@@ -76,7 +81,7 @@ public class StagesFragment extends BaseFragment<StagesViewModel> {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_stages, container,
                 false);
         View view = binding.getRoot();
-        binding.setClick(new MyHandler());
+//        binding.setClick(new MyHandler());
 
         //Get intent extras
         categoryId = getArguments().getString("CategoryId");

@@ -13,13 +13,9 @@ public abstract class BaseFragment<T extends ViewModel> extends DaggerFragment {
      *
      * @return view model instance
      */
-    public abstract T getViewModel();
+//    public abstract T getViewModel();
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        viewModel = getViewModel();
-    }
+
 
 
     @Override

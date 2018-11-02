@@ -36,7 +36,10 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import javax.inject.Inject;
 
+import me.aartikov.alligator.annotations.RegisterScreen;
 
+
+@RegisterScreen(LoginScreen.class)
 public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
 
     //Firebase declaration
@@ -63,11 +66,11 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
     ConnectivityReceiver connectivityReceiver;
 
 
-    @Override
-    public LoginActivityViewModel getViewModel() {
-        viewModel = ViewModelProviders.of(this, factory).get(LoginActivityViewModel.class);
-        return viewModel;
-    }
+//    @Override
+//    public LoginActivityViewModel getViewModel() {
+//        viewModel = ViewModelProviders.of(this, factory).get(LoginActivityViewModel.class);
+//        return viewModel;
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,6 +143,9 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w("TAG", "Google sign in failed", e);
+            }
+            finally {
+                goMainScreen();
             }
 
         }

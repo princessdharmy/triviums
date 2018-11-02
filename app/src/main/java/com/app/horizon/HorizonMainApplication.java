@@ -7,12 +7,19 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
 import io.fabric.sdk.android.Fabric;
+import me.aartikov.alligator.AndroidNavigator;
+import me.aartikov.alligator.NavigationContextBinder;
+import me.aartikov.alligator.Navigator;
+import me.aartikov.alligator.ScreenResolver;
+import me.aartikov.alligator.navigationfactories.GeneratedNavigationFactory;
+import me.aartikov.alligator.navigationfactories.NavigationFactory;
 
 
 public class HorizonMainApplication extends DaggerApplication {
 
     private static HorizonMainApplication instance;
     private static final String TAG = HorizonMainApplication.class.getSimpleName();
+    private static AndroidNavigator sAndroidNavigator;
 
     @Override
     public void onCreate() {
@@ -20,6 +27,7 @@ public class HorizonMainApplication extends DaggerApplication {
 
         //Fabric for Crashlytics
         Fabric.with(this, new Crashlytics());
+        sAndroidNavigator  = new AndroidNavigator(new GeneratedNavigationFactory());
 
         //HyperLog for Remote Logging
         //HyperLog.initialize(this);
@@ -40,4 +48,19 @@ public class HorizonMainApplication extends DaggerApplication {
         return DaggerHorizonMainComponent.builder().create(this);
     }
 
+    public static NavigationFactory getNavigationFactory() {
+        return sAndroidNavigator.getNavigationFactory();
+    }
+
+    public static Navigator getNavigator() {
+        return sAndroidNavigator;
+    }
+
+    public static NavigationContextBinder getNavigationContextBinder() {
+        return sAndroidNavigator;
+    }
+
+    public static ScreenResolver getScreenResolver() {
+        return sAndroidNavigator.getScreenResolver();
+    }
 }

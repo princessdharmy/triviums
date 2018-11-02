@@ -39,7 +39,6 @@ public abstract class ActivityBuilder {
     abstract MainActivity contributeMainActivity();
 
     @ContributesAndroidInjector(modules = {
-            StagesFragmentProvider.class,
             QuestionFragmentProvider.class})
     abstract StageActivity contributeStageActivity();
 

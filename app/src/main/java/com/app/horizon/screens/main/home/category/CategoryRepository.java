@@ -89,6 +89,7 @@ public class CategoryRepository {
 
 
     private void fetchDataFromCloud(DataExistsCallback callback) {
+        try {
         DocumentReference docRef = firestore.collection("users")
                 .document(userProfile.getUserUid())
                 .collection("categories")
@@ -110,7 +111,10 @@ public class CategoryRepository {
                 Log.e("Error", task.getException().toString());
             }
             callback.onCallback(isExisting);
-        });
+        });}
+        catch (Exception e){
+            Log.e("Horizon_", "Failed to get Data from Api, ignoring");
+        }
     }
 
 

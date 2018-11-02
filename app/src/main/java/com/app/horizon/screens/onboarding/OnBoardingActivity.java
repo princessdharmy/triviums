@@ -22,7 +22,7 @@ import javax.inject.Inject;
 import static dagger.android.AndroidInjection.inject;
 
 
-public class OnBoardingActivity extends BaseActivity<OnBoardingViewModel> {
+public class OnBoardingActivity extends BaseActivity {
 
     private ActivityOnBoardingBinding binding;
 
@@ -33,11 +33,7 @@ public class OnBoardingActivity extends BaseActivity<OnBoardingViewModel> {
     @Inject
     ViewModelProvider.Factory factory;
 
-    @Override
-    public OnBoardingViewModel getViewModel() {
-        viewModel = ViewModelProviders.of(this, factory).get(OnBoardingViewModel.class);
-        return viewModel;
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -13,17 +13,11 @@ import com.app.horizon.screens.onboarding.OnBoardingActivity;
 import javax.inject.Inject;
 
 
-public class SplashScreenActivity extends BaseActivity<SplashScreenViewModel> {
+public class SplashScreenActivity extends BaseActivity {
 
     SplashScreenViewModel viewModel;
     @Inject
     ViewModelProvider.Factory factory;
-
-    @Override
-    public SplashScreenViewModel getViewModel() {
-        viewModel = ViewModelProviders.of(this, factory).get(SplashScreenViewModel.class);
-        return viewModel;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

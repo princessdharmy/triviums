@@ -15,12 +15,12 @@ public abstract class BaseActivity<T extends ViewModel> extends DaggerAppCompatA
      *
      * @return view model instance
      */
-    public abstract T getViewModel();
+//    public abstract T getViewModel();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.viewModel = viewModel == null ? getViewModel() : viewModel;
+//        this.viewModel = viewModel == null ? getViewModel() : viewModel;
     }
 
 }

@@ -13,12 +13,16 @@ import android.view.ViewGroup;
 import com.app.horizon.R;
 import com.app.horizon.core.base.BaseFragment;
 import com.app.horizon.databinding.FragmentLeaderboardBinding;
+import com.app.horizon.screens.main.profile.LeaderScreen;
 
 import javax.inject.Inject;
+
+import me.aartikov.alligator.annotations.RegisterScreen;
 
 /**
  * A simple {@link Fragment} subclass.
  */
+@RegisterScreen(LeaderScreen.class)
 public class LeaderboardFragment extends BaseFragment<LeaderboardViewModel> {
 
     FragmentLeaderboardBinding binding;
@@ -30,12 +34,12 @@ public class LeaderboardFragment extends BaseFragment<LeaderboardViewModel> {
     public LeaderboardFragment() {
         // Required empty public constructor
     }
-
-    @Override
-    public LeaderboardViewModel getViewModel() {
-        viewModel = ViewModelProviders.of(this, factory).get(LeaderboardViewModel.class);
-        return viewModel;
-    }
+//
+//    @Override
+//    public LeaderboardViewModel getViewModel() {
+//        viewModel = ViewModelProviders.of(this, factory).get(LeaderboardViewModel.class);
+//        return viewModel;
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
