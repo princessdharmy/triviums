@@ -13,8 +13,12 @@ Find out how much you know with this app.
 
 Check out the Triviums app and enjoy your time with exercising your wit.
 
+#### How to play the game
+Once you download the app, select any of the quiz categories. This takes you to the stages in each category, then the game begins. 
+The questions are shown alongside with four options to select the correct answer. 
+
 #### Google Playstore Link:
-Get it [here](https://play.google.com/store/apps/details?id=com.app.horizon)
+Download it [here](https://play.google.com/store/apps/details?id=com.app.horizon)
 ***
 ## Technology Stack
 * Java
@@ -32,3 +36,6 @@ Libraries
 * Dagger2
 * Firestore
 * Databinding
+
+## How to contribute?
+You can reach me by commenting on this post or send message on the discord (@princessdharmy#4642) or damomos123@gmail.com. If you want to make this application better, you can make a Pull Request.
