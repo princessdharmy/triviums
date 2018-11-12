@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--button default state-->
+    <item android:drawable="@drawable/stage_button_unselected"/>
+
+    <!--button pressed state-->
+    <item android:drawable="@drawable/stage_button_selected"
+        android:state_pressed="true"/>
+
+    <!--button selected state-->
+    <item android:drawable="@drawable/stage_button_selected"
+        android:state_selected="true"/>
+
+</selector>

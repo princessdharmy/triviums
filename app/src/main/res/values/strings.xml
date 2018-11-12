@@ -1,6 +1,60 @@
 <resources>
     <string name="app_name">Horizon</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_leader_board">Leaderboard</string>
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+
+    <!--Texts-->
+    <string name="login_text">You will be redirected automatically to authenticate your login account</string>
+    <string name="title_activity_on_boarding">OnBoardingActivity</string>
+    <string name="action_logout">Log out</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <!--OnBoarding texts-->
+    <string name="slide1_title">Technology</string>
+    <string name="slide1_desc">Find out how much you know about the technology</string>
+
+    <string name="slide2_title">Sport</string>
+    <string name="slide2_desc">How much do you know? Are you a real fan?</string>
+
+    <string name="slide3_title">Entertainment</string>
+    <string name="slide3_desc">You think you know entertainment?</string>
+
+    <string name="get_started">Get Started</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="categories">Categories</string>
+    <string name="stages">Stages</string>
+    <string name="questions">Questions</string>
+
+    <!--dummt data-->
+    <string name="hello_blank_fragment">Hello Blank Fragment</string>
+    <string name="second">s</string>
+
+    <!--Score text-->
+    <string name="score_pass">Congrats </string>
+    <string name="score_fail">Ooppss! </string>
+    <string name="pass_message">Yeh! You just proceeded to the next stage</string>
+    <string name="fail_message">Sorry, you could do better. Please, try again!</string>
+    <string name="score_value">Score: </string>
+
+    <!--Others-->
+    <string name="people">People</string>
+    <string name="profile">Profile</string>
+    <string name="achievements">Achievements</string>
+    <string name="view_all">VIEW ALL</string>
+    <string name="leaderboard">Leaderboard</string>
+    <string name="add">ADD</string>
+    <string name="loading">Loading...</string>
+    <string name="point">%d Point</string>
+    <string name="points">%d Points</string>
+    <string name="message">You have not attempted any quiz...</string>
+
+    <!--Network connection-->
+    <string name="newtwork_available">Good! Connected to Internet</string>
+    <string name="newtwork_unavailable">Sorry! Please check your Internet Connection</string>
+
 </resources>

@@ -2,4 +2,32 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="activity_horizontal_padding">10dp</dimen>
+    <dimen name="activity_vertical_padding">32dp</dimen>
+    <dimen name="margin">8dp</dimen>
+    <dimen name="marginTop">60dp</dimen>
+    <dimen name="marginBottom">100dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
+
+    <dimen name="slide_title">30sp</dimen>
+    <dimen name="slide_desc">20sp</dimen>
+    <dimen name="slide_title_margin_top">30dp</dimen>
+    <dimen name="dots_height">30dp</dimen>
+    <dimen name="dots_margin_bottom">20dp</dimen>
+
+    <dimen name="carousel_page_radius">200dp</dimen>
+    <dimen name="indicator_size">10dp</dimen>
+    <dimen name="indicator_margin">5dp</dimen>
+    <dimen name="card_view_radius">10dp</dimen>
+    <dimen name="card_view_marginH">8dp</dimen>
+    <dimen name="card_view_marginV">8dp</dimen>
+    <dimen name="question_spacing">2dp</dimen>
+    <dimen name="score_text">35sp</dimen>
+
+    <!--Profile dimens-->
+    <dimen name="username">18sp</dimen>
+    <dimen name="profile_texts">16sp</dimen>
+
 </resources>
