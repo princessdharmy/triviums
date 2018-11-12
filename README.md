@@ -18,7 +18,7 @@ Once you download the app, select any of the quiz categories. This takes you to 
 The questions are shown alongside with four options to select the correct answer. 
 
 #### Google Playstore Link:
-Download it [here](https://play.google.com/store/apps/details?id=com.app.horizon)
+You can download it [here](https://play.google.com/store/apps/details?id=com.app.horizon)
 ***
 ## Technology Stack
 * Java
