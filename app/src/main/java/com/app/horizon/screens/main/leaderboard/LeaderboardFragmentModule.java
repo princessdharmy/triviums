@@ -16,8 +16,8 @@ public class LeaderboardFragmentModule {
     }
 
     @Provides
-    PeopleViewHolder providePeopleViewHolder(){
-        return new PeopleViewHolder();
+    PeopleAdapter providePeopleAdapter(){
+        return new PeopleAdapter();
     }
 
     @Provides

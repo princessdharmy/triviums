@@ -6,4 +6,5 @@
     <string name="loading">Loading...</string>
     <string name="message">You have not attempted any quiz</string>
     <string name="no_internet">Please check your Internet</string>
+    <string name="add">ADD</string>
 </resources>

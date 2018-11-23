@@ -79,6 +79,7 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.e("Checking State", "On Create View");
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_question, container,
                 false);
@@ -94,6 +95,7 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
                 getQuestion(categoryId, page);
             } else {
                 isConnected = false;
+                Log.e("Checking Timeout", "Timeout failed with poor internet");
                 utils.showSnackbar(getActivity(), getResources().getString(R.string.newtwork_unavailable));
             }
         });
@@ -242,7 +244,7 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
                 dialogBinding.scoreTxt.setText(String.valueOf(questionScore));
             }
 
-            countDownTimer = new CountDownTimer(2L, TimeUnit.SECONDS) {
+            /*countDownTimer = new CountDownTimer(2L, TimeUnit.SECONDS) {
                 @Override
                 public void onTick(long tickValue) {
 
@@ -253,7 +255,7 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
                     dismissDialog();
                 }
             };
-            countDownTimer.start();
+            countDownTimer.start();*/
 
             dialog.show();
         }
@@ -306,7 +308,7 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
                     displayQuestion(position);
                     break;
                 default:
-                    throw new RuntimeException("Unknow button ID");
+                    throw new RuntimeException("Unknown button ID");
             }
         }
     }
@@ -326,21 +328,46 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
     @Override
     public void onResume() {
         super.onResume();
+        Log.e("Checking State", "On Resume");
 
         if (isConnected) {
             binding.loader.setVisibility(View.VISIBLE);
             //getActivity().getIntent();
             getQuestion(categoryId, page);
         } else {
+            Log.e("Checking Timeout", "Timeout failed with poor internet");
             utils.showSnackbar(getActivity(), getResources().getString(R.string.newtwork_unavailable));
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.e("Checking State", "On Pause");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.e("Checking State", "On Start");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.e("Checking State", "On Stop");
     }
 
     @Override
     public void onDestroyView() {
         //countDownTimer.cancel();
         super.onDestroyView();
+        Log.e("Checking State", "On Destroy View");
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e("Checking State", "On Destroy");
+    }
 }

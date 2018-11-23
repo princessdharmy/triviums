@@ -7,13 +7,16 @@ import android.util.Log;
 
 
 import com.app.horizon.core.network.models.UserProfile;
+import com.app.horizon.core.store.online.question.FirestoreResultResponse;
 import com.app.horizon.core.store.online.question.QuestionResponse;
+import com.app.horizon.core.store.online.question.QuestionResultsResponse;
 import com.app.horizon.core.store.online.services.ApiService;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.Map;
 
@@ -30,9 +33,8 @@ public class StageRepository {
     private ApiService apiService;
     private FirebaseFirestore firestore;
     private UserProfile userProfile;
-    DocumentSnapshot document;
-    private MutableLiveData<Map<String, Object>> liveData = new MutableLiveData<>();
-    final MutableLiveData<QuestionResponse> mutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<FirestoreResultResponse> liveData = new MutableLiveData<>();
+    final MutableLiveData<QuestionResultsResponse> mutableLiveData = new MutableLiveData<>();
     CompositeDisposable disposable = new CompositeDisposable();
 
     public StageRepository(ApiService apiService, FirebaseFirestore firestore, UserProfile userProfile) {
@@ -41,7 +43,7 @@ public class StageRepository {
         this.userProfile = userProfile;
     }
 
-    public LiveData<QuestionResponse> fetchStages(String categoryId) {
+    public LiveData<QuestionResultsResponse> fetchStages(String categoryId) {
         Single<Response<QuestionResponse>> responseObservable = apiService.fetchStages(categoryId);
         disposable.add(
                 responseObservable
@@ -49,26 +51,39 @@ public class StageRepository {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeWith(new DisposableSingleObserver<Response<QuestionResponse>>() {
                             @Override
-                            public void onSuccess(Response<QuestionResponse> questionResponseResponse) {
-                                mutableLiveData.postValue(questionResponseResponse.body());
+                            public void onSuccess(Response<QuestionResponse> questionResponse) {
+                                try {
+                                    mutableLiveData.postValue(
+                                            new QuestionResultsResponse(questionResponse.body(), null));
+                                } catch (Exception e) {
+                                    if (e instanceof FirebaseFirestoreException) {
+                                        mutableLiveData.postValue(
+                                                new QuestionResultsResponse(null, e.toString()));
+                                    }
+                                    e.printStackTrace();
+                                }
+
                             }
 
                             @Override
                             public void onError(Throwable e) {
+                                mutableLiveData.postValue(
+                                        new QuestionResultsResponse(null, e.toString()));
+
                             }
                         })
         );
         return mutableLiveData;
     }
 
-    public LiveData<Map<String, Object>> getProgress(String categoryName){
+    public LiveData<FirestoreResultResponse> getProgress(String categoryName) {
         fetchProgress(categoryName, data -> {
             liveData.postValue(data);
         });
         return liveData;
     }
 
-    private void fetchProgress(String categoryName, ProgressCallback callback){
+    private void fetchProgress(String categoryName, ProgressCallback callback) {
         DocumentReference docRef = firestore.collection("users")
                 .document(userProfile.getUserUid())
                 .collection("categories")
@@ -78,16 +93,23 @@ public class StageRepository {
 
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                document = task.getResult();
-            } else {
-                Log.e("Error", task.getException().toString());
             }
-            callback.onCallback(document.getData());
-        });
+            try {
+                callback.onCallback(new FirestoreResultResponse(task.getResult().getData(), null));
+            } catch (Exception e) {
+                if (e instanceof FirebaseFirestoreException) {
+                    callback.onCallback(new FirestoreResultResponse(null, e.getLocalizedMessage()));
+                }
+                e.printStackTrace();
+            }
+        })
+                .addOnFailureListener(error -> {
+                    callback.onCallback(new FirestoreResultResponse(null, error.toString()));
+                });
 
     }
 
     public interface ProgressCallback {
-        void onCallback(Map<String, Object> data);
+        void onCallback(FirestoreResultResponse response);
     }
 }

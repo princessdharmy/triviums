@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -29,6 +30,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.disposables.CompositeDisposable;
+
 /**
  * A simple{@link Fragment } subclass.
  */
@@ -43,7 +46,7 @@ public class StagesFragment extends BaseFragment<StagesViewModel> {
     String categoryId, categoryName, stageProgress;
     int currentScore;
     Button button;
-    public CountDownTimer countDownTimer;
+    CompositeDisposable disposable = new CompositeDisposable();
 
     public static final int MobileData = 2;
     public static final int WifiData = 1;
@@ -89,7 +92,6 @@ public class StagesFragment extends BaseFragment<StagesViewModel> {
         totalPage.clear();
 
         connectivityReceiver.observe(this, connectionModel -> {
-            try {
                 if (connectionModel.isConnected()) {
                     isConnected = true;
                     binding.noInternet.setVisibility(View.GONE);
@@ -103,9 +105,6 @@ public class StagesFragment extends BaseFragment<StagesViewModel> {
                     isConnected = false;
                     noInternet();
                 }
-            } catch (Exception e){
-                utils.showSnackbar(getActivity(), "Error fetching data");
-            }
         });
 
         return view;
@@ -128,16 +127,27 @@ public class StagesFragment extends BaseFragment<StagesViewModel> {
 
 
     public void showStage(String categoryId) {
+        try{
         viewModel.getStage(categoryId).observe(getViewLifecycleOwner(), response -> {
             binding.loader.setVisibility(View.GONE);
 
-            int page = response.getPaging().getTotalPages().intValue();
-            totalPage.clear();
-            for (int i = 1; i <= page; i++) {
-                totalPage.add(i);
+            if(response.getQuestionResponse() != null){
+                int page = response.getQuestionResponse().getPaging().getTotalPages().intValue();
+                totalPage.clear();
+                for (int i = 1; i <= page; i++) {
+                    totalPage.add(i);
+                }
+                adapter.updateStages(totalPage);
             }
-            adapter.updateStages(totalPage);
+             else {
+                //handle error here
+                Log.e("Error", response.getError());
+                showDialogForTimeout();
+            }
         });
+        } catch(Exception e){
+            utils.showSnackbar(getActivity(), "Error fetching data");
+        }
     }
 
     /**
@@ -148,16 +158,23 @@ public class StagesFragment extends BaseFragment<StagesViewModel> {
 
 
     public void getProgress(String category) {
-        viewModel.getProgressDetails(category).observe(getViewLifecycleOwner(), data -> {
-            if (data != null) {
-                int score = Integer.parseInt(String.valueOf(data.get("score")));
-                getCurrentScore(score);
+        try {
+            viewModel.getProgressDetails(category).observe(getViewLifecycleOwner(), data -> {
 
-                int stageNumber = Integer.parseInt(data.get("stageNumber").toString());
-                getStageNumber(String.valueOf(stageNumber));
-                adapter.updateButtonColor(stageNumber);
-            }
-        });
+                if (data.getData() != null) {
+                    int score = Integer.parseInt(String.valueOf(data.getData().get("score")));
+                    getCurrentScore(score);
+
+                    int stageNumber = Integer.parseInt(data.getData().get("stageNumber").toString());
+                    getStageNumber(String.valueOf(stageNumber));
+                    adapter.updateButtonColor(stageNumber);
+                } else {
+                    showDialogForTimeout();
+                }
+            });
+        } catch (Exception e){
+            utils.showSnackbar(getActivity(), "Error fetching data");
+        }
     }
 
 
@@ -226,25 +243,31 @@ public class StagesFragment extends BaseFragment<StagesViewModel> {
         binding.noInternet.setVisibility(View.VISIBLE);
     }
 
+    private void showDialogForTimeout(){
+        AlertDialog dialog;
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Sorry, please check your internet connection")
+                .setPositiveButton("OK", (dialog1, which) -> {
+                    getActivity().finish();
+                });
+        dialog = builder.create();
+        dialog.show();
+    }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        try {
             if (isConnected) {
                 binding.noInternet.setVisibility(View.GONE);
                 binding.loader.setVisibility(View.VISIBLE);
                 binding.stageView.setVisibility(View.VISIBLE);
-                //getActivity().getIntent();
+
                 getProgress(categoryName);
                 showStage(categoryId);
             } else {
                 noInternet();
             }
-        } catch (Exception e){
-            utils.showSnackbar(getActivity(), "Error fetching data");
-        }
     }
 
 
@@ -255,4 +278,10 @@ public class StagesFragment extends BaseFragment<StagesViewModel> {
 
     }
 
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        disposable.dispose();
+    }
 }

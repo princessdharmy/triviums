@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.app.horizon.core.network.models.UserProfile;
 import com.app.horizon.core.store.MainAppStore;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import javax.inject.Inject;

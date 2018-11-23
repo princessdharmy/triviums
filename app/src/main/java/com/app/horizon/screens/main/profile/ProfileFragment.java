@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +25,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -35,6 +35,8 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
     AchievementAdapter adapter;
     List<DocumentSnapshot> achievements = new ArrayList<>();
     RecyclerView recyclerView;
+    Uri imageUri;
+    UserProfile userProfile;
     @Inject
     ViewModelProvider.Factory factory;
     private ProfileViewModel viewModel;
@@ -60,6 +62,7 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container,
                 false);
         View view = binding.getRoot();
+        binding.setClick(new MyHandler());
 
         initAchievementRecyclerview();
         getAchievementData();
@@ -68,15 +71,25 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
         return view;
     }
 
-    public void showProfile(){
-        UserProfile userProfile = viewModel.getUserDetails();
-        binding.username.setText(userProfile.getName());
+    public void showProfile() {
+        userProfile = viewModel.getUserDetails();
 
-        Uri imageUri = Uri.parse(userProfile.getProfilePicture());
-        binding.profilePix.setImageURI(imageUri);
+        viewModel.getUserLiveData().observe(getViewLifecycleOwner(), data -> {
+
+            //Check if data exists
+            if (data != null) {
+
+                //Display the default Name
+                binding.username.setText(userProfile.getName());
+
+                //Display the default Photo
+                imageUri = Uri.parse(userProfile.getProfilePicture());
+                binding.profilePix.setImageURI(imageUri);
+            }
+        });
     }
 
-    public void initAchievementRecyclerview(){
+    public void initAchievementRecyclerview() {
         adapter = new AchievementAdapter(getActivity(), achievements);
         recyclerView = binding.achievements;
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -84,19 +97,19 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
         recyclerView.setAdapter(adapter);
     }
 
-    public void getAchievementData(){
+    public void getAchievementData() {
         viewModel.getLiveData().observe(getViewLifecycleOwner(), data -> {
             binding.progressBar.setVisibility(View.GONE);
             binding.loadingTxt.setVisibility(View.GONE);
-            if(data !=null){
-                for(DocumentSnapshot document : data){
+            if (data != null) {
+                for (DocumentSnapshot document : data) {
                     values.add(Integer.valueOf(String.valueOf(document.getData().get("score"))));
                 }
 
-                for(Integer score : values) {
+                for (Integer score : values) {
                     totalScore += score;
                 }
-                if (totalScore > 0){
+                if (totalScore > 0) {
                     //Check if user has played any quiz
                     binding.message.setVisibility(View.GONE);
                     binding.achievements.setVisibility(View.VISIBLE);
@@ -107,7 +120,7 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
                 }
                 adapter.updateData(data);
 
-                if(totalScore <= 1){
+                if (totalScore <= 1) {
                     binding.totalXp.setText(String.format(getString(R.string.point), totalScore));
                 } else {
                     binding.totalXp.setText(String.format(getString(R.string.points), totalScore));
@@ -115,6 +128,15 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
 
             }
         });
+    }
+
+    /**
+     * Class to handle click events
+     */
+    public class MyHandler {
+        public void onAddLeaderboardClick(View view) {
+
+        }
     }
 
 }

@@ -44,7 +44,11 @@ public class QuestionRepository {
                         .subscribeWith(new DisposableSingleObserver<Response<QuestionResponse>>() {
                             @Override
                             public void onSuccess(Response<QuestionResponse> questionResponseResponse) {
-                                mutableLiveData.postValue(questionResponseResponse.body());
+                                try {
+                                    mutableLiveData.postValue(questionResponseResponse.body());
+                                } catch(Exception e){
+                                    e.printStackTrace();
+                                }
                             }
                             @Override
                             public void onError(Throwable e) {

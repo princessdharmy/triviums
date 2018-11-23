@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -43,7 +45,6 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
     private CompositeDisposable disposable = new CompositeDisposable();
     private RecyclerView.LayoutManager layoutManager;
 
-
     @Inject
     ViewModelProvider.Factory factory;
     private CategoryViewModel viewModel;
@@ -77,20 +78,20 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
 
         initRecyclerView();
 
-        connectivityReceiver.observe(this, connectionModel -> {
-            try{
-            if(connectionModel.isConnected()){
-                isConnected = true;
-                showCategory();
-            } else {
-                isConnected = false;
-                utils.showSnackbar(getActivity(), getResources().getString(R.string.newtwork_unavailable));
-                showCategory();
-            }
-            } catch (Exception e){
-                utils.showSnackbar(getActivity(), "Error fetching data");
-            }
-        });
+            connectivityReceiver.observe(this, connectionModel -> {
+                try{
+                    if(connectionModel.isConnected()){
+                        isConnected = true;
+                        showCategory();
+                    } else {
+                        isConnected = false;
+                        utils.showSnackbar(getActivity(), getResources().getString(R.string.newtwork_unavailable));
+                        showCategory();
+                    }
+                } catch (Exception e){
+                    utils.showSnackbar(getActivity(), "Error fetching data");
+                }
+            });
 
         return view;
     }
@@ -126,7 +127,6 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> {
             intent.putExtra("categoryName", category.getName());
             getActivity().startActivity(intent);
     };
-
 
     @Override
     public void onDestroy() {
