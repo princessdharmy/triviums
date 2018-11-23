@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.app.horizon.core.network.models.UserProfile;
 import com.app.horizon.core.store.online.question.QuestionResponse;
+import com.app.horizon.core.store.online.question.QuestionResultsResponse;
 import com.app.horizon.core.store.online.services.ApiService;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -27,7 +28,7 @@ public class QuestionRepository {
     private FirebaseFirestore firestore;
     private UserProfile userProfile;
     private CompositeDisposable disposable = new CompositeDisposable();
-    private MutableLiveData<QuestionResponse> mutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<QuestionResultsResponse> mutableLiveData = new MutableLiveData<>();
 
     public QuestionRepository(ApiService apiService, FirebaseFirestore firestore, UserProfile userProfile) {
         this.apiService = apiService;
@@ -35,7 +36,7 @@ public class QuestionRepository {
         this.userProfile = userProfile;
     }
 
-    public LiveData<QuestionResponse> fetchQuestion(String categoryId, String page){
+    public LiveData<QuestionResultsResponse> fetchQuestion(String categoryId, String page){
         Single<Response<QuestionResponse>> responseSingle =
                 apiService.fetchQuestions(categoryId, page);
         disposable.add(
@@ -45,14 +46,16 @@ public class QuestionRepository {
                             @Override
                             public void onSuccess(Response<QuestionResponse> questionResponseResponse) {
                                 try {
-                                    mutableLiveData.postValue(questionResponseResponse.body());
+                                    mutableLiveData.postValue(
+                                            new QuestionResultsResponse(questionResponseResponse.body(), null));
                                 } catch(Exception e){
                                     e.printStackTrace();
                                 }
                             }
                             @Override
                             public void onError(Throwable e) {
-
+                                mutableLiveData.postValue(
+                                        new QuestionResultsResponse(null, e.getLocalizedMessage()));
                             }
                         })
         );

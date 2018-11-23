@@ -14,6 +14,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -103,7 +105,7 @@ public class StagesFragment extends BaseFragment<StagesViewModel> {
                     showStage(categoryId);
                 } else {
                     isConnected = false;
-                    noInternet();
+                    showDialogForTimeout();
                 }
         });
 
@@ -127,7 +129,6 @@ public class StagesFragment extends BaseFragment<StagesViewModel> {
 
 
     public void showStage(String categoryId) {
-        try{
         viewModel.getStage(categoryId).observe(getViewLifecycleOwner(), response -> {
             binding.loader.setVisibility(View.GONE);
 
@@ -139,15 +140,7 @@ public class StagesFragment extends BaseFragment<StagesViewModel> {
                 }
                 adapter.updateStages(totalPage);
             }
-             else {
-                //handle error here
-                Log.e("Error", response.getError());
-                showDialogForTimeout();
-            }
         });
-        } catch(Exception e){
-            utils.showSnackbar(getActivity(), "Error fetching data");
-        }
     }
 
     /**
@@ -158,7 +151,6 @@ public class StagesFragment extends BaseFragment<StagesViewModel> {
 
 
     public void getProgress(String category) {
-        try {
             viewModel.getProgressDetails(category).observe(getViewLifecycleOwner(), data -> {
 
                 if (data.getData() != null) {
@@ -168,13 +160,8 @@ public class StagesFragment extends BaseFragment<StagesViewModel> {
                     int stageNumber = Integer.parseInt(data.getData().get("stageNumber").toString());
                     getStageNumber(String.valueOf(stageNumber));
                     adapter.updateButtonColor(stageNumber);
-                } else {
-                    showDialogForTimeout();
                 }
             });
-        } catch (Exception e){
-            utils.showSnackbar(getActivity(), "Error fetching data");
-        }
     }
 
 
@@ -235,15 +222,8 @@ public class StagesFragment extends BaseFragment<StagesViewModel> {
                 .commit();
     }
 
-    private void noInternet() {
-        binding.loader.setVisibility(View.GONE);
-        binding.stageView.setVisibility(View.GONE);
-
-        //show no internet status
-        binding.noInternet.setVisibility(View.VISIBLE);
-    }
-
     private void showDialogForTimeout(){
+        binding.loader.setVisibility(View.GONE);
         AlertDialog dialog;
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage("Sorry, please check your internet connection")
@@ -251,6 +231,10 @@ public class StagesFragment extends BaseFragment<StagesViewModel> {
                     getActivity().finish();
                 });
         dialog = builder.create();
+
+        //This disables clicking outside the dialog box
+        dialog.setCanceledOnTouchOutside(false);
+
         dialog.show();
     }
 
@@ -266,7 +250,7 @@ public class StagesFragment extends BaseFragment<StagesViewModel> {
                 getProgress(categoryName);
                 showStage(categoryId);
             } else {
-                noInternet();
+               showDialogForTimeout();
             }
     }
 

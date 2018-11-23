@@ -12,6 +12,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -79,7 +80,6 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.e("Checking State", "On Create View");
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_question, container,
                 false);
@@ -95,8 +95,7 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
                 getQuestion(categoryId, page);
             } else {
                 isConnected = false;
-                Log.e("Checking Timeout", "Timeout failed with poor internet");
-                utils.showSnackbar(getActivity(), getResources().getString(R.string.newtwork_unavailable));
+                showDialogForTimeout();
             }
         });
 
@@ -125,10 +124,14 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
 
             if (response != null) {
                 questionList.clear();
-                questionList.addAll(response.getData());
+                questionList.addAll(response.getQuestionResponse().getData());
+            } else{
+                //handles no internet message
+                showDialogForTimeout();
             }
             generateRandomQuestions(questionList, totalQuestion);
             displayQuestion(position);
+
         });
     }
 
@@ -244,7 +247,7 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
                 dialogBinding.scoreTxt.setText(String.valueOf(questionScore));
             }
 
-            /*countDownTimer = new CountDownTimer(2L, TimeUnit.SECONDS) {
+            countDownTimer = new CountDownTimer(2L, TimeUnit.SECONDS) {
                 @Override
                 public void onTick(long tickValue) {
 
@@ -255,7 +258,7 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
                     dismissDialog();
                 }
             };
-            countDownTimer.start();*/
+            countDownTimer.start();
 
             dialog.show();
         }
@@ -323,6 +326,19 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
         dialog.dismiss();
         getActivity().startActivity(getActivity().getIntent());
         getActivity().finish();
+    }
+
+    private void showDialogForTimeout(){
+        AlertDialog dialog;
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Sorry, please check your internet connection")
+                .setPositiveButton("OK", (dialog1, which) -> {
+                    getActivity().finish();
+                });
+        dialog = builder.create();
+        //This disables clicking outside the dialog box
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 
     @Override
