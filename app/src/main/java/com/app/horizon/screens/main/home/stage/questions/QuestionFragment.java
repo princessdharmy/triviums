@@ -125,9 +125,6 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
             if (response != null) {
                 questionList.clear();
                 questionList.addAll(response.getQuestionResponse().getData());
-            } else{
-                //handles no internet message
-                showDialogForTimeout();
             }
             generateRandomQuestions(questionList, totalQuestion);
             displayQuestion(position);
@@ -344,34 +341,13 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
     @Override
     public void onResume() {
         super.onResume();
-        Log.e("Checking State", "On Resume");
 
         if (isConnected) {
             binding.loader.setVisibility(View.VISIBLE);
-            //getActivity().getIntent();
             getQuestion(categoryId, page);
         } else {
-            Log.e("Checking Timeout", "Timeout failed with poor internet");
-            utils.showSnackbar(getActivity(), getResources().getString(R.string.newtwork_unavailable));
+            showDialogForTimeout();
         }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.e("Checking State", "On Pause");
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.e("Checking State", "On Start");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.e("Checking State", "On Stop");
     }
 
     @Override
@@ -379,11 +355,5 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
         //countDownTimer.cancel();
         super.onDestroyView();
         Log.e("Checking State", "On Destroy View");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.e("Checking State", "On Destroy");
     }
 }
