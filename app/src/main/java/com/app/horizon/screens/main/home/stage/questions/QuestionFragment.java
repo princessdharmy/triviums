@@ -354,6 +354,5 @@ public class QuestionFragment extends BaseFragment<QuestionViewModel> {
     public void onDestroyView() {
         //countDownTimer.cancel();
         super.onDestroyView();
-        Log.e("Checking State", "On Destroy View");
     }
 }

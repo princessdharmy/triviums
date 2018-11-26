@@ -30,4 +30,8 @@
     <dimen name="username">18sp</dimen>
     <dimen name="profile_texts">16sp</dimen>
 
+    <!--People's dimens-->
+    <dimen name="people_username">14sp</dimen>
+    <dimen name="people_score">16sp</dimen>
+
 </resources>

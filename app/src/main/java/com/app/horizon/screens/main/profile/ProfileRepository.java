@@ -28,7 +28,6 @@ public class ProfileRepository {
 
     private UserProfile userProfile;
     private FirebaseFirestore firestore;
-    boolean isExisting;
     List<DocumentSnapshot> document;
     private MutableLiveData<List<DocumentSnapshot>> liveData = new MutableLiveData<>();
     private MutableLiveData<Map<String, Object>> userLiveData = new MutableLiveData<>();
@@ -42,6 +41,7 @@ public class ProfileRepository {
     public UserProfile getProfile() {
         return userProfile;
     }
+
 
     public LiveData<Map<String, Object>> getProfileFromCloud() {
         getUpdatedProfile(data -> {
@@ -89,6 +89,11 @@ public class ProfileRepository {
         });
     }
 
+    /**
+     * Update profile in the database
+     * @param name
+     * @param photoUri
+     */
     public void updateProfile(String name, String photoUri) {
         DocumentReference docRef = firestore.collection("users")
                 .document(userProfile.getUserUid());

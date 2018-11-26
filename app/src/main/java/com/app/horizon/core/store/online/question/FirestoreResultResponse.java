@@ -5,14 +5,14 @@ import java.util.Map;
 public class FirestoreResultResponse {
 
     Map<String, Object> data;
-    String Error;
+    String error;
 
     public FirestoreResultResponse() {
     }
 
     public FirestoreResultResponse(Map<String, Object> data, String error) {
         this.data = data;
-        Error = error;
+        this.error = error;
     }
 
     public Map<String, Object> getData() {
@@ -24,10 +24,10 @@ public class FirestoreResultResponse {
     }
 
     public String getError() {
-        return Error;
+        return error;
     }
 
     public void setError(String error) {
-        Error = error;
+        error = error;
     }
 }
