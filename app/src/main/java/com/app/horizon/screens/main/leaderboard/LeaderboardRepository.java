@@ -4,7 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.util.Log;
 
-import com.app.horizon.core.store.online.question.FirestoreResultResponse;
+import com.app.horizon.core.network.models.UserProfile;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -17,12 +17,14 @@ import javax.inject.Inject;
 public class LeaderboardRepository {
 
     private FirebaseFirestore firestore;
+    private UserProfile userProfile;
     List<DocumentSnapshot> document;
     private MutableLiveData<List<DocumentSnapshot>> usersLiveData = new MutableLiveData();
-    private MutableLiveData<List<DocumentSnapshot>> progressLiveData = new MutableLiveData<>();
+
 
     @Inject
-    public LeaderboardRepository(FirebaseFirestore firestore) {
+    public LeaderboardRepository(UserProfile userProfile, FirebaseFirestore firestore) {
+        this.userProfile = userProfile;
         this.firestore = firestore;
     }
 
@@ -31,13 +33,6 @@ public class LeaderboardRepository {
             usersLiveData.postValue(response);
         });
         return usersLiveData;
-    }
-
-    public LiveData<List<DocumentSnapshot>> getProgress() {
-        fetchProgress(snapshotList -> {
-            progressLiveData.postValue(snapshotList);
-        });
-        return progressLiveData;
     }
 
     private void fetchUsers(UserCallback callback){
@@ -51,37 +46,18 @@ public class LeaderboardRepository {
                 callback.onCallback(document);
             } catch (Exception e) {
                 if (e instanceof FirebaseFirestoreException) {
-                    Log.e("Exception", e.getLocalizedMessage());
-                    //callback.onCallback(e.getLocalizedMessage());
+
                 }
                 e.printStackTrace();
             }
         })
                 .addOnFailureListener(error -> {
-                    //callback.onCallback();
+
                 });
     }
-
-    private void fetchProgress(ProgressCallback callback) {
-        CollectionReference collectionReference = firestore.collection("users")
-                .document("uuid")
-                .collection("categories")
-                .document("category")
-                .collection("progress");
-
-        collectionReference.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                document = task.getResult().getDocuments();
-            }
-            callback.onCallback(document);
-        });
-    }
-
 
     public interface UserCallback {
         void onCallback(List<DocumentSnapshot> snapshotList);
     }
-    public interface ProgressCallback {
-        void onCallback(List<DocumentSnapshot> snapshotList);
-    }
+
 }

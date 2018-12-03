@@ -41,4 +41,5 @@ public class ProfileViewModel extends ViewModel {
     public void updateData(String name, String photoUri){
         repository.updateProfile(name, photoUri);
     }
+
 }

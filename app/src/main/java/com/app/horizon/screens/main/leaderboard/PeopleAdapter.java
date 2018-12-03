@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +60,6 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
         this.peopleList = value;
         notifyDataSetChanged();
     }
-
 
     public class PeopleViewHolder extends RecyclerView.ViewHolder {
 

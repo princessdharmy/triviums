@@ -7,9 +7,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +15,6 @@ import android.view.ViewGroup;
 import com.app.horizon.R;
 import com.app.horizon.core.base.BaseFragment;
 import com.app.horizon.databinding.FragmentLeaderboardBinding;
-import com.app.horizon.screens.main.profile.AchievementAdapter;
 import com.app.horizon.utils.ConnectivityReceiver;
 import com.google.firebase.firestore.DocumentSnapshot;
 
@@ -40,7 +37,6 @@ public class LeaderboardFragment extends BaseFragment<LeaderboardViewModel> {
     List<DocumentSnapshot> peopleList = new ArrayList<>();
     @Inject
     ConnectivityReceiver connectivityReceiver;
-    ArrayList<String> userDetail = new ArrayList<>();
 
 
     public LeaderboardFragment() {
@@ -66,6 +62,7 @@ public class LeaderboardFragment extends BaseFragment<LeaderboardViewModel> {
             getUsers();
         });
 
+
         return view;
     }
 
@@ -84,10 +81,11 @@ public class LeaderboardFragment extends BaseFragment<LeaderboardViewModel> {
         viewModel.getUsers().observe(getViewLifecycleOwner(), response -> {
             binding.loader.setVisibility(View.GONE);
             binding.peopleRecyclerview.setVisibility(View.VISIBLE);
-            if (response != null){
+            if (response != null) {
                 adapter.updateData(response);
             }
         });
+
     }
 
 

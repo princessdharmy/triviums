@@ -37,29 +37,16 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
         android:gravity="center"
-        android:text="Damilola"
-        android:textColor="@color/textColor"
+        android:textColor="@color/option_text_color"
         android:textSize="@dimen/people_username"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/server_user" />
 
-    <TextView
-        android:id="@+id/server_user_score"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="134"
-        android:textColor="@color/bottomNavIconColor"
-        android:textSize="@dimen/people_score"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/server_user_name" />
+
 
 </android.support.constraint.ConstraintLayout>
 </layout>

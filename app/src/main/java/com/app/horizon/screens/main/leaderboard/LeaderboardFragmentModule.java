@@ -3,6 +3,7 @@ package com.app.horizon.screens.main.leaderboard;
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
 
+import com.app.horizon.core.network.models.UserProfile;
 import com.app.horizon.utils.ViewModelProviderFactory;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -21,8 +22,8 @@ public class LeaderboardFragmentModule {
     }
 
     @Provides
-    LeaderboardRepository provideLeaderboardRepository(FirebaseFirestore firestore){
-        return new LeaderboardRepository(firestore);
+    LeaderboardRepository provideLeaderboardRepository(UserProfile userProfile, FirebaseFirestore firestore){
+        return new LeaderboardRepository(userProfile, firestore);
     }
 
     @Provides

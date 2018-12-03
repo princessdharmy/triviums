@@ -109,6 +109,7 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
                 for (Integer score : values) {
                     totalScore += score;
                 }
+
                 if (totalScore > 0) {
                     //Check if user has played any quiz
                     binding.message.setVisibility(View.GONE);

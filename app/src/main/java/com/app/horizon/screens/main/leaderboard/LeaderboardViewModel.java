@@ -22,7 +22,9 @@ public class LeaderboardViewModel extends ViewModel {
 
     public LiveData<List<DocumentSnapshot>> getUsers(){
         if(liveData == null)
-            liveData=repository.getUsers();
+            liveData = repository.getUsers();
         return liveData;
     }
+
+
 }
