@@ -1,7 +1,6 @@
 
 package com.app.horizon.core.store.online.question;
 
-import android.arch.persistence.room.PrimaryKey;
 import android.databinding.BindingAdapter;
 import android.support.annotation.NonNull;
 import android.text.Html;
@@ -15,7 +14,6 @@ import com.google.gson.annotations.SerializedName;
 public class Question {
 
     @NonNull
-    @PrimaryKey
     @SerializedName("id")
     private String mId;
 

@@ -5,16 +5,19 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.app.horizon.HorizonMainApplication;
 import com.app.horizon.R;
 import com.app.horizon.core.base.BaseFragment;
 import com.app.horizon.core.store.offline.category.Category;
@@ -33,8 +36,7 @@ import io.reactivex.disposables.CompositeDisposable;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CategoryFragment extends BaseFragment<CategoryViewModel> implements
-        ConnectivityReceiver.ConnectivityReceiverListener{
+public class CategoryFragment extends BaseFragment<CategoryViewModel> {
 
     private FragmentCategoryBinding binding;
     private RecyclerView recyclerView;
@@ -43,10 +45,15 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> implements
     private CompositeDisposable disposable = new CompositeDisposable();
     private RecyclerView.LayoutManager layoutManager;
 
-
     @Inject
     ViewModelProvider.Factory factory;
     private CategoryViewModel viewModel;
+
+    public  static  final int MobileData = 2;
+    public static final int WifiData = 1;
+    boolean isConnected;
+    @Inject
+    ConnectivityReceiver connectivityReceiver;
     @Inject
     Utils utils;
 
@@ -71,13 +78,20 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> implements
 
         initRecyclerView();
 
-        if(checkConnection()){
-            showCategory();
-        } else {
-            utils.showSnackbar(getActivity(), getResources().getString(R.string.newtwork_unavailable));
-            showCategory();
-        }
-
+            connectivityReceiver.observe(this, connectionModel -> {
+                try{
+                    if(connectionModel.isConnected()){
+                        isConnected = true;
+                        showCategory();
+                    } else {
+                        isConnected = false;
+                        utils.showSnackbar(getActivity(), getResources().getString(R.string.newtwork_unavailable));
+                        showCategory();
+                    }
+                } catch (Exception e){
+                    utils.showSnackbar(getActivity(), "Error fetching data");
+                }
+            });
 
         return view;
     }
@@ -108,48 +122,16 @@ public class CategoryFragment extends BaseFragment<CategoryViewModel> implements
     private View.OnClickListener categoryListener = view -> {
         Category category = (Category) view.getTag();
 
-        if(checkConnection()){
             Intent intent = new Intent(getActivity(), StageActivity.class);
             intent.putExtra("CategoryId", category.getId());
             intent.putExtra("categoryName", category.getName());
             getActivity().startActivity(intent);
-        } else {
-            utils.showSnackbar(getActivity(), getResources().getString(R.string.newtwork_unavailable));
-        }
-
     };
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        //register connection status listener
-        HorizonMainApplication.getInstance().setConnectivityListener(this);
-    }
-
-    public boolean checkConnection(){
-        return ConnectivityReceiver.isConnected();
-    }
-
-    /**
-     * Callback will be triggered when there is change in
-     * network connection
-     */
-    @Override
-    public void onNetworkConnectionChanged(boolean isConnected) {
-        if(isConnected){
-            utils.showSnackbar(getActivity(), getResources().getString(R.string.newtwork_available));
-        } else {
-            utils.showSnackbar(getActivity(), getResources().getString(R.string.newtwork_unavailable));
-        }
-    }
-
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         disposable.dispose();
     }
-
 
 }

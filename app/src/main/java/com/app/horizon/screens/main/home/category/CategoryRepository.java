@@ -95,19 +95,18 @@ public class CategoryRepository {
                 .document("category");
 
         docRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    isExisting = true;
-                    CategoryResponse response = document.toObject(CategoryResponse.class);
-                    mutableLiveData.postValue(response);
+            try {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        isExisting = true;
+                        CategoryResponse response = document.toObject(CategoryResponse.class);
+                        mutableLiveData.postValue(response);
 
-                } else {
-                    Log.e("Failed!", "No such document");
+                    }
                 }
+            } catch(Exception e){
 
-            } else {
-                Log.e("Error", task.getException().toString());
             }
             callback.onCallback(isExisting);
         });

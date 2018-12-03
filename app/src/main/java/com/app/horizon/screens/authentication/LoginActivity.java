@@ -8,9 +8,6 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -24,12 +21,6 @@ import com.app.horizon.databinding.ActivityLoginBinding;
 import com.app.horizon.screens.main.MainActivity;
 import com.app.horizon.utils.ConnectivityReceiver;
 import com.app.horizon.utils.Utils;
-import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -39,8 +30,6 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -48,8 +37,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import javax.inject.Inject;
 
 
-public class LoginActivity extends BaseActivity<LoginActivityViewModel> implements
-        ConnectivityReceiver.ConnectivityReceiverListener {
+public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
 
     //Firebase declaration
     private FirebaseAuth mAuth;
@@ -68,6 +56,12 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel> implemen
     @Inject
     ViewModelProvider.Factory factory;
 
+    public static final int MobileData = 2;
+    public static final int WifiData = 1;
+    boolean isConnected;
+    @Inject
+    ConnectivityReceiver connectivityReceiver;
+
 
     @Override
     public LoginActivityViewModel getViewModel() {
@@ -79,8 +73,6 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel> implemen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
-
-        checkConnection();
 
         //Initialise UserProfile
         userProfile = new UserProfile();
@@ -96,11 +88,19 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel> implemen
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         binding.signInButton.setOnClickListener(view -> {
-            if(checkConnection()){
-                signIn();
-            } else {
-                utils.showSnackbar(this, getResources().getString(R.string.newtwork_unavailable));
-            }
+            connectivityReceiver.observe(this, connectionModel -> {
+                try {
+                    if (connectionModel.isConnected()) {
+                        isConnected = true;
+                        signIn();
+                    } else {
+                        isConnected = false;
+                        utils.showSnackbar(this, getResources().getString(R.string.newtwork_unavailable));
+                    }
+                } catch(Exception e){
+                    utils.showSnackbar(this, "Error fetching data");
+                }
+            });
         });
 
         firebaseAuthListener = firebaseAuth -> {
@@ -189,28 +189,4 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel> implemen
         mAuth.removeAuthStateListener(firebaseAuthListener);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        //register connection status listener
-        HorizonMainApplication.getInstance().setConnectivityListener(this);
-    }
-
-    public boolean checkConnection(){
-       return ConnectivityReceiver.isConnected();
-    }
-
-    /**
-     * Callback will be triggered when there is change in
-     * network connection
-     */
-    @Override
-    public void onNetworkConnectionChanged(boolean isConnected) {
-        if(isConnected){
-            utils.showSnackbar(this, getResources().getString(R.string.newtwork_available));
-        } else {
-            utils.showSnackbar(this, getResources().getString(R.string.newtwork_unavailable));
-        }
-    }
 }

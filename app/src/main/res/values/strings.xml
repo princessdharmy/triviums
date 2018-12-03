@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Horizon</string>
+    <string name="app_name">Triviums</string>
     <string name="title_home">Home</string>
     <string name="title_profile">Profile</string>
     <string name="title_leader_board">Leaderboard</string>
@@ -49,12 +49,13 @@
     <string name="leaderboard">Leaderboard</string>
     <string name="add">ADD</string>
     <string name="loading">Loading...</string>
-    <string name="point">%d Point</string>
-    <string name="points">%d Points</string>
+    <string name="point">%d pt</string>
+    <string name="points">%d pts</string>
     <string name="message">You have not attempted any quiz...</string>
 
     <!--Network connection-->
     <string name="newtwork_available">Good! Connected to Internet</string>
     <string name="newtwork_unavailable">Sorry! Please check your Internet Connection</string>
+    <string name="no_internet">Please check your Internet</string>
 
 </resources>

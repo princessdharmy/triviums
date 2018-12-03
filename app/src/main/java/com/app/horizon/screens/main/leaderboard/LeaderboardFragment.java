@@ -6,6 +6,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,11 @@ import android.view.ViewGroup;
 import com.app.horizon.R;
 import com.app.horizon.core.base.BaseFragment;
 import com.app.horizon.databinding.FragmentLeaderboardBinding;
+import com.app.horizon.utils.ConnectivityReceiver;
+import com.google.firebase.firestore.DocumentSnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -25,6 +32,11 @@ public class LeaderboardFragment extends BaseFragment<LeaderboardViewModel> {
     @Inject
     ViewModelProvider.Factory factory;
     private LeaderboardViewModel viewModel;
+    RecyclerView recyclerView;
+    PeopleAdapter adapter;
+    List<DocumentSnapshot> peopleList = new ArrayList<>();
+    @Inject
+    ConnectivityReceiver connectivityReceiver;
 
 
     public LeaderboardFragment() {
@@ -44,7 +56,36 @@ public class LeaderboardFragment extends BaseFragment<LeaderboardViewModel> {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_leaderboard, container,
                 false);
         View view = binding.getRoot();
+        initLeaderRecyclerview();
+
+        connectivityReceiver.observe(this, connectionModel -> {
+            getUsers();
+        });
+
+
         return view;
+    }
+
+    public void initLeaderRecyclerview() {
+        adapter = new PeopleAdapter(getActivity(), peopleList);
+        recyclerView = binding.peopleRecyclerview;
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+    }
+
+    /**
+     * Gets the progress of the user
+     */
+    public void getUsers() {
+        viewModel.getUsers().observe(getViewLifecycleOwner(), response -> {
+            binding.loader.setVisibility(View.GONE);
+            binding.peopleRecyclerview.setVisibility(View.VISIBLE);
+            if (response != null) {
+                adapter.updateData(response);
+            }
+        });
+
     }
 
 

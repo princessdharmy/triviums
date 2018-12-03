@@ -1,7 +1,6 @@
 
 package com.app.horizon.core.store.offline.category;
 
-import android.arch.persistence.room.PrimaryKey;
 import android.databinding.BindingAdapter;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -13,7 +12,6 @@ import com.google.gson.annotations.SerializedName;
 public class Category {
 
     @NonNull
-    @PrimaryKey
     @SerializedName("id")
     private String mId;
 

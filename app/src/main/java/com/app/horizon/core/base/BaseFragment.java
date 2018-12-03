@@ -27,12 +27,4 @@ public abstract class BaseFragment<T extends ViewModel> extends DaggerFragment {
         super.onDetach();
     }
 
-    /**
-     * Could handle back press.
-     * @return true if back press was handled
-     *//*
-    public boolean onBackPressed() {
-        return false;
-    }*/
-
 }
