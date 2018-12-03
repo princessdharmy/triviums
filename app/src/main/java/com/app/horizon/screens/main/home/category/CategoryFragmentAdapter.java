@@ -57,6 +57,15 @@ public class CategoryFragmentAdapter extends RecyclerView.Adapter<CategoryFragme
         return categoryList.size();
     }
 
+    public List<Category> getCategoryList(){
+        return categoryList;
+    }
+
+    public void setCategoryList(List<Category> categories){
+        this.categoryList = categories;
+        notifyDataSetChanged();
+    }
+
 
     public class CategoryViewHolder extends RecyclerView.ViewHolder {
 

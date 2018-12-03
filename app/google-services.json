@@ -15,7 +15,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "1032665251185-3trvep3uaeu1jum3g7l6993qrblsd33l.apps.googleusercontent.com",
+          "client_id": "1032665251185-h8ftse1hd56nvokidhfbe592tt7glb69.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.horizon",
+            "certificate_hash": "9dab935c7e6ffe4d0e3d039b36132a77065680f5"
+          }
+        },
+        {
+          "client_id": "1032665251185-rvs66pd80quo8i20u0n7lnj9qr0trehn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.app.horizon",
@@ -23,11 +31,11 @@
           }
         },
         {
-          "client_id": "1032665251185-e2d1jkpak6pje0548vhedmau7484vj7p.apps.googleusercontent.com",
+          "client_id": "1032665251185-c0o5u8b2ejlbdu89f562kvr5qtpsebbm.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.app.horizon",
-            "certificate_hash": "7d3a4200dc583b9ff4d88b06530a286541fdc73c"
+            "certificate_hash": "cbf43e190434cde7c7c1852ca9820877fa70e502"
           }
         },
         {

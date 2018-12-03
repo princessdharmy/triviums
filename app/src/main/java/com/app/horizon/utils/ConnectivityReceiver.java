@@ -1,45 +1,79 @@
 package com.app.horizon.utils;
 
+import android.arch.lifecycle.LiveData;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import com.app.horizon.HorizonMainApplication;
 
-public class ConnectivityReceiver extends BroadcastReceiver{
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
-    public static ConnectivityReceiverListener connectivityReceiverListener;
+import static com.app.horizon.screens.main.home.stage.stages.StagesFragment.MobileData;
+import static com.app.horizon.screens.main.home.stage.stages.StagesFragment.WifiData;
 
-    public ConnectivityReceiver() {
-        super();
+@Singleton
+public class ConnectivityReceiver extends LiveData<ConnectionModel> {
+
+    private Context context;
+
+
+    @Inject
+    public ConnectivityReceiver(Context context) {
+        this.context = context;
     }
+
 
     @Override
-    public void onReceive(Context context, Intent intent) {
-        ConnectivityManager connectivityManager = (ConnectivityManager)
-                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    protected void onActive() {
+        super.onActive();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        context.registerReceiver(networkReceiver, filter);
 
-        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+    }
 
-        boolean isConnected = activeNetwork != null && activeNetwork.isConnected();
 
-        if(connectivityReceiverListener != null){
-            connectivityReceiverListener.onNetworkConnectionChanged(isConnected);
+    @Override
+    protected void onInactive() {
+        super.onInactive();
+        context.unregisterReceiver(networkReceiver);
+    }
+
+    private BroadcastReceiver networkReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            try {
+                if (intent.getExtras() != null) {
+                    NetworkInfo activeNetwork = (NetworkInfo)
+                            intent.getExtras().get(ConnectivityManager.EXTRA_NETWORK_INFO);
+                    boolean isConnected = activeNetwork != null &&
+                            activeNetwork.isConnectedOrConnecting();
+
+                    if (isConnected) {
+                        switch (activeNetwork.getType()) {
+                            case ConnectivityManager.TYPE_WIFI:
+                                postValue(new ConnectionModel(WifiData, true));
+                                break;
+                            case ConnectivityManager.TYPE_MOBILE:
+                                postValue(new ConnectionModel(MobileData, true));
+                                break;
+
+                        }
+                    } else {
+                        postValue(new ConnectionModel(0, false));
+                    }
+                }
+
+            } catch(Exception e){
+                Log.e("Catched Error!", "Not able to connect to Internet!");
+            }
+
         }
-    }
+    };
 
-    public static boolean isConnected(){
-        ConnectivityManager connectivityManager = (ConnectivityManager)
-                HorizonMainApplication.getInstance().getApplicationContext().
-                        getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-        return activeNetwork != null && activeNetwork.isConnected();
-    }
-
-    public interface ConnectivityReceiverListener {
-        void onNetworkConnectionChanged(boolean isConnected);
-    }
 }

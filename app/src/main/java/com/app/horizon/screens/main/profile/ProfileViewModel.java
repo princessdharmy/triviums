@@ -15,6 +15,7 @@ public class ProfileViewModel extends ViewModel {
 
     private ProfileRepository repository;
     private LiveData<List<DocumentSnapshot>> liveData;
+    private LiveData<Map<String, Object>> userLiveData;
 
     @Inject
     public ProfileViewModel(ProfileRepository repository) {
@@ -30,4 +31,15 @@ public class ProfileViewModel extends ViewModel {
             liveData = repository.getProgress();
         return liveData;
     }
+
+    public LiveData<Map<String, Object>> getUserLiveData() {
+        if(userLiveData == null)
+            userLiveData = repository.getProfileFromCloud();
+        return userLiveData;
+    }
+
+    public void updateData(String name, String photoUri){
+        repository.updateProfile(name, photoUri);
+    }
+
 }

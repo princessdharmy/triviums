@@ -8,7 +8,6 @@ public class UserProfile {
     private String email;
     private String profilePicture;
 
-
     public UserProfile(){
 
     }
@@ -44,6 +43,7 @@ public class UserProfile {
     public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
     }
+
 
     @Override
     public String toString() {

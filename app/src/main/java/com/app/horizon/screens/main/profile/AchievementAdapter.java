@@ -13,6 +13,7 @@ import com.app.horizon.R;
 import com.app.horizon.databinding.AchievementsBinding;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
