@@ -36,6 +36,3 @@ Libraries
 * Dagger2
 * Firestore
 * Databinding
-
-## How to contribute?
-You can reach me by commenting on this post or send message on the discord (@princessdharmy#4642) or damomos123@gmail.com. If you want to make this application better, you can make a Pull Request.
